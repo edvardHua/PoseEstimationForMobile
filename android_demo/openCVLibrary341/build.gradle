@@ -93,13 +93,13 @@ apply plugin: 'com.android.library'
 println "OpenCV: " + project.buildscript.sourceFile
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
     //buildToolsVersion "27.0.3" // not needed since com.android.tools.build:gradle:3.0.0
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 26
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
     }
 
     buildTypes {
