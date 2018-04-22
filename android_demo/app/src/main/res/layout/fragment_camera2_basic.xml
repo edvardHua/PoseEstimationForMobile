@@ -18,24 +18,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <com.example.android.tflitecamerademo.AutoFitFrameLayout
+    <com.edvard.poseestimation.AutoFitFrameLayout
         android:id="@+id/layout_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
-        <com.example.android.tflitecamerademo.AutoFitTextureView
+        <com.edvard.poseestimation.AutoFitTextureView
             android:id="@+id/texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <com.example.android.tflitecamerademo.DrawView
+        <com.edvard.poseestimation.DrawView
             android:id="@+id/drawview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </com.example.android.tflitecamerademo.AutoFitFrameLayout>
+    </com.edvard.poseestimation.AutoFitFrameLayout>
 
     <LinearLayout
         android:id="@+id/layout_bottom"

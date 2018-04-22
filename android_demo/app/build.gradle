@@ -4,7 +4,7 @@ android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
     defaultConfig {
-        applicationId "android.example.com.tflitecamerademo"
+        applicationId "com.edvard.poseestimation"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1

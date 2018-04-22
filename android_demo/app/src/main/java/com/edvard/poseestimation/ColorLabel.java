@@ -1,4 +1,4 @@
-package com.example.android.tflitecamerademo;
+package com.edvard.poseestimation;
 
 import android.graphics.Color;
 

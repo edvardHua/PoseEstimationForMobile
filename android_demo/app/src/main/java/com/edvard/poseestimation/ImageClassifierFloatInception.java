@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package com.example.android.tflitecamerademo;
+package com.edvard.poseestimation;
 
 import android.app.Activity;
 import android.util.Log;
@@ -25,7 +25,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 
-import static com.example.android.tflitecamerademo.CameraActivity.isOpenCVInit;
+import static com.edvard.poseestimation.CameraActivity.isOpenCVInit;
 
 /**
  * This classifier works with the Inception-v3 slim model.

@@ -1,4 +1,4 @@
-package com.example.android.tflitecamerademo;
+package com.edvard.poseestimation;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
