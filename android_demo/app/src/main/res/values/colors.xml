@@ -16,4 +16,25 @@
 -->
 <resources>
     <color name="control_background">#cc4285f4</color>
+
+  <color name="top">#980000</color>
+  <color name="color_top">#980000</color>
+  <color name="color_neck">#ff0000</color>
+
+
+  <color name="color_l_shoulder">#ff9d00</color>
+  <color name="color_l_elbow">#e8e84a</color>
+  <color name="color_l_wrist">#87fd00</color>
+  <color name="color_l_hip">#00ac0b</color>
+  <color name="color_l_knee">#01ffe1</color>
+  <color name="color_l_ankle">#2169f9</color>
+
+
+  <color name="color_r_shoulder">#ad48f5</color>
+  <color name="color_r_elbow">#f700ff</color>
+  <color name="color_r_wrist">#ff0000</color>
+  <color name="color_r_hip">#0090ff</color>
+  <color name="color_r_knee">#268b01</color>
+  <color name="color_r_ankle">#ff6a4d</color>
+  <color name="color_background">#be9268</color>
 </resources>
