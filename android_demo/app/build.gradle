@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
     defaultConfig {
-        applicationId "android.example.com.tflitecamerademo"
+        applicationId "com.edvard.poseestimation"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
@@ -73,6 +74,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':openCVLibrary341')
+    implementation deps.kotlin.stdlib.jdk
     implementation(name:'tensorflow-lite', ext:'aar')
     implementation deps.android.support.appcompatV7
     implementation deps.android.support.constraintLayout

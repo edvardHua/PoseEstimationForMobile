@@ -16,7 +16,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.android.tflitecamerademo">
+          package="com.edvard.poseestimation">
 
     <uses-permission android:name="android.permission.CAMERA"/>
 
@@ -30,7 +30,7 @@
         android:theme="@style/MaterialTheme">
 
         <activity
-            android:name="com.example.android.tflitecamerademo.CameraActivity"
+            android:name="com.edvard.poseestimation.CameraActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>

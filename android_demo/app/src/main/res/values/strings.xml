@@ -21,4 +21,19 @@
     <string name="toggle_turn_on">NN:On</string>
     <string name="toggle_turn_off">NN:Off</string>
     <string name="toggle">Use NNAPI</string>
+
+    <string name="neck">脖子</string>
+    <string name="r_shoulder">右肩膀</string>
+    <string name="r_elbow">右肘部</string>
+    <string name="l_shoulder">左肩膀</string>
+    <string name="l_elbow">左肘部</string>
+    <string name="l_wrist">左手腕</string>
+    <string name="r_wrist">右手腕</string>
+    <string name="r_hip">右臀部</string>
+    <string name="r_knee">右膝盖</string>
+    <string name="r_ankle">右踝关节</string>
+    <string name="l_hip">左臀部</string>
+    <string name="l_knee">左膝盖</string>
+    <string name="l_ankle">左踝关节</string>
+    <string name="background">背景</string>
 </resources>

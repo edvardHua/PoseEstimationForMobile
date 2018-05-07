@@ -18,159 +18,135 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <com.example.android.tflitecamerademo.AutoFitFrameLayout
+    <com.edvard.poseestimation.AutoFitFrameLayout
         android:id="@+id/layout_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
-        <com.example.android.tflitecamerademo.AutoFitTextureView
+        <com.edvard.poseestimation.AutoFitTextureView
             android:id="@+id/texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <com.example.android.tflitecamerademo.DrawView
+        <com.edvard.poseestimation.DrawView
             android:id="@+id/drawview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </com.example.android.tflitecamerademo.AutoFitFrameLayout>
+    </com.edvard.poseestimation.AutoFitFrameLayout>
 
     <LinearLayout
         android:id="@+id/layout_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="112dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
         android:orientation="vertical"
-        android:background="#000">
+        android:background="#1c000000"
+        android:paddingStart="10dp"
+        >
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFF"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:text="asd"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="top"
+          android:textColor="@color/color_top"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/neck"
+          android:textColor="@color/color_neck"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="top"
-                android:layout_marginLeft="10dp"
-                android:textColor="#980000"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/l_shoulder"
+          android:textColor="@color/color_l_shoulder"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="脖子"
-                android:layout_marginLeft="10dp"
-                android:textColor="#ff0000"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/l_elbow"
+          android:textColor="@color/color_l_elbow"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="右肩膀"
-                android:layout_marginLeft="10dp"
-                android:textColor="#ff9900"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="右肘部"
-                android:layout_marginLeft="10dp"
-                android:textColor="#ffff00"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/l_wrist"
+          android:textColor="@color/color_l_wrist"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="左肩膀"
-                android:textColor="#00ffff"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/l_hip"
+          android:textColor="@color/color_l_hip"/>
 
-        </LinearLayout>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/l_knee"
+          android:textColor="@color/color_l_knee"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/l_ankle"
+          android:textColor="@color/color_l_ankle"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="左肘部"
-                android:layout_marginLeft="10dp"
-                android:textColor="#4a86e8"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/r_shoulder"
+          android:textColor="@color/color_r_shoulder"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/r_elbow"
+          android:textColor="@color/color_r_elbow"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="左手腕"
-                android:layout_marginLeft="10dp"
-                android:textColor="#0000ff"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/r_wrist"
+          android:textColor="@color/color_r_wrist"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="右臀部"
-                android:layout_marginLeft="10dp"
-                android:textColor="#9900ff"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="右膝盖"
-                android:layout_marginLeft="10dp"
-                android:textColor="#274e13"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/r_hip"
+          android:textColor="@color/color_r_hip"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/r_knee"
+          android:textColor="@color/color_r_knee"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="右踝关节"
-                android:textColor="#e6b8af"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/r_ankle"
+          android:textColor="@color/color_r_ankle"/>
 
-        </LinearLayout>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/background"
+          android:textColor="@color/color_background"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="左臀部"
-                android:layout_marginLeft="10dp"
-                android:textColor="#0c343d"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="左膝盖"
-                android:layout_marginLeft="10dp"
-                android:textColor="#1c4587"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="左踝关节"
-                android:layout_marginLeft="10dp"
-                android:textColor="#073763"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="背景"
-                android:layout_marginLeft="10dp"
-                android:textColor="#20124d"/>
-
-        </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="#1c000000"
+        tools:text="asd"/>
 
 </RelativeLayout>

@@ -19,4 +19,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context="com.example.android.tflitecamerademo.CameraActivity" />
+    tools:context="com.edvard.android.tflitecamerademo.CameraActivity" />
