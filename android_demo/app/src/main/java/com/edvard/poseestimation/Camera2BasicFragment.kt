@@ -69,10 +69,10 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
   private var checkedPermissions = false
   private var textView: TextView? = null
   private var textureView: AutoFitTextureView? = null
-  private var layout_frame: AutoFitFrameLayout? = null
+  private var layoutFrame: AutoFitFrameLayout? = null
   private var drawView: DrawView? = null
   private var classifier: ImageClassifier? = null
-  private var layout_bottom: ViewGroup? = null
+  private var layoutBottom: ViewGroup? = null
 
   /**
    * [TextureView.SurfaceTextureListener] handles several lifecycle events on a [ ].
@@ -268,11 +268,11 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
   ) {
     textureView = view.findViewById(R.id.texture)
     textView = view.findViewById(R.id.text)
-    layout_frame = view.findViewById(R.id.layout_frame)
+    layoutFrame = view.findViewById(R.id.layout_frame)
     drawView = view.findViewById(R.id.drawview)
-    layout_bottom = view.findViewById(R.id.layout_bottom)
-    if (classifier != null)
-      drawView!!.setImgSize(classifier!!.imageSizeX, classifier!!.imageSizeY)
+    layoutBottom = view.findViewById(R.id.layout_bottom)
+//    if (classifier != null)
+//      drawView!!.setImgSize(classifier!!.imageSizeX, classifier!!.imageSizeY)
   }
 
   /**
@@ -283,7 +283,7 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
     try {
       // create either a new ImageClassifierQuantizedMobileNet or an ImageClassifierFloatInception
       //      classifier = new ImageClassifierQuantizedMobileNet(getActivity());
-      classifier = ImageClassifierFloatInception(activity)
+      classifier = ImageClassifierFloatInception.create(activity)
       if (drawView != null)
         drawView!!.setImgSize(classifier!!.imageSizeX, classifier!!.imageSizeY)
     } catch (e: IOException) {
@@ -403,11 +403,11 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
         // We fit the aspect ratio of TextureView to the size of preview we picked.
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-          layout_frame!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
+          layoutFrame!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
           textureView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
           drawView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
         } else {
-          layout_frame!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
+          layoutFrame!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
           textureView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
           drawView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
         }
@@ -697,23 +697,23 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
     /**
      * Tag for the [Log].
      */
-    private val TAG = "TfLiteCameraDemo"
+    private const val TAG = "TfLiteCameraDemo"
 
-    private val FRAGMENT_DIALOG = "dialog"
+    private const val FRAGMENT_DIALOG = "dialog"
 
-    private val HANDLE_THREAD_NAME = "CameraBackground"
+    private const val HANDLE_THREAD_NAME = "CameraBackground"
 
-    private val PERMISSIONS_REQUEST_CODE = 1
+    private const val PERMISSIONS_REQUEST_CODE = 1
 
     /**
      * Max preview width that is guaranteed by Camera2 API
      */
-    private val MAX_PREVIEW_WIDTH = 1920
+    private const val MAX_PREVIEW_WIDTH = 1920
 
     /**
      * Max preview height that is guaranteed by Camera2 API
      */
-    private val MAX_PREVIEW_HEIGHT = 1080
+    private const val MAX_PREVIEW_HEIGHT = 1080
 
     /**
      * Resizes image.
@@ -767,13 +767,13 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
 
       // Pick the smallest of those big enough. If there is no one big enough, pick the
       // largest of those not big enough.
-      if (bigEnough.size > 0) {
-        return Collections.min(bigEnough, CompareSizesByArea())
-      } else if (notBigEnough.size > 0) {
-        return Collections.max(notBigEnough, CompareSizesByArea())
-      } else {
-        Log.e(TAG, "Couldn't find any suitable preview size")
-        return choices[0]
+      return when {
+        bigEnough.size > 0 -> Collections.min(bigEnough, CompareSizesByArea())
+        notBigEnough.size > 0 -> Collections.max(notBigEnough, CompareSizesByArea())
+        else -> {
+          Log.e(TAG, "Couldn't find any suitable preview size")
+          choices[0]
+        }
       }
     }
 

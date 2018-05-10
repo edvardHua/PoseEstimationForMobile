@@ -130,11 +130,11 @@
           android:text="@string/r_ankle"
           android:textColor="@color/color_r_ankle"/>
 
-      <TextView
+    <!--  <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/background"
-          android:textColor="@color/color_background"/>
+          android:textColor="@color/color_background"/>-->
 
 
     </LinearLayout>
