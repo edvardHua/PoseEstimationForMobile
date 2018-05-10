@@ -40,7 +40,15 @@ import java.util.PriorityQueue
 abstract class ImageClassifier
 /** Initializes an `ImageClassifier`.  */
 @Throws(IOException::class)
-internal constructor(activity: Activity) {
+internal constructor(
+  activity: Activity,
+  val imageSizeX: Int, // Get the image size along the x axis.
+  val imageSizeY: Int, // Get the image size along the y axis.
+  private val modelPath: String, // Get the name of the model file stored in Assets.
+  private val labelPath: String, // Get the name of the label file stored in Assets.
+  // Get the number of bytes that is used to store a single color channel value.
+  numBytesPerChannel: Int
+) {
 
   /* Preallocated buffers for storing image data in. */
   private val intValues = IntArray(imageSizeX * imageSizeY)
@@ -62,41 +70,6 @@ internal constructor(activity: Activity) {
   private val sortedLabels = PriorityQueue<Map.Entry<String, Float>>(
       RESULTS_TO_SHOW,
       Comparator<Map.Entry<String, Float>> { o1, o2 -> o1.value.compareTo(o2.value) })
-
-  /**
-   * Get the name of the model file stored in Assets.
-   *
-   * @return
-   */
-  protected abstract val modelPath: String
-
-  /**
-   * Get the name of the label file stored in Assets.
-   *
-   * @return
-   */
-  protected abstract val labelPath: String
-
-  /**
-   * Get the image size along the x axis.
-   *
-   * @return
-   */
-  abstract val imageSizeX: Int
-
-  /**
-   * Get the image size along the y axis.
-   *
-   * @return
-   */
-  abstract val imageSizeY: Int
-
-  /**
-   * Get the number of bytes that is used to store a single color channel value.
-   *
-   * @return
-   */
-  protected abstract val numBytesPerChannel: Int
 
   /**
    * Get the total number of labels.
@@ -285,17 +258,17 @@ internal constructor(activity: Activity) {
   companion object {
 
     /** Tag for the [Log].  */
-    private val TAG = "TfLiteCameraDemo"
+    private const val TAG = "TfLiteCameraDemo"
 
     /** Number of results to show in the UI.  */
-    private val RESULTS_TO_SHOW = 3
+    private const val RESULTS_TO_SHOW = 3
 
     /** Dimensions of inputs.  */
-    private val DIM_BATCH_SIZE = 1
+    private const val DIM_BATCH_SIZE = 1
 
-    private val DIM_PIXEL_SIZE = 3
+    private const val DIM_PIXEL_SIZE = 3
 
-    private val FILTER_STAGES = 3
-    private val FILTER_FACTOR = 0.4f
+    private const val FILTER_STAGES = 3
+    private const val FILTER_FACTOR = 0.4f
   }
 }

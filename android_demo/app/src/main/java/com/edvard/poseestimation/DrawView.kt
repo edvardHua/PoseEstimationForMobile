@@ -92,7 +92,7 @@ class DrawView : View {
 
     var tempX: Float
     var tempY: Float
-    for (i in 0..14) {
+    for (i in 0..13) {
       tempX = point[0][i] / ratio / mRatioX
       tempY = point[1][i] / ratio / mRatioY
       mDrawPoint.add(PointF(tempX, tempY))
@@ -126,25 +126,24 @@ class DrawView : View {
     mPaint.color = 0xff6fa8dc.toInt()
     val p1 = mDrawPoint[1]
     for ((index, pointF) in mDrawPoint.withIndex()) {
-      if (index != 1 && index <= 13) {
-        when (index) {
-        //0-1
-          0 -> {
-            canvas.drawLine(pointF.x, pointF.y, p1.x, p1.y, mPaint)
-          }
-        // 1-2, 1-5, 1-8, 1-11
-          2, 5, 8, 11 -> {
-            canvas.drawLine(p1.x, p1.y, pointF.x, pointF.y, mPaint)
-          }
-          else -> {
-            if (prePointF != null) {
-              mPaint.color = 0xff6fa8dc.toInt()
-              canvas.drawLine(prePointF.x, prePointF.y, pointF.x, pointF.y, mPaint)
-            }
+      if (index == 1) continue
+      when (index) {
+      //0-1
+        0 -> {
+          canvas.drawLine(pointF.x, pointF.y, p1.x, p1.y, mPaint)
+        }
+      // 1-2, 1-5, 1-8, 1-11
+        2, 5, 8, 11 -> {
+          canvas.drawLine(p1.x, p1.y, pointF.x, pointF.y, mPaint)
+        }
+        else -> {
+          if (prePointF != null) {
+            mPaint.color = 0xff6fa8dc.toInt()
+            canvas.drawLine(prePointF.x, prePointF.y, pointF.x, pointF.y, mPaint)
           }
         }
-        prePointF = pointF
       }
+      prePointF = pointF
     }
 
     for ((index, pointF) in mDrawPoint.withIndex()) {
