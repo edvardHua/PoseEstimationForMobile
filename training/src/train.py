@@ -127,8 +127,12 @@ def main(argv=None):
         variable_averages = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
         variable_to_average = (tf.trainable_variables() + tf.moving_average_variables())
         variables_averages_op = variable_averages.apply(variable_to_average)
-        train_op = tf.group(apply_gradient_op, variables_averages_op)
-        saver = tf.train.Saver()
+
+        update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+        with tf.control_dependencies(update_ops):
+            train_op = tf.group(apply_gradient_op, variables_averages_op)
+
+        saver = tf.train.Saver(max_to_keep=100)
 
         tf.summary.scalar("learning_rate", learning_rate)
         tf.summary.scalar("loss", loss)
