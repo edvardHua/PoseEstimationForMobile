@@ -167,11 +167,11 @@ class ImageClassifierFloatInception private constructor(
      */
     fun create(
       activity: Activity,
-      imageSizeX: Int = 256,
-      imageSizeY: Int = 256,
-      outputW: Int = 128,
-      outputH: Int = 128,
-      modelPath: String = "mv2-cpm.tflite",
+      imageSizeX: Int = 224,
+      imageSizeY: Int = 224,
+      outputW: Int = 112,
+      outputH: Int = 112,
+      modelPath: String = "mv2-cpm-224.tflite",
       numBytesPerChannel: Int = 4
     ): ImageClassifierFloatInception =
       ImageClassifierFloatInception(
