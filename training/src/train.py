@@ -78,6 +78,9 @@ def main(argv=None):
 
     os.environ['CUDA_VISIBLE_DEVICES'] = params['visible_devices']
 
+    gpus_index = params['visible_devices'].split(",")
+    params['gpus'] = len(gpus_index)
+
     if not os.path.exists(params['modelpath']):
         os.makedirs(params['modelpath'])
     if not os.path.exists(params['logpath']):
@@ -101,7 +104,7 @@ def main(argv=None):
         global_step = tf.Variable(0, trainable=False)
         learning_rate = tf.train.exponential_decay(float(params['lr']), global_step,
                                                    decay_steps=10000, decay_rate=float(params['decay_rate']), staircase=True)
-        opt = tf.train.AdamOptimizer(learning_rate, epsilon=1e-7)
+        opt = tf.train.AdamOptimizer(learning_rate, epsilon=1e-8)
         tower_grads = []
         reuse_variable = False
 
@@ -152,8 +155,9 @@ def main(argv=None):
             coord = tf.train.Coordinator()
             threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
-            summary_writer = tf.summary.FileWriter(params['logpath'], sess.graph)
+            summary_writer = tf.summary.FileWriter(os.path.join(params['logpath'], training_name), sess.graph)
             total_step_num = params['num_train_samples'] * params['max_epoch'] // (params['batchsize'] * params['gpus'])
+            print("Start training...")
             for step in range(total_step_num):
                 start_time = time.time()
                 _, loss_value, lh_loss, in_image, in_heat, p_heat = sess.run(

@@ -58,7 +58,7 @@ class CocoPose:
 
 
 class CocoMetadata:
-    __coco_parts = 15
+    __coco_parts = 14
 
     @staticmethod
     def parse_float(four_np):
@@ -106,7 +106,7 @@ class CocoMetadata:
                 else:
                     new_joint.append(((j1[0] + j2[0]) / 2, (j1[1] + j2[1]) / 2))
             # background
-            new_joint.append((-1000, -1000))
+            # new_joint.append((-1000, -1000))
             self.joint_list.append(new_joint)
 
     def get_heatmap(self, target_size):
@@ -121,7 +121,7 @@ class CocoMetadata:
         heatmap = heatmap.transpose((1, 2, 0))
 
         # background
-        heatmap[:, :, -1] = np.clip(1 - np.amax(heatmap, axis=2), 0.0, 1.0)
+        # heatmap[:, :, -1] = np.clip(1 - np.amax(heatmap, axis=2), 0.0, 1.0)
 
         if target_size:
             heatmap = cv2.resize(heatmap, target_size, interpolation=cv2.INTER_AREA)
@@ -133,7 +133,7 @@ class CocoMetadata:
         center_x, center_y = center
         _, height, width = heatmap.shape[:3]
 
-        th = 1.0052
+        th = 1.6052
         delta = math.sqrt(th * 2)
 
         x0 = int(max(0, center_x - delta * sigma))

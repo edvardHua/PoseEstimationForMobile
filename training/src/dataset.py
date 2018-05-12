@@ -13,7 +13,7 @@ from os.path import join
 from pycocotools.coco import COCO
 import multiprocessing
 
-BASE = ""
+BASE = "/root/hdd"
 BASE_PATH = ""
 TRAIN_JSON = "ai_challenger_train.json"
 VALID_JSON = "ai_challenger_valid.json"
@@ -29,19 +29,23 @@ def set_config(config):
     BASE_PATH = CONFIG['datapath']
 
 
-def _parse_function(imgId):
+def _parse_function(imgId, ann=None):
     """
     :param imgId:
     :return:
     """
     global TRAIN_ANNO
+
+    if ann is not None:
+        TRAIN_ANNO = ann
+
     img_meta = TRAIN_ANNO.loadImgs([imgId])[0]
     anno_ids = TRAIN_ANNO.getAnnIds(imgIds=imgId)
     img_anno = TRAIN_ANNO.loadAnns(anno_ids)
     idx = img_meta['id']
     img_path = join(BASE, img_meta['file_name'])
 
-    img_meta_data = CocoMetadata(idx, img_path, img_meta, img_anno, sigma=4.0)
+    img_meta_data = CocoMetadata(idx, img_path, img_meta, img_anno, sigma=6.0)
     img_meta_data = pose_random_scale(img_meta_data)
     img_meta_data = pose_rotation(img_meta_data)
     img_meta_data = pose_flip(img_meta_data)

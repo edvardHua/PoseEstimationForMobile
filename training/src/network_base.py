@@ -31,6 +31,36 @@ def upsample(inputs, factor, name):
     return tf.image.resize_bilinear(inputs, [int(inputs.get_shape()[1]) * factor, int(inputs.get_shape()[2]) * factor],
                                     name=name)
 
+def separable_conv(input, c_o, k_s, stride, scope):
+        with slim.arg_scope([slim.batch_norm],
+                            decay=0.999,
+                            fused=True,
+                            is_training=_trainable,
+                            activation_fn=tf.nn.relu6):
+            output = slim.separable_convolution2d(input,
+                                                  num_outputs=None,
+                                                  stride=stride,
+                                                  trainable=_trainable,
+                                                  depth_multiplier=1.0,
+                                                  kernel_size=[k_s, k_s],
+                                                  weights_initializer=_init_xavier,
+                                                  weights_regularizer=_l2_regularizer_00004,
+                                                  biases_initializer=None,
+                                                  scope=scope + '_depthwise')
+
+            output = slim.convolution2d(output,
+                                        c_o,
+                                        stride=1,
+                                        kernel_size=[1, 1],
+                                        weights_initializer=_init_xavier,
+                                        biases_initializer=_init_zero,
+                                        normalizer_fn=slim.batch_norm,
+                                        trainable=_trainable,
+                                        weights_regularizer=None,
+                                        scope=scope + '_pointwise')
+
+        return output
+
 
 def inverted_bottleneck(inputs, up_channel_rate, channels, subsample, k_s=3, scope=""):
     with tf.variable_scope("inverted_bottleneck_%s" % scope):
@@ -49,7 +79,8 @@ def inverted_bottleneck(inputs, up_channel_rate, channels, subsample, k_s=3, sco
                                         biases_initializer=_init_zero,
                                         normalizer_fn=slim.batch_norm,
                                         weights_regularizer=None,
-                                        scope=scope + '_up_pointwise')
+                                        scope=scope + '_up_pointwise',
+                                        trainable=_trainable)
 
             output = slim.separable_convolution2d(output,
                                                   num_outputs=None,
@@ -60,7 +91,8 @@ def inverted_bottleneck(inputs, up_channel_rate, channels, subsample, k_s=3, sco
                                                   weights_regularizer=_l2_regularizer_00004,
                                                   biases_initializer=None,
                                                   padding="SAME",
-                                                  scope=scope + '_depthwise')
+                                                  scope=scope + '_depthwise',
+                                                  trainable=_trainable)
 
             output = slim.convolution2d(output,
                                         channels,
@@ -71,7 +103,8 @@ def inverted_bottleneck(inputs, up_channel_rate, channels, subsample, k_s=3, sco
                                         biases_initializer=_init_zero,
                                         normalizer_fn=slim.batch_norm,
                                         weights_regularizer=None,
-                                        scope=scope + '_pointwise')
+                                        scope=scope + '_pointwise',
+                                        trainable=_trainable)
             if inputs.get_shape().as_list()[-1] == channels:
                 output = tf.add(inputs, output)
 
@@ -90,6 +123,6 @@ def convb(input, k_h, k_w, c_o, stride, name, relu=True):
             weights_initializer=_init_xavier,
             biases_initializer=_init_zero,
             activation_fn=tf.nn.relu if relu else None,
-            scope=name
-        )
+            scope=name,
+            trainable=_trainable)
     return output

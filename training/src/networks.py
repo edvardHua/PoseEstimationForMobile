@@ -4,11 +4,9 @@
 # @FileName: data_filter.py
 # @Software: PyCharm
 
-from network_mv2_cpm import build_network
-
+import network_mv2_cpm
 
 def get_network(type, input, trainable=True):
     if type == 'mv2_cpm':
-        net, loss = build_network(input, trainable)
-
+        net, loss = network_mv2_cpm.build_network(input, trainable)
     return net, loss
