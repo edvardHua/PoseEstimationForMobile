@@ -79,9 +79,7 @@ class DrawView : View {
   }
 
   /**
-   * 输入的为92*92的图,然后按照比例放大
-   * 先按ratio放大,再按机器实际尺寸放大
-   *
+   * Scale according to the device.
    * @param point 2*14
    */
   fun setDrawPoint(

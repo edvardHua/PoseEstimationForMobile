@@ -21,8 +21,7 @@
         <![CDATA[
 
 
-            This sample demonstrates the basic use of TfLite API. Check the source code to see how
-            you can use TfLite for efficient, on-device inference with trained TensorFlow models.
+            PoseEstimation For Mobile
 
 
         ]]>

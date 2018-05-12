@@ -26,8 +26,7 @@ import org.opencv.imgproc.Imgproc
 import java.io.IOException
 
 /**
- * This classifier works with the Inception-v3 slim model.
- * It applies floating point inference rather than using a quantized model.
+ * Pose Estimator
  */
 class ImageClassifierFloatInception private constructor(
     activity: Activity,
@@ -35,40 +34,24 @@ class ImageClassifierFloatInception private constructor(
     imageSizeY: Int,
     private val outputW: Int,
     private val outputH: Int,
-    // you can download this file from
-    // https://storage.googleapis.com/download.tensorflow.org/models/tflite/inception_v3_slim_2016_android_2017_11_10.zip
     modelPath: String,
-    labelPath: String,
     numBytesPerChannel: Int = 4 // a 32bit float value requires 4 bytes
-  ) : ImageClassifier(activity, imageSizeX, imageSizeY, modelPath, labelPath, numBytesPerChannel) {
+  ) : ImageClassifier(activity, imageSizeX, imageSizeY, modelPath, numBytesPerChannel) {
 
   /**
    * An array to hold inference results, to be feed into Tensorflow Lite as outputs.
    * This isn't part of the super class, because we need a primitive array here.
    */
   private val heatMapArray: Array<Array<Array<FloatArray>>> =
-    Array(1) { Array(outputW) { Array(outputH) { FloatArray(15) } } }
+    Array(1) { Array(outputW) { Array(outputH) { FloatArray(14) } } }
 
   private var mMat: Mat? = null
 
   override fun addPixelValue(pixelValue: Int) {
-    //        imgData.putFloat((((pixelValue >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-    //        imgData.putFloat((((pixelValue >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-    //        imgData.putFloat(((pixelValue & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-
-    //rgb
-    //        imgData.put((byte) ((pixelValue >> 16) & 0xFF));
-    //        imgData.put((byte) ((pixelValue >> 8) & 0xFF));
-    //        imgData.put((byte) (pixelValue & 0xFF));
-
     //bgr
     imgData!!.putFloat((pixelValue and 0xFF).toFloat())
     imgData!!.putFloat((pixelValue shr 8 and 0xFF).toFloat())
     imgData!!.putFloat((pixelValue shr 16 and 0xFF).toFloat())
-
-    //        imgData.putFloat(((pixelValue & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-    //        imgData.putFloat((((pixelValue >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-    //        imgData.putFloat((((pixelValue >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
   }
 
   override fun getProbability(labelIndex: Int): Float {
@@ -84,7 +67,6 @@ class ImageClassifierFloatInception private constructor(
   }
 
   override fun getNormalizedProbability(labelIndex: Int): Float {
-    // TODO the following value isn't in [0,1] yet, but may be greater. Why?
     return getProbability(labelIndex)
   }
 
@@ -92,18 +74,18 @@ class ImageClassifierFloatInception private constructor(
     tflite?.run(imgData!!, heatMapArray)
 
     if (mPrintPointArray == null)
-      mPrintPointArray = Array(2) { FloatArray(15) }
+      mPrintPointArray = Array(2) { FloatArray(14) }
 
     if (!CameraActivity.isOpenCVInit)
       return
 
-    //先进行高斯滤波,5*5
+    // Gaussian Filter 5*5
     if (mMat == null)
       mMat = Mat(outputW, outputH, CvType.CV_32F)
 
     val tempArray = FloatArray(outputW * outputH)
     val outTempArray = FloatArray(outputW * outputH)
-    for (i in 0..14) {
+    for (i in 0..13) {
       var index = 0
       for (x in 0 until outputW) {
         for (y in 0 until outputH) {
@@ -120,7 +102,7 @@ class ImageClassifierFloatInception private constructor(
       var maxY = 0f
       var max = 0f
 
-      //比较上下左右4个点与自身的点的最大值
+      // Find keypoint coordinate through maximum values
       for (x in 0 until outputW) {
         for (y in 0 until outputH) {
           val top = get(x, y - 1, outTempArray)
@@ -146,7 +128,7 @@ class ImageClassifierFloatInception private constructor(
       }
 
       if (max == 0f) {
-        mPrintPointArray = Array(2) { FloatArray(15) }
+        mPrintPointArray = Array(2) { FloatArray(14) }
         return
       }
 
@@ -154,30 +136,6 @@ class ImageClassifierFloatInception private constructor(
       mPrintPointArray!![1][i] = maxY
       Log.i("TestOutPut", "pic[$i] ($maxX,$maxY) $max")
     }
-
-    //        if (mPrintPointArray == null)
-    //            mPrintPointArray = new float[2][15];
-    //
-    //        for (int i = 0; i < 15; i++) {
-    //            float maxX = 0, maxY = 0;
-    //            float max = 0;
-    //            for (int x = 0; x < 112; x++) {
-    //                for (int y = 0; y < 112; y++) {
-    ////                    float t = Math.abs(heatMapArray[0][x][y][i]);
-    //                    float t = heatMapArray[0][x][y][i];
-    //                    if (t >= max) {
-    //                        max = t;
-    ////                        maxX = x;
-    ////                        maxY = y;
-    //                        maxX = y;
-    //                        maxY = x;
-    //                    }
-    //                }
-    //            }
-    //            mPrintPointArray[0][i] = maxX;
-    //            mPrintPointArray[1][i] = maxY;
-    //            Log.i("Fucker", "pic[" + i + "] (" + maxX + "," + maxY + ") " + max);
-    //        }
   }
 
   private operator fun get(
@@ -201,21 +159,19 @@ class ImageClassifierFloatInception private constructor(
      *
      * @param imageSizeX Get the image size along the x axis.
      * @param imageSizeY Get the image size along the y axis.
-     * @param outputW The output width
-     * @param outputH The output height
+     * @param outputW The output width of model
+     * @param outputH The output height of model
      * @param modelPath Get the name of the model file stored in Assets.
-     * @param labelPath Get the name of the label file stored in Assets.
      * @param numBytesPerChannel Get the number of bytes that is used to store a single
      * color channel value.
      */
     fun create(
       activity: Activity,
-      imageSizeX: Int = 224,
-      imageSizeY: Int = 224,
-      outputW: Int = 112,
-      outputH: Int = 112,
-      modelPath: String = "model-85.tflite",
-      labelPath: String = "labels.txt",
+      imageSizeX: Int = 256,
+      imageSizeY: Int = 256,
+      outputW: Int = 128,
+      outputH: Int = 128,
+      modelPath: String = "mv2-cpm.tflite",
       numBytesPerChannel: Int = 4
     ): ImageClassifierFloatInception =
       ImageClassifierFloatInception(
@@ -225,7 +181,6 @@ class ImageClassifierFloatInception private constructor(
           outputW,
           outputH,
           modelPath,
-          labelPath,
           numBytesPerChannel)
   }
 }
