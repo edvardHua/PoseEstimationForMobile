@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -22,18 +22,22 @@
         android:id="@+id/layout_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_gravity="center_vertical"
+        >
 
         <com.edvard.poseestimation.AutoFitTextureView
             android:id="@+id/texture"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            />
 
         <com.edvard.poseestimation.DrawView
             android:id="@+id/drawview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            />
 
     </com.edvard.poseestimation.AutoFitFrameLayout>
 
@@ -41,11 +45,11 @@
         android:id="@+id/layout_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:background="#1c000000"
         android:paddingStart="10dp"
+        android:paddingEnd="0dp"
         >
 
       <TextView
@@ -149,4 +153,4 @@
         android:background="#1c000000"
         tools:text="asd"/>
 
-</RelativeLayout>
+</FrameLayout>

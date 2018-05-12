@@ -15,8 +15,11 @@ android {
         externalNativeBuild {
             cmake {
                 arguments  '-DANDROID_TOOLCHAIN=clang', '-DANDROID_STL=gnustl_static'
-//                cppFlags "-std=c++11","-frtti", "-fexceptions"
+                cppFlags "-std=c++11","-frtti", "-fexceptions"
             }
+        }
+        ndk {
+            abiFilters 'armeabi-v7a'
         }
     }
 
@@ -39,10 +42,6 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            ndk{
-                abiFilters 'armeabi-v7a'
-            }
         }
     }
 
