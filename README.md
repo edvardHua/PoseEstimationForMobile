@@ -110,6 +110,8 @@ cd training
 pip3 install -r requirements.txt
 ```
 
+Beside, you also need to install [cocoapi](https://github.com/cocodataset/cocoapi)
+
 2. Edit the parameters files in experiments folder, it contains almost all the hyper-parameters and other configuration you need to define in training. After that, passing the parameters file to start the training:
 
 ```bash
