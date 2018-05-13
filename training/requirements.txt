@@ -1,0 +1,9 @@
+tensorflow-gpu==1.4.0
+matplotlib==2.1.0
+numpy==1.13.3
+scipy==1.0.0
+sklearn==0.0
+pandas==0.21.0
+tensorpack==0.8.0
+requests
+opencv-python
