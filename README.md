@@ -198,9 +198,9 @@ If you are an IOS enthusiast who are interested in this project and want to migr
 
 ***
 
-[1] [Paper of Convolutional Pose Machines](https://arxiv.org/abs/1602.00134)
-[2] [Paper of MobileNet V2](https://arxiv.org/pdf/1801.04381.pdf)
-[3] [Repository of tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation)
+[1] [Paper of Convolutional Pose Machines](https://arxiv.org/abs/1602.00134) <br>
+[2] [Paper of MobileNet V2](https://arxiv.org/pdf/1801.04381.pdf) <br>
+[3] [Repository of tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) <br>
 [4] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite)
 
 
