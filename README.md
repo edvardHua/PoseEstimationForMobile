@@ -8,7 +8,7 @@ Hence, the respository contains:
 * IOS Demo (TODO)
 
 
-> You can buy me a coke if you think my work is helpful for you.
+> You can buy me a coke if you think my work is helpful for you. <br>
 > ETH address: 0x8fcF32D797968B64428ab2d8d09ce2f74143398E
 
 
@@ -37,9 +37,7 @@ $ tree -L 1 .
 └── valid
 ```
 
-The traing dataset only contains single person im
-
-ages and it come from the competition of [AI Challenger](). I transfer the annotation into COCO format for using the data augument code from [tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) respository.
+The traing dataset only contains single person images and it come from the competition of [AI Challenger](). I transfer the annotation into COCO format for using the data augument code from [tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) respository.
 
 ### Hyper-parameter
 
