@@ -165,10 +165,10 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
      */
     fun create(
       activity: Activity,
-      imageSizeX: Int = 256,
-      imageSizeY: Int = 256,
-      outputW: Int = 128,
-      outputH: Int = 128,
+      imageSizeX: Int = 224,
+      imageSizeY: Int = 224,
+      outputW: Int = 112,
+      outputH: Int = 112,
       modelPath: String = "mv2-cpm.tflite",
       numBytesPerChannel: Int = 4
     ): ImageClassifierFloatInception =
@@ -186,7 +186,7 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
 
 Finally, import the project in `Android Studio` and run in you smartphone.
 
-Also, you can download the [apk] of demo..
+Also, you can download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo..
 
 ## IOS Demo (TODO) 
 
