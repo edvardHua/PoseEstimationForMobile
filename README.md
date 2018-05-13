@@ -7,6 +7,11 @@ Hence, the respository contains:
 * Android Demo
 * IOS Demo (TODO)
 
+Below Gif is catch on Mi Mix2s (5 FPS)
+
+![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/demo.gif)
+
+You can download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo.
 
 > You can buy me a coke if you think my work is helpful for you. <br>
 > ETH address: 0x8fcF32D797968B64428ab2d8d09ce2f74143398E
@@ -37,7 +42,7 @@ $ tree -L 1 .
 └── valid
 ```
 
-The traing dataset only contains single person images and it come from the competition of [AI Challenger](). I transfer the annotation into COCO format for using the data augument code from [tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) respository.
+The traing dataset only contains single person images and it come from the competition of [AI Challenger](https://challenger.ai/datasets/keypoint). I transfer the annotation into COCO format for using the data augument code from [tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) respository.
 
 ### Hyper-parameter
 
@@ -57,8 +62,8 @@ max_epoch: 1000
 lr: '0.001'
 batchsize: 5
 decay_rate: 0.95
-input_width: 256
-input_height: 256
+input_width: 224
+input_height: 224
 n_kpoints: 14
 scale: 2
 modelpath: '/root/hdd/trained/mv2_cpm/models'
@@ -141,7 +146,7 @@ bazel-bin/tensorflow/contrib/lite/toco/toco \
 --output_file=<you_output_tflite_model_path>/mv2-cpm.tflite \
 --input_format=TENSORFLOW_GRAPHDEF --output_format=TFLITE \
 --inference_type=FLOAT \
---input_shape="1,256,256,3" \
+--input_shape="1,224,224,3" \
 --input_array='image' \
 --output_array='Convolutional_Pose_Machine/stage_5_out'
 ```
@@ -185,8 +190,6 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
 ```
 
 Finally, import the project in `Android Studio` and run in you smartphone.
-
-Also, you can download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo..
 
 ## IOS Demo (TODO) 
 
