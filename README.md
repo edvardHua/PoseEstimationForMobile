@@ -11,7 +11,7 @@ Below Gif is catch on Mi Mix2s (5 FPS)
 
 ![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/demo.gif)
 
-You can download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo.
+Download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo.
 
 > You can buy me a coke if you think my work is helpful for you. <br>
 > ETH address: 0x8fcF32D797968B64428ab2d8d09ce2f74143398E
@@ -191,7 +191,7 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
 ......
 ```
 
-Finally, import the project in `Android Studio` and run in you smartphone.
+Finally, import the project to `Android Studio` and run in you smartphone.
 
 ## IOS Demo (TODO) 
 
