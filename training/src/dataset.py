@@ -80,7 +80,6 @@ def _get_dataset_pipline(json_filename, batch_size, epoch, buffer_size):
 
     dataset = tf.data.Dataset.from_tensor_slices(imgIds)
 
-    # 在 map 之前 shuffle
     dataset.shuffle(buffer_size)
     dataset = dataset.map(
         lambda imgId: tuple(
