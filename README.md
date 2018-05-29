@@ -7,7 +7,7 @@ Hence, the respository contains:
 * Android Demo
 * IOS Demo (TODO)
 
-Below Gif is catch on Mi Mix2s (5 FPS)
+Below GIF is catch on Mi Mix2s (5 FPS)
 
 ![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/demo.gif)
 
@@ -119,7 +119,7 @@ cd training
 python3 src/train.py experiments/mv2_cpm.cfg
 ```
 
-It's take 12 hour to training the model on 3 Nvidia 1080Ti graphics cards, below is the corresponding plot on tensorboard.
+After 12 hour training, the model is almost coverage on 3 Nvidia 1080Ti graphics cards, below is the corresponding plot on tensorboard.
 
 ![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/loss_lastlayer_heat.png)
 
@@ -139,7 +139,7 @@ After you training the model, the following command can transfer the model into 
 cd training
 python3 src/gen_frozen_pb.py \
 --checkpoint=<you_training_model_path>/model-xxx --output_graph=<you_output_model_path>/model-xxx.pb \
---size=256 --model=mv2_cpm_2
+--size=224 --model=mv2_cpm_2
 
 # Convert to tflite.
 # See https://github.com/tensorflow/tensorflow/blob/master/tensorflow/docs_src/mobile/tflite/devguide.md for more information.
