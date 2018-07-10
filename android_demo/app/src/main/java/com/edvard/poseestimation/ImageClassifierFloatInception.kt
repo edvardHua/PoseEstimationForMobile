@@ -105,24 +105,11 @@ class ImageClassifierFloatInception private constructor(
       // Find keypoint coordinate through maximum values
       for (x in 0 until outputW) {
         for (y in 0 until outputH) {
-          val top = get(x, y - 1, outTempArray)
-          val left = get(x - 1, y, outTempArray)
-          val right = get(x + 1, y, outTempArray)
-          val bottom = get(x, y + 1, outTempArray)
           val center = get(x, y, outTempArray)
-
-          if (center > top &&
-              center > left &&
-              center > right &&
-              center > bottom &&
-              center >= 0.01
-          ) {
-
-            if (center > max) {
-              max = center
-              maxX = x.toFloat()
-              maxY = y.toFloat()
-            }
+          if (center > max) {
+            max = center
+            maxX = x.toFloat()
+            maxY = y.toFloat()
           }
         }
       }
@@ -134,7 +121,7 @@ class ImageClassifierFloatInception private constructor(
 
       mPrintPointArray!![0][i] = maxX
       mPrintPointArray!![1][i] = maxY
-      Log.i("TestOutPut", "pic[$i] ($maxX,$maxY) $max")
+//      Log.i("TestOutPut", "pic[$i] ($maxX,$maxY) $max")
     }
   }
 
@@ -149,12 +136,6 @@ class ImageClassifierFloatInception private constructor(
   companion object {
 
     /**
-     * The inception net requires additional normalization of the used input.
-     */
-    private val IMAGE_MEAN = 128
-    private val IMAGE_STD = 128.0f
-
-    /**
      * Create ImageClassifierFloatInception instance
      *
      * @param imageSizeX Get the image size along the x axis.
@@ -167,11 +148,11 @@ class ImageClassifierFloatInception private constructor(
      */
     fun create(
       activity: Activity,
-      imageSizeX: Int = 224,
-      imageSizeY: Int = 224,
-      outputW: Int = 112,
-      outputH: Int = 112,
-      modelPath: String = "mv2-cpm-224.tflite",
+      imageSizeX: Int = 192,
+      imageSizeY: Int = 192,
+      outputW: Int = 48,
+      outputH: Int = 48,
+      modelPath: String = "hourglass.tflite",
       numBytesPerChannel: Int = 4
     ): ImageClassifierFloatInception =
       ImageClassifierFloatInception(

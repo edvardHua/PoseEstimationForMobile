@@ -641,8 +641,8 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
     val textToShow = classifier!!.classifyFrame(bitmap)
     bitmap.recycle()
 
-    //        drawView.setDrawPoint(classifier.mPrintPointArray, 0.25f);
-    drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
+
+    drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.25f)
 
     showToast(textToShow)
   }
