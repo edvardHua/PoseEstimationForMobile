@@ -130,6 +130,8 @@ def run_with_frozen_pb(img_path, input_w_h, frozen_graph, output_node_names):
     image_ = cv2.resize(image_0, (input_w_h, input_w_h), interpolation=cv2.INTER_AREA)
 
     with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+
         heatmaps = sess.run(output, feed_dict={image: [image_]})
         CocoPose.display_image(
             # np.reshape(image_, [1, input_w_h, input_w_h, 3]),
