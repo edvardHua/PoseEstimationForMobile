@@ -159,7 +159,10 @@ After 12 hour training, the model is almost coverage on 3 Nvidia 1080Ti graphics
 Run the follow command to evaluate the value of your PCKh.
 
 ```bash
-python3 src/benchmark.py --frozen_pb_path=hourglass/model-360000.pb \--anno_json_path=/root/hdd/ai_challenger/ai_challenger_valid.json \--img_path=/root/hdd \--output_node_name=hourglass_out_3
+python3 src/benchmark.py --frozen_pb_path=hourglass/model-360000.pb \
+--anno_json_path=/root/hdd/ai_challenger/ai_challenger_valid.json \
+--img_path=/root/hdd \
+--output_node_name=hourglass_out_3
 ```
 
 
@@ -167,15 +170,15 @@ python3 src/benchmark.py --frozen_pb_path=hourglass/model-360000.pb \--anno_jso
 
 CPM
 
-* Frozen graph
-* TFlite
-* CoreML
+* [Frozen graph](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/release/cpm_model)
+* [TFlite](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/release/cpm_model)
+* [CoreML](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/release/cpm_model)
 
 Hourglass
 
-* Frozen graph
-* TFlite
-* CoreML
+* [Frozen graph](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/release/hourglass_model)
+* [TFlite](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/release/hourglass_model)
+* [CoreML](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/release/hourglass_model)
 
 ## Android Demo
 
@@ -191,8 +194,13 @@ python3 src/gen_frozen_pb.py \
 --size=192 --model=mv2_cpm_2
 
 # If you update tensorflow to 1.9, run following command.
-python3 src/gen_tflite_coreml.py \--frozen_pb=forzen_graph.pb \--input_node_name='image' \--output_node_name='Convolutional_Pose_Machine/stage_5_out' \--output_path='./' \
---type=tflite 
+python3 src/gen_tflite_coreml.py \
+--frozen_pb=forzen_graph.pb \
+--input_node_name='image' \
+--output_node_name='Convolutional_Pose_Machine/stage_5_out' \
+--output_path='./' \
+--type=tflite
+ 
 # Convert to tflite.
 # See https://github.com/tensorflow/tensorflow/blob/master/tensorflow/docs_src/mobile/tflite/devguide.md for more information.
 bazel-bin/tensorflow/contrib/lite/toco/toco \
@@ -262,7 +270,11 @@ python3 src/gen_frozen_pb.py \
 --size=192 --model=mv2_cpm_2
 
 # Run the following command to get mlmodel
-python3 src/gen_tflite_coreml.py \--frozen_pb=forzen_graph.pb \--input_node_name='image' \--output_node_name='Convolutional_Pose_Machine/stage_5_out' \--output_path='./' \
+python3 src/gen_tflite_coreml.py \
+--frozen_pb=forzen_graph.pb \
+--input_node_name='image' \
+--output_node_name='Convolutional_Pose_Machine/stage_5_out' \
+--output_path='./' \
 --type=coreml
 ```
 
