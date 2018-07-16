@@ -1,21 +1,47 @@
-This repository currently implemented the Convolutional Pose Machine (CPM) using TensorFlow. Instead of normal convolution, inverted residuals (also known as Mobilenet V2) module has been used inside the CPM for faster inference. More experimental models will release as time goes by.
+This repository currently implemented the CPM and Hourglass model using TensorFlow. Instead of normal convolution, inverted residuals (also known as Mobilenet V2) module has been used inside the model for faster inference. 
 
-Hence, the respository contains:
 
-* Code of training model
-* Code of converting model to TensorFlow Lite
-* Android Demo
-* IOS Demo (TODO)
+<table>
 
-Below GIF is catch on Mi Mix2s (5 FPS)
+  <tr>
+    <td>Model</td>
+    <td>FLOPs</td>
+    <td>PCKh</td>
+    <td>Inference Time</td>
+  </tr>
+
+  <tr>
+	<td>CPM</td>
+	<td>0.5G</td>
+	<td>93.78</td>
+	<td rowspan="2">
+	~100 ms on Snapdragon 845 <br/>
+	~30 ms on iPhone x 
+	</td>
+  </tr>
+
+  <tr>
+	<td>Hourglass</td>
+	<td>0.5G</td>
+	<td>91.81</td>
+  </tr>
+</table>
+
+> You can modify the [architectures](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/training/src) of network for training much higher PCKh model.
+
+The respository contains:
+
+* Code of training cpm & hourglass model
+* Android demo source code
+* IOS demo source code
+
+Below GIF is catch on Mi Mix2s (~10 FPS)
 
 ![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/demo.gif)
 
 Download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo.
 
-> You can buy me a coke if you think my work is helpful for you. <br>
-> ETH address: 0x8fcF32D797968B64428ab2d8d09ce2f74143398E
-
+> Issue and PR are welcome when you encount any problem.
 
 ## Training
 
@@ -42,7 +68,12 @@ $ tree -L 1 .
 └── valid
 ```
 
-The traing dataset only contains single person images and it come from the competition of [AI Challenger](https://challenger.ai/datasets/keypoint). I transfer the annotation into COCO format for using the data augument code from [tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) respository.
+The traing dataset only contains single person images and it come from the competition of [AI Challenger](https://challenger.ai/datasets/keypoint). 
+
+* 22446 training examples
+* 1500 testing examples
+
+I transfer the annotation into COCO format for using the data augument code from [tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) respository.
 
 ### Hyper-parameter
 
@@ -62,8 +93,8 @@ max_epoch: 1000
 lr: '0.001'
 batchsize: 5
 decay_rate: 0.95
-input_width: 224
-input_height: 224
+input_width: 192
+input_height: 192
 n_kpoints: 14
 scale: 2
 modelpath: '/root/hdd/trained/mv2_cpm/models'
@@ -123,10 +154,28 @@ After 12 hour training, the model is almost coverage on 3 Nvidia 1080Ti graphics
 
 ![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/loss_lastlayer_heat.png)
 
+### Bechmark (PCKh)
+
+Run the follow command to evaluate the value of your PCKh.
+
+```bash
+python3 src/benchmark.py --frozen_pb_path=hourglass/model-360000.pb \--anno_json_path=/root/hdd/ai_challenger/ai_challenger_valid.json \--img_path=/root/hdd \--output_node_name=hourglass_out_3
+```
+
+
 ### Pretain model
 
-Can be download [here](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/android_demo/app/src/main/assets/mv2-cpm-224.tflite).
+CPM
 
+* Frozen graph
+* TFlite
+* CoreML
+
+Hourglass
+
+* Frozen graph
+* TFlite
+* CoreML
 
 ## Android Demo
 
@@ -139,8 +188,11 @@ After you training the model, the following command can transfer the model into 
 cd training
 python3 src/gen_frozen_pb.py \
 --checkpoint=<you_training_model_path>/model-xxx --output_graph=<you_output_model_path>/model-xxx.pb \
---size=224 --model=mv2_cpm_2
+--size=192 --model=mv2_cpm_2
 
+# If you update tensorflow to 1.9, run following command.
+python3 src/gen_tflite_coreml.py \--frozen_pb=forzen_graph.pb \--input_node_name='image' \--output_node_name='Convolutional_Pose_Machine/stage_5_out' \--output_path='./' \
+--type=tflite 
 # Convert to tflite.
 # See https://github.com/tensorflow/tensorflow/blob/master/tensorflow/docs_src/mobile/tflite/devguide.md for more information.
 bazel-bin/tensorflow/contrib/lite/toco/toco \
@@ -148,9 +200,10 @@ bazel-bin/tensorflow/contrib/lite/toco/toco \
 --output_file=<you_output_tflite_model_path>/mv2-cpm.tflite \
 --input_format=TENSORFLOW_GRAPHDEF --output_format=TFLITE \
 --inference_type=FLOAT \
---input_shape="1,224,224,3" \
+--input_shape="1,192,192,3" \
 --input_array='image' \
 --output_array='Convolutional_Pose_Machine/stage_5_out'
+
 ```
 
 Then, place the tflite file in `android_demo/app/src/main/assets` and modify the parameters in `ImageClassifierFloatInception.kt`.
@@ -172,10 +225,10 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
      */
     fun create(
       activity: Activity,
-      imageSizeX: Int = 224,
-      imageSizeY: Int = 224,
-      outputW: Int = 112,
-      outputH: Int = 112,
+      imageSizeX: Int = 192,
+      imageSizeY: Int = 192,
+      outputW: Int = 96,
+      outputH: Int = 96,
       modelPath: String = "mv2-cpm.tflite",
       numBytesPerChannel: Int = 4
     ): ImageClassifierFloatInception =
@@ -193,20 +246,39 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
 
 Finally, import the project to `Android Studio` and run in you smartphone.
 
-## IOS Demo (TODO) 
+## IOS Demo
 
 ***
 
-If you are an IOS enthusiast who are interested in this project and want to migrate to ios, we welcome to submit a pull request.
+Thanks to [tucan](https://github.com/tucan9389), now you can run model on iOS.
+
+First, convert model into CoreML model.
+
+```bash
+# Convert to frozen pb.
+cd training
+python3 src/gen_frozen_pb.py \
+--checkpoint=<you_training_model_path>/model-xxx --output_graph=<you_output_model_path>/model-xxx.pb \
+--size=192 --model=mv2_cpm_2
+
+# Run the following command to get mlmodel
+python3 src/gen_tflite_coreml.py \--frozen_pb=forzen_graph.pb \--input_node_name='image' \--output_node_name='Convolutional_Pose_Machine/stage_5_out' \--output_path='./' \
+--type=coreml
+```
+
+Then, follow the instruction on [PoseEstimation-CoreML](https://github.com/tucan9389/PoseEstimation-CoreML).
+
 
 ## Reference
 
 ***
 
-[1] [Paper of Convolutional Pose Machines](https://arxiv.org/abs/1602.00134) <br>
-[2] [Paper of MobileNet V2](https://arxiv.org/pdf/1801.04381.pdf) <br>
-[3] [Repository of tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) <br>
-[4] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite)
+[1] [Paper of Convolutional Pose Machines](https://arxiv.org/abs/1602.00134) <br/>
+[2] [Paper of Stack Hourglass](https://arxiv.org/abs/1603.06937) <br/>
+[3] [Paper of MobileNet V2](https://arxiv.org/pdf/1801.04381.pdf) <br/>
+[4] [Repository PoseEstimation-CoreML](https://github.com/tucan9389/PoseEstimation-CoreML) <br/>
+[5] [Repository of tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) <br>
+[6] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite)
 
 
 ## License
