@@ -254,7 +254,7 @@ Then, place the tflite file in `android_demo/app/src/main/assets` and modify the
 
 Finally, import the project to `Android Studio` and run in you smartphone.
 
-## IOS Demo
+## iOS Demo
 
 ***
 
