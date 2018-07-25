@@ -97,5 +97,5 @@ def _get_dataset_pipline(json_filename, batch_size, epoch, buffer_size):
     return dataset
 
 
-def get_train_dataset_pipline(batch_size=32, epoch=10, buffer_size=1):
-    return _get_dataset_pipline(TRAIN_JSON, batch_size, epoch, buffer_size, )
+def get_train_dataset_pipeline(batch_size=32, epoch=10, buffer_size=1):
+    return _get_dataset_pipeline(TRAIN_JSON, batch_size, epoch, buffer_size, )

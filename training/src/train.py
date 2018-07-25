@@ -22,14 +22,14 @@ import dataset
 
 from datetime import datetime
 
-from dataset import get_train_dataset_pipline
+from dataset import get_train_dataset_pipeline
 from networks import get_network
 from dataset_prepare import CocoPose
 from dataset_augment import set_network_input_wh, set_network_scale
 
 
 def get_train_input(batchsize, epoch):
-    train_ds = get_train_dataset_pipline(batch_size=batchsize, epoch=epoch, buffer_size=100)
+    train_ds = get_train_dataset_pipeline(batch_size=batchsize, epoch=epoch, buffer_size=100)
     iter = train_ds.make_one_shot_iterator()
     _ = iter.get_next()
     return _[0], _[1]
