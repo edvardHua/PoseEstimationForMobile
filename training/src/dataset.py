@@ -46,6 +46,7 @@ def _parse_function(imgId, is_train, ann=None):
     """
 
     global TRAIN_ANNO
+    global VALID_ANNO
 
     if ann is not None:
         if is_train == True:
@@ -80,7 +81,7 @@ def _set_shapes(img, heatmap):
     return img, heatmap
 
 
-def _get_dataset_pipline(anno, batch_size, epoch, buffer_size, is_train=True):
+def _get_dataset_pipeline(anno, batch_size, epoch, buffer_size, is_train=True):
 
     imgIds = anno.getImgIds()
 
@@ -106,15 +107,19 @@ def _get_dataset_pipline(anno, batch_size, epoch, buffer_size, is_train=True):
 def get_train_dataset_pipeline(batch_size=32, epoch=10, buffer_size=1):
     global TRAIN_ANNO
 
+    anno_path = join(BASE_PATH, TRAIN_JSON)
+    print("preparing annotation from:", anno_path)
     TRAIN_ANNO = COCO(
-        join(BASE_PATH, TRAIN_JSON)
+        anno_path
     )
-    return _get_dataset_pipeline(TRAIN_JSON, batch_size, epoch, buffer_size, True)
+    return _get_dataset_pipeline(TRAIN_ANNO, batch_size, epoch, buffer_size, True)
 
 def get_valid_dataset_pipeline(batch_size=32, epoch=10, buffer_size=1):
     global VALID_ANNO
 
+    anno_path = join(BASE_PATH, VALID_JSON)
+    print("preparing annotation from:", anno_path)
     VALID_ANNO = COCO(
-        join(BASE_PATH, VALID_JSON)
+        anno_path
     )
     return _get_dataset_pipeline(VALID_ANNO, batch_size, epoch, buffer_size, False)
