@@ -22,15 +22,18 @@ import dataset
 
 from datetime import datetime
 
-from dataset import get_train_dataset_pipeline
+from dataset import get_train_dataset_pipeline, get_valid_dataset_pipeline
 from networks import get_network
 from dataset_prepare import CocoPose
 from dataset_augment import set_network_input_wh, set_network_scale
 
 
-def get_train_input(batchsize, epoch):
-    train_ds = get_train_dataset_pipeline(batch_size=batchsize, epoch=epoch, buffer_size=100)
-    iter = train_ds.make_one_shot_iterator()
+def get_input(batchsize, epoch, is_train=True):
+    if is_train is True:
+        input_pipeline = get_train_dataset_pipeline(batch_size=batchsize, epoch=epoch, buffer_size=100)
+    else:
+        input_pipeline = get_valid_dataset_pipeline(batch_size=batchsize, epoch=epoch, buffer_size=100)
+    iter = input_pipeline.make_one_shot_iterator()
     _ = iter.get_next()
     return _[0], _[1]
 
@@ -109,7 +112,9 @@ def main(argv=None):
     )
 
     with tf.Graph().as_default(), tf.device("/cpu:0"):
-        input_image, input_heat = get_train_input(params['batchsize'], params['max_epoch'])
+        input_image, input_heat = get_input(params['batchsize'], params['max_epoch'], is_train=True)
+        valid_input_image, valid_input_heat = get_input(params['batchsize'], params['max_epoch'], is_train=False)
+
         global_step = tf.Variable(0, trainable=False)
         learning_rate = tf.train.exponential_decay(float(params['lr']), global_step,
                                                    decay_steps=10000, decay_rate=float(params['decay_rate']), staircase=True)
@@ -125,6 +130,9 @@ def main(argv=None):
                     reuse_variable = True
                     grads = opt.compute_gradients(loss)
                     tower_grads.append(grads)
+
+                    valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'], params['batchsize'],
+                                                                                            valid_input_image, valid_input_heat, reuse_variable)
 
         grads = average_gradients(tower_grads)
         for grad, var in grads:
@@ -177,12 +185,17 @@ def main(argv=None):
                 if step != 0 and step % params['per_update_tensorboard_step'] == 0:
                     # False will speed up the training time.
                     if params['pred_image_on_tensorboard'] is True:
+
+                        valid_loss_value, valid_lh_loss, valid_in_image, valid_in_heat, valid_p_heat = sess.run(
+                            [valid_loss, valid_last_heat_loss, valid_input_image, valid_input_heat, valid_pred_heat]
+                        )
+
                         result = []
                         for index in range(params['batchsize']):
                             r = CocoPose.display_image(
-                                    in_image[index,:,:,:],
-                                    in_heat[index,:,:,:],
-                                    p_heat[index,:,:,:],
+                                    valid_in_image[index,:,:,:],
+                                    valid_in_heat[index,:,:,:],
+                                    valid_p_heat[index,:,:,:],
                                     True
                                 )
                             result.append(
