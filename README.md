@@ -1,4 +1,4 @@
-This repository currently implemented the CPM and Hourglass model using TensorFlow. Instead of normal convolution, inverted residuals (also known as Mobilenet V2) module has been used inside the model for faster inference. 
+This repository currently implemented the CPM and Hourglass model using TensorFlow. Instead of normal convolution, inverted residuals (also known as Mobilenet V2) module has been used inside the model for **real-time** inference. 
 
 
 <table>
@@ -15,8 +15,8 @@ This repository currently implemented the CPM and Hourglass model using TensorFl
 	<td>0.5G</td>
 	<td>93.78</td>
 	<td rowspan="2">
-	~100 ms on Snapdragon 845 <br/>
-	~30 ms on iPhone x 
+	~60 FPS FPS on Snapdragon 845 <br/>
+	30+ FPS on iPhone x (need more test)
 	</td>
   </tr>
 
@@ -35,11 +35,16 @@ The respository contains:
 * Android demo source code
 * IOS demo source code
 
-Below GIF is catch on Mi Mix2s (~10 FPS)
+Below GIF is catch on Mi Mix2s (~60 FPS)
 
 ![image](https://github.com/edvardHua/PoseEstimationForMobile/raw/master/images/demo.gif)
 
-Download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/master/release/PoseEstimationDemo.apk) of demo.
+You can download the apk as below to test on your device.
+
+| Using Mace (Support GPU) | Using TFlite (Only CPU) |
+| --- | --- |
+| [PoseEstimation-Mace.apk]() | [PoseEstimation-TFlite.apk]() |
+
 
 > Issue and PR are welcome when you encount any problem.
 
@@ -51,6 +56,7 @@ Download the [apk](https://github.com/edvardHua/PoseEstimationForMobile/blob/mas
 
 * Python3
 * TensorFlow >= 1.4
+* Mace
 
 ### Dataset:
 
@@ -184,7 +190,30 @@ Hourglass
 
 ***
 
-After you training the model, the following command can transfer the model into tflite.
+Thanks to mace framework, now you can using GPU to run this model on android smartphone.
+
+Following command can transfer model into mace format.
+
+```bash
+cd <your-mace-path>
+# You transer hourglass or cpm model by changing `yml` file.
+python tools/converter.py convert --config=<PoseEstimationForMobilePath>/release/mace_ymls/cpm.yml
+```
+
+Then follow the instruction of [mace documentation](https://mace.readthedocs.io/en/latest/user_guide/basic_usage.html) to integrate into android.
+
+For how to invoke the model and parsing output, you can check the [android source code]() i provided.
+
+The benchmark of some socs for average inference time are shown as follow.
+
+Model | Snapdragon 845 | Snapdragon 660 | Hisilicon 960 | Exynos 7420 
+---- | --- | --- | --- | --- 
+CPM & Hourglass | 17 ms | 30 ms | 42 ms | 103 ms 
+
+***
+
+
+Or you can transfer the model into tflite.
 
 ```bash
 # Convert to frozen pb.
