@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo_mace.iml" filepath="$PROJECT_DIR$/demo_mace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/macelibrary/macelibrary.iml" filepath="$PROJECT_DIR$/macelibrary/macelibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openCVLibrary341/openCVLibrary341.iml" filepath="$PROJECT_DIR$/openCVLibrary341/openCVLibrary341.iml" />
+    </modules>
+  </component>
+</project>
