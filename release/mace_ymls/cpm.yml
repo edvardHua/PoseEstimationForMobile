@@ -1,0 +1,24 @@
+library_name: cpm
+target_abis: [armeabi-v7a]
+model_graph_format: code
+model_data_format: code
+models:
+  cpm_v1: # model tag, which will be used in model loading and must be specific.
+    platform: tensorflow
+    # path to your tensorflow model's pb file. Support local path, http:// and https://
+    model_file_path: https://raw.githubusercontent.com/edvardHua/PoseEstimationForMobile/master/release/cpm_model/model.pb
+    # sha256_checksum of your model's pb file.
+    # use this command to get the sha256_checksum: sha256sum path/to/your/pb/file
+    model_sha256_checksum: e9314c15af001cafde741dde93827f646361b3b4cf08131807a8ec91e4e93134
+    subgraphs:
+      - input_tensors:
+          - image
+        input_shapes:
+          - 1,192,192,3
+        output_tensors:
+          - Convolutional_Pose_Machine/stage_5_out
+        output_shapes:
+          - 1,96,96,14
+    # cpu, gpu or cpu+gpu
+    runtime: cpu+gpu
+    winograd: 0

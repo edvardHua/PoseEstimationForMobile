@@ -1,0 +1,24 @@
+library_name: hourglass
+target_abis: [armeabi-v7a]
+model_graph_format: code
+model_data_format: code
+models:
+  hourglass_v1: # model tag, which will be used in model loading and must be specific.
+    platform: tensorflow
+    # path to your tensorflow model's pb file. Support local path, http:// and https://
+    model_file_path: https://raw.githubusercontent.com/edvardHua/PoseEstimationForMobile/master/release/hourglass_model/model.pb
+    # sha256_checksum of your model's pb file.
+    # use this command to get the sha256_checksum: sha256sum path/to/your/pb/file
+    model_sha256_checksum: 4d59044f4679b70e333c23c0b251da64471a4bbe96e42045e0d13d16aad7babe
+    subgraphs:
+      - input_tensors:
+          - image
+        input_shapes:
+          - 1,192,192,3
+        output_tensors:
+          - hourglass_out_3
+        output_shapes:
+          - 1,96,96,14
+    # cpu, gpu or cpu+gpu
+    runtime: cpu+gpu
+    winograd: 0
