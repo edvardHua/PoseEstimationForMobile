@@ -202,7 +202,7 @@ python tools/converter.py convert --config=<PoseEstimationForMobilePath>/release
 
 Then follow the instruction of [mace documentation](https://mace.readthedocs.io/en/latest/user_guide/basic_usage.html) to integrate into android.
 
-For how to invoke the model and parsing output, you can check the [android source code]() i provided.
+For how to invoke the model and parsing output, you can check the [android source code](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/android_demo) i provided.
 
 The benchmark of some socs for average inference time are shown as follow.
 
