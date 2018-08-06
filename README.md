@@ -15,7 +15,7 @@ This repository currently implemented the CPM and Hourglass model using TensorFl
 	<td>0.5G</td>
 	<td>93.78</td>
 	<td rowspan="2">
-	~60 FPS FPS on Snapdragon 845 <br/>
+	~60 FPS on Snapdragon 845 <br/>
 	30+ FPS on iPhone x (need more test)
 	</td>
   </tr>
@@ -319,8 +319,8 @@ Then, follow the instruction on [PoseEstimation-CoreML](https://github.com/tucan
 [3] [Paper of MobileNet V2](https://arxiv.org/pdf/1801.04381.pdf) <br/>
 [4] [Repository PoseEstimation-CoreML](https://github.com/tucan9389/PoseEstimation-CoreML) <br/>
 [5] [Repository of tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) <br>
-[6] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite)
-
+[6] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite)】
+[7] [Mace documentation](https://mace.readthedocs.io)
 
 ## License
 
