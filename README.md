@@ -210,6 +210,35 @@ Model | Snapdragon 845 | Snapdragon 660 | Hisilicon 960 | Exynos 7420
 ---- | --- | --- | --- | --- 
 CPM & Hourglass | 17 ms | 30 ms | 42 ms | 103 ms 
 
+Below is the environments i build this demo.
+
+- Operation System: `macOS 10.13.6` (mace not support build under windows now)
+- Android Studio: `3.0.1`
+- NDK Version: `r16`
+
+**Different environments may encounter different error when you build mace-demo. To avoid this, i suggest using docker.**
+
+```bash
+docker pull registry.cn-hangzhou.aliyuncs.com/xiaomimace/mace-dev-lite
+
+docker run -it
+	--privileged -d --name mace-dev 
+	--net=host 
+	-v to/you/path/PoseEstimationForMobile/android_demo/demo_mace:/demo_mace 
+	registry.cn-hangzhou.aliyuncs.com/xiaomimace/mace-dev-lite
+
+docker run -it --privileged -d --name mace-dev --net=host \
+           -v to/you/path/PoseEstimationForMobile/android_demo/demo_mace:/demo_mace  \
+           registry.cn-hangzhou.aliyuncs.com/xiaomimace/mace-dev-lite
+
+# Enter to docker
+docker exec -it mace-dev bash
+
+# Exec command inside the docker
+cd /demo_mace && ./gradlew build
+
+```
+
 ***
 
 
