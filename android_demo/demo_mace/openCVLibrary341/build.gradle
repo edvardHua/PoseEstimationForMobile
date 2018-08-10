@@ -96,7 +96,9 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     //buildToolsVersion "27.0.3" // not needed since com.android.tools.build:gradle:3.0.0
-
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 26
