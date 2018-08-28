@@ -348,7 +348,7 @@ Then, follow the instruction on [PoseEstimation-CoreML](https://github.com/tucan
 [3] [Paper of MobileNet V2](https://arxiv.org/pdf/1801.04381.pdf) <br/>
 [4] [Repository PoseEstimation-CoreML](https://github.com/tucan9389/PoseEstimation-CoreML) <br/>
 [5] [Repository of tf-pose-estimation](https://github.com/ildoonet/tf-pose-estimation) <br>
-[6] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite)】
+[6] [Devlope guide of TensorFlow Lite](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/docs_src/mobile/tflite) <br/>
 [7] [Mace documentation](https://mace.readthedocs.io)
 
 ## License
