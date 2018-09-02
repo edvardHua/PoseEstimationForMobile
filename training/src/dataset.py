@@ -28,6 +28,7 @@ TRAIN_JSON = "ai_challenger_train.json"
 VALID_JSON = "ai_challenger_valid.json"
 
 TRAIN_ANNO = None
+VALID_ANNO = None
 CONFIG = None
 
 
@@ -38,19 +39,29 @@ def set_config(config):
     BASE_PATH = CONFIG['datapath']
 
 
-def _parse_function(imgId, ann=None):
+def _parse_function(imgId, is_train, ann=None):
     """
     :param imgId:
     :return:
     """
+
     global TRAIN_ANNO
+    global VALID_ANNO
 
     if ann is not None:
-        TRAIN_ANNO = ann
+        if is_train == True:
+            TRAIN_ANNO = ann
+        else:
+            VALID_ANNO = ann
+    else:
+        if is_train == True:
+            anno = TRAIN_ANNO
+        else:
+            anno = VALID_ANNO
 
-    img_meta = TRAIN_ANNO.loadImgs([imgId])[0]
-    anno_ids = TRAIN_ANNO.getAnnIds(imgIds=imgId)
-    img_anno = TRAIN_ANNO.loadAnns(anno_ids)
+    img_meta = anno.loadImgs([imgId])[0]
+    anno_ids = anno.getAnnIds(imgIds=imgId)
+    img_anno = anno.loadAnns(anno_ids)
     idx = img_meta['id']
     img_path = join(BASE, img_meta['file_name'])
 
@@ -70,13 +81,9 @@ def _set_shapes(img, heatmap):
     return img, heatmap
 
 
-def _get_dataset_pipline(json_filename, batch_size, epoch, buffer_size):
-    global TRAIN_ANNO
+def _get_dataset_pipeline(anno, batch_size, epoch, buffer_size, is_train=True):
 
-    TRAIN_ANNO = COCO(
-        join(BASE_PATH, json_filename)
-    )
-    imgIds = TRAIN_ANNO.getImgIds()
+    imgIds = anno.getImgIds()
 
     dataset = tf.data.Dataset.from_tensor_slices(imgIds)
 
@@ -85,7 +92,7 @@ def _get_dataset_pipline(json_filename, batch_size, epoch, buffer_size):
         lambda imgId: tuple(
             tf.py_func(
                 func=_parse_function,
-                inp=[imgId],
+                inp=[imgId, is_train],
                 Tout=[tf.float32, tf.float32]
             )
         ), num_parallel_calls=CONFIG['multiprocessing_num'])
@@ -97,5 +104,22 @@ def _get_dataset_pipline(json_filename, batch_size, epoch, buffer_size):
     return dataset
 
 
-def get_train_dataset_pipline(batch_size=32, epoch=10, buffer_size=1):
-    return _get_dataset_pipline(TRAIN_JSON, batch_size, epoch, buffer_size, )
+def get_train_dataset_pipeline(batch_size=32, epoch=10, buffer_size=1):
+    global TRAIN_ANNO
+
+    anno_path = join(BASE_PATH, TRAIN_JSON)
+    print("preparing annotation from:", anno_path)
+    TRAIN_ANNO = COCO(
+        anno_path
+    )
+    return _get_dataset_pipeline(TRAIN_ANNO, batch_size, epoch, buffer_size, True)
+
+def get_valid_dataset_pipeline(batch_size=32, epoch=10, buffer_size=1):
+    global VALID_ANNO
+
+    anno_path = join(BASE_PATH, VALID_JSON)
+    print("preparing annotation from:", anno_path)
+    VALID_ANNO = COCO(
+        anno_path
+    )
+    return _get_dataset_pipeline(VALID_ANNO, batch_size, epoch, buffer_size, False)
