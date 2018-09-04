@@ -75,9 +75,9 @@ def _parse_function(imgId, is_train, ann=None):
 
 
 def _set_shapes(img, heatmap):
-    img.set_shape([CONFIG['input_width'], CONFIG['input_height'], 3])
+    img.set_shape([CONFIG['input_height'], CONFIG['input_width'], 3])
     heatmap.set_shape(
-        [CONFIG['input_width'] / CONFIG['scale'], CONFIG['input_height'] / CONFIG['scale'], CONFIG['n_kpoints']])
+        [CONFIG['input_height'] / CONFIG['scale'], CONFIG['input_width'] / CONFIG['scale'], CONFIG['n_kpoints']])
     return img, heatmap
 
 
