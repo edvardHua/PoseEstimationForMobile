@@ -46,7 +46,7 @@ You can download the apk as below to test on your device.
 | [PoseEstimation-Mace.apk](https://raw.githubusercontent.com/edvardHua/PoseEstimationForMobile/master/release/PoseEstimation-Mace.apk) | [PoseEstimation-TFlite.apk](https://raw.githubusercontent.com/edvardHua/PoseEstimationForMobile/master/release/PoseEstimation-TFlite.apk) |
 
 
-> Issue and PR are welcome when you encount any problem.
+> Issue and PR are welcome when you come across any problem.
 
 ## Training
 
