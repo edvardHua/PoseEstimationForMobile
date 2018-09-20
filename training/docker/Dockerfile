@@ -3,7 +3,7 @@ FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
 MAINTAINER zengzihua (edvard_hua@live.com)
 
 # pip source, use when you located in mainland, china
-# ENV DOUBAN_SOURCE="https://pypi.douban.com/simple"
+ENV DOUBAN_SOURCE="https://pypi.douban.com/simple"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
