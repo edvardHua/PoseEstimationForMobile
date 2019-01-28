@@ -200,7 +200,7 @@ cd <your-mace-path>
 python tools/converter.py convert --config=<PoseEstimationForMobilePath>/release/mace_ymls/cpm.yml
 ```
 
-Then follow the instruction of [mace documentation](https://mace.readthedocs.io/en/latest/user_guide/basic_usage.html) to integrate into android.
+Then follow the instruction of [mace-0.9 documentation](https://mace.readthedocs.io/en/v0.9.0/) to integrate into android.
 
 For how to invoke the model and parsing output, you can check the [android source code](https://github.com/edvardHua/PoseEstimationForMobile/tree/master/android_demo) i provided.
 
@@ -215,6 +215,7 @@ Below is the environments i build this demo.
 - Operation System: `macOS 10.13.6` (mace not support build under windows now)
 - Android Studio: `3.0.1`
 - NDK Version: `r16`
+- Mace Version: `0.9.0`
 
 **Different environments may encounter different error when you build mace-demo. To avoid this, i suggest using docker.**
 

@@ -19,8 +19,8 @@
 #include <string>
 #include <vector>
 
-#include "src/main/cpp/include/mace/public/mace.h"
-#include "src/main/cpp/include/mace/public/mace_runtime.h"
+#include "mace/public/mace.h"
+#include "mace/public/mace_runtime.h"
 
 namespace mace {
 

@@ -18,15 +18,14 @@
 #define MACE_CODEGEN_MODELS_CPM_V1_CPM_V1_H_
 
 #include <string>
-#include "src/main/cpp/include/mace/public/mace.h"
+
+#include "mace/public/mace.h"
 
 namespace mace {
 namespace cpm_v1 {
 
 
 const unsigned char *LoadModelData(const std::string &model_data_file);
-
-void UnloadModelData(const unsigned char *model_data);
 
 const std::shared_ptr<NetDef> CreateNet();
 
