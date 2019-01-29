@@ -15,6 +15,7 @@
 
 import tensorflow as tf
 import os
+import platform
 import time
 import numpy as np
 import configparser
@@ -26,7 +27,6 @@ from dataset import get_train_dataset_pipeline, get_valid_dataset_pipeline
 from networks import get_network
 from dataset_prepare import CocoPose
 from dataset_augment import set_network_input_wh, set_network_scale
-
 
 def get_input(batchsize, epoch, is_train=True):
     if is_train is True:
@@ -102,10 +102,14 @@ def main(argv=None):
     set_network_input_wh(params['input_width'], params['input_height'])
     set_network_scale(params['scale'])
 
-    training_name = '{}_batch-{}_lr-{}_gpus-{}_{}x{}_{}'.format(
+    gpus = 'gpus'
+    if platform.system() == 'Darwin':
+        gpus = 'cpu'
+    training_name = '{}_batch-{}_lr-{}_{}-{}_{}x{}_{}'.format(
         params['model'],
         params['batchsize'],
         params['lr'],
+        gpus,
         params['gpus'],
         params['input_width'], params['input_height'],
         config_file.replace("/", "-").replace(".cfg", "")
@@ -122,17 +126,36 @@ def main(argv=None):
         tower_grads = []
         reuse_variable = False
 
-        # multiple gpus
-        for i in range(params['gpus']):
-            with tf.device("/gpu:%d" % i):
-                with tf.name_scope("GPU_%d" % i):
-                    loss, last_heat_loss, pred_heat = get_loss_and_output(params['model'], params['batchsize'], input_image, input_heat, reuse_variable)
+        if platform.system() == 'Darwin':
+            # cpu (mac only)
+            with tf.device("/cpu:0"):
+                with tf.name_scope("CPU_0"):
+                    loss, last_heat_loss, pred_heat = get_loss_and_output(params['model'], params['batchsize'],
+                                                                          input_image, input_heat, reuse_variable)
                     reuse_variable = True
                     grads = opt.compute_gradients(loss)
                     tower_grads.append(grads)
 
-                    valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'], params['batchsize'],
-                                                                                            valid_input_image, valid_input_heat, reuse_variable)
+                    valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'],
+                                                                                            params['batchsize'],
+                                                                                            valid_input_image,
+                                                                                            valid_input_heat,
+                                                                                            reuse_variable)
+        else:
+            # multiple gpus
+            for i in range(params['gpus']):
+                with tf.device("/gpu:%d" % i):
+                    with tf.name_scope("GPU_%d" % i):
+                        loss, last_heat_loss, pred_heat = get_loss_and_output(params['model'], params['batchsize'], input_image, input_heat, reuse_variable)
+                        reuse_variable = True
+                        grads = opt.compute_gradients(loss)
+                        tower_grads.append(grads)
+
+                        valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'],
+                                                                                                params['batchsize'],
+                                                                                                valid_input_image,
+                                                                                                valid_input_heat,
+                                                                                                reuse_variable)
 
         grads = average_gradients(tower_grads)
         for grad, var in grads:

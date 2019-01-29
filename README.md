@@ -33,7 +33,7 @@ The respository contains:
 
 * Code of training cpm & hourglass model
 * Android demo source code
-* IOS demo source code
+* iOS demo source code
 
 Below GIF is catch on Mi Mix2s (~60 FPS)
 
@@ -139,6 +139,8 @@ nvidia-docker run -it -d \
 Also, it will create the tensorboard on port 6006. Beside, make sure you install the `nvidia-docker`.
 
 ### Train by ordinary way
+
+0. (mac only) Change tensorflow-gpu==1.4.0 to tensorflow==1.4.0 on requirements.txt.
 
 1. install the dependencies.
 
