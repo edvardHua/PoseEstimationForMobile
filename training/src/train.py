@@ -28,15 +28,13 @@ from networks import get_network
 from dataset_prepare import CocoPose
 from dataset_augment import set_network_input_wh, set_network_scale
 
-def get_input(batchsize, epoch, is_train=True):
+def get_input_iter(batchsize, epoch, is_train=True):
     if is_train is True:
         input_pipeline = get_train_dataset_pipeline(batch_size=batchsize, epoch=epoch, buffer_size=100)
     else:
         input_pipeline = get_valid_dataset_pipeline(batch_size=batchsize, epoch=epoch, buffer_size=100)
     iter = input_pipeline.make_one_shot_iterator()
-    _ = iter.get_next()
-    return _[0], _[1]
-
+    return iter
 
 def get_loss_and_output(model, batchsize, input_image, input_heat, reuse_variables=None):
     losses = []
@@ -116,9 +114,8 @@ def main(argv=None):
     )
 
     with tf.Graph().as_default(), tf.device("/cpu:0"):
-        input_image, input_heat = get_input(params['batchsize'], params['max_epoch'], is_train=True)
-        valid_input_image, valid_input_heat = get_input(params['batchsize'], params['max_epoch'], is_train=False)
-
+        input_iterator = get_input_iter(params['batchsize'], params['max_epoch'], is_train=True)
+        valid_input_iterator = get_input_iter(params['batchsize'], params['max_epoch'], is_train=False)
         global_step = tf.Variable(0, trainable=False)
         learning_rate = tf.train.exponential_decay(float(params['lr']), global_step,
                                                    decay_steps=10000, decay_rate=float(params['decay_rate']), staircase=True)
@@ -130,12 +127,13 @@ def main(argv=None):
             # cpu (mac only)
             with tf.device("/cpu:0"):
                 with tf.name_scope("CPU_0"):
+                    input_image, input_heat = input_iterator.get_next()
                     loss, last_heat_loss, pred_heat = get_loss_and_output(params['model'], params['batchsize'],
                                                                           input_image, input_heat, reuse_variable)
                     reuse_variable = True
                     grads = opt.compute_gradients(loss)
                     tower_grads.append(grads)
-
+                    valid_input_image, valid_input_heat = valid_input_iterator.get_next()
                     valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'],
                                                                                             params['batchsize'],
                                                                                             valid_input_image,
@@ -146,16 +144,18 @@ def main(argv=None):
             for i in range(params['gpus']):
                 with tf.device("/gpu:%d" % i):
                     with tf.name_scope("GPU_%d" % i):
+                        input_image, input_heat = input_iterator.get_next()
                         loss, last_heat_loss, pred_heat = get_loss_and_output(params['model'], params['batchsize'], input_image, input_heat, reuse_variable)
                         reuse_variable = True
                         grads = opt.compute_gradients(loss)
                         tower_grads.append(grads)
-
-                        valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'],
-                                                                                                params['batchsize'],
-                                                                                                valid_input_image,
-                                                                                                valid_input_heat,
-                                                                                                reuse_variable)
+                        if i == 0:
+                            valid_input_image, valid_input_heat = valid_input_iterator.get_next()
+                            valid_loss, valid_last_heat_loss, valid_pred_heat = get_loss_and_output(params['model'],
+                                                                                                    params['batchsize'],
+                                                                                                    valid_input_image,
+                                                                                                    valid_input_heat,
+                                                                                                    reuse_variable)
 
         grads = average_gradients(tower_grads)
         for grad, var in grads:
@@ -200,9 +200,7 @@ def main(argv=None):
             print("Start training...")
             for step in range(total_step_num):
                 start_time = time.time()
-                _, loss_value, lh_loss, in_image, in_heat, p_heat = sess.run(
-                    [train_op, loss, last_heat_loss, input_image, input_heat, pred_heat]
-                )
+                _, loss_value, lh_loss = sess.run([train_op, loss, last_heat_loss])
                 duration = time.time() - start_time
 
                 if step != 0 and step % params['per_update_tensorboard_step'] == 0:
@@ -245,7 +243,7 @@ def main(argv=None):
                     summary_writer.add_summary(merge_op, step)
 
                 # save model
-                if step % params['per_saved_model_step'] == 0:
+                if step != 0 and step % params['per_saved_model_step'] == 0:
                     checkpoint_path = os.path.join(params['modelpath'], training_name, 'model')
                     saver.save(sess, checkpoint_path, global_step=step)
             coord.request_stop()
