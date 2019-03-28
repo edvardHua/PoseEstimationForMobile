@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time    : 18-3-6 3:20 PM
-# @Author  : zengzihua@huya.com
+# @Author  : edvard_hua@live.com
 # @FileName: data_filter.py
 # @Software: PyCharm
 
