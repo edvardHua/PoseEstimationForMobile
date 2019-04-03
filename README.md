@@ -348,6 +348,16 @@ python3 src/gen_tflite_coreml.py \
 
 Then, follow the instruction on [PoseEstimation-CoreML](https://github.com/tucan9389/PoseEstimation-CoreML).
 
+The benchmark of some socs for average inference time are shown as follow.
+
+Model           | iPhone XS Max | iPhone XS | iPhone X | iPhone 8 Plus | iPhone 8
+--------------- | ------------- | --------- | -------- | ------------- | --------
+CPM & Hourglass | 17 ms         | 16 ms     | 69 ms    | 64 ms         | 42 ms    
+
+Model           | iPhone 7 | iPad Pro<br>(10.5-inch) | iPhone SE | iPad<br>(5th) | iPhone 6 Plus
+--------------- | -------- | ------------------- | --------- | ---------- | -------------
+CPM & Hourglass | 74 ms    | 41 ms               | 103 ms    | 118 ms     | 331 ms
+
 
 ## Reference
 
