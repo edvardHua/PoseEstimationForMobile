@@ -16,7 +16,7 @@ This repository currently implemented the CPM and Hourglass model using TensorFl
 	<td>93.78</td>
 	<td rowspan="2">
 	~60 FPS on Snapdragon 845 <br/>
-	30+ FPS on iPhone x (need more test)
+	~60 FPS on iPhone XS (need more test)
 	</td>
   </tr>
 
