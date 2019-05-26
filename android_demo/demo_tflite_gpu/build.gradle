@@ -1,0 +1,55 @@
+buildscript {
+    ext.buildConfig = [
+        'compileSdk': 26,
+        'buildTools': '26.0.1',
+        'minSdk': 23,
+        'targetSdk': 26,
+    ]
+
+    ext.versions = [
+        'supportLibrary': '27.1.1',
+        'kotlin': '1.2.41'
+    ]
+
+    ext.deps = [
+        'kotlin': [
+            'stdlib': [
+                'jdk': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+            ]
+        ],
+        'android': [
+            'support': [
+                'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
+                'appcompatV7': "com.android.support:appcompat-v7:${versions.supportLibrary}",
+                'design': "com.android.support:design:${versions.supportLibrary}",
+                'supportV13': "com.android.support:support-v13:${versions.supportLibrary}",
+                'constraintLayout': 'com.android.support.constraint:constraint-layout:1.1.0',
+            ],
+            'test': [
+                'espresso': "com.android.support.test.espresso:espresso-core:2.2.2"
+            ]
+        ],
+        'junit': 'junit:junit:4.12',
+        'timber': 'com.jakewharton.timber:timber:4.7.0',
+    ]
+
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
