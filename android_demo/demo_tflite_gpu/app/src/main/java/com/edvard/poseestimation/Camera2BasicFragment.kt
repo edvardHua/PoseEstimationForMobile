@@ -75,6 +75,10 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
   private var classifier: ImageClassifier? = null
   private var layoutBottom: ViewGroup? = null
   private var radiogroup: RadioGroup? = null
+  private var switchCamera: RadioGroup? = null
+  private var backCamera: Boolean? = true
+  private var cameraWidth: Int? = null
+  private var cameraHeight: Int? = null
   /**
    * [TextureView.SurfaceTextureListener] handles several lifecycle events on a [ ].
    */
@@ -85,6 +89,8 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
       width: Int,
       height: Int
     ) {
+      cameraWidth = width
+      cameraHeight = height
       openCamera(width, height)
     }
 
@@ -273,12 +279,25 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
     drawView = view.findViewById(R.id.drawview)
     layoutBottom = view.findViewById(R.id.layout_bottom)
     radiogroup = view.findViewById(R.id.radiogroup);
+    switchCamera = view.findViewById(R.id.radiogroup_switch_camera);
 
     radiogroup!!.setOnCheckedChangeListener { group, checkedId ->
       if(checkedId==R.id.radio_cpu){
         startBackgroundThread(Runnable { classifier!!.initTflite(false) })
       } else {
         startBackgroundThread(Runnable { classifier!!.initTflite(true) })
+      }
+    }
+
+    switchCamera!!.setOnCheckedChangeListener { group, checkedId ->
+      if(checkedId==R.id.radio_back){
+        backCamera = true
+        closeCamera()
+        openCamera(cameraWidth!!, cameraHeight!!)
+      } else {
+        backCamera = false
+        closeCamera()
+        openCamera(cameraWidth!!, cameraHeight!!)
       }
     }
   }
@@ -351,7 +370,11 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
 
         // We don't use a front facing camera in this sample.
         val facing = characteristics.get(CameraCharacteristics.LENS_FACING)
-        if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
+        if(backCamera!! && facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
+          continue
+        }
+
+        if(!backCamera!! && facing != null && facing == CameraCharacteristics.LENS_FACING_BACK){
           continue
         }
 

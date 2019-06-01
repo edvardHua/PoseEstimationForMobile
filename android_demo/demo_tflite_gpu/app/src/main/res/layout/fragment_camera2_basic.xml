@@ -146,22 +146,51 @@
         android:textStyle="bold"
         tools:text="asd"/>
 
-    <RadioGroup
-        android:id="@+id/radiogroup"
+    <android.support.constraint.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RadioButton android:id="@+id/radio_gpu"
-            android:textColor="@color/black"
+        android:layout_height="wrap_content">
+        <RadioGroup
+            android:id="@+id/radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="GPU"/>
-        <RadioButton android:id="@+id/radio_cpu"
-            android:textColor="@color/black"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf = "parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <RadioButton android:id="@+id/radio_gpu"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="GPU"/>
+            <RadioButton android:id="@+id/radio_cpu"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CPU"/>
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radiogroup_switch_camera"
+            android:layout_gravity="bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CPU"/>
-    </RadioGroup>
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/radiogroup"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <RadioButton android:id="@+id/radio_back"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Back"/>
+            <RadioButton android:id="@+id/radio_front"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Front"/>
+        </RadioGroup>
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
