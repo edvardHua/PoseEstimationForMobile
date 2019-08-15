@@ -15,9 +15,9 @@
 
 import tensorflow as tf
 
-from dataset_augment import pose_random_scale, pose_rotation, pose_flip, pose_resize_shortestedge_random, \
+from pefm.dataset.dataset_augment import pose_random_scale, pose_rotation, pose_flip, pose_resize_shortestedge_random, \
     pose_crop_random, pose_to_img
-from dataset_prepare import CocoMetadata
+from pefm.dataset.dataset_prepare import CocoMetadata
 from os.path import join
 from pycocotools.coco import COCO
 import multiprocessing
