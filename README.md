@@ -263,7 +263,7 @@ python3 src/gen_frozen_pb.py \
 
 # If you update tensorflow to 1.9, run following command.
 python3 src/gen_tflite_coreml.py \
---frozen_pb=forzen_graph.pb \
+--frozen_pb=frozen_graph.pb \
 --input_node_name='image' \
 --output_node_name='Convolutional_Pose_Machine/stage_5_out' \
 --output_path='./' \
@@ -339,7 +339,7 @@ python3 src/gen_frozen_pb.py \
 
 # Run the following command to get mlmodel
 python3 src/gen_tflite_coreml.py \
---frozen_pb=forzen_graph.pb \
+--frozen_pb=frozen_graph.pb \
 --input_node_name='image' \
 --output_node_name='Convolutional_Pose_Machine/stage_5_out' \
 --output_path='./' \
