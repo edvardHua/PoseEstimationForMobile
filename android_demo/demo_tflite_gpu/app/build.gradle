@@ -81,8 +81,8 @@ dependencies {
     implementation deps.android.support.supportV13
     implementation deps.timber
 
-    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
+    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
 
     testImplementation deps.junit
 
