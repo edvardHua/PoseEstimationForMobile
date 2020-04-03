@@ -40,7 +40,7 @@ import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.support.v13.app.FragmentCompat
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.util.Size
@@ -63,7 +63,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Basic fragments for the Camera.
  */
-class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResultCallback {
+class Camera2BasicFragment : Fragment() {
 
   private val lock = Any()
   private var runClassifier = false
@@ -449,7 +449,7 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
     height: Int
   ) {
     if (!checkedPermissions && !allPermissionsGranted()) {
-      FragmentCompat.requestPermissions(this, requiredPermissions, PERMISSIONS_REQUEST_CODE)
+      ActivityCompat.requestPermissions(this.activity, requiredPermissions, PERMISSIONS_REQUEST_CODE)
       return
     } else {
       checkedPermissions = true
