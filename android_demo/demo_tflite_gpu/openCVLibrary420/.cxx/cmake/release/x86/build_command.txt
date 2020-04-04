@@ -1,0 +1,21 @@
+Executable : C:\Users\Utilisateur\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\cmake.exe
+arguments : 
+-HC:\Users\Utilisateur\Documents\GitHub\PoseEstimationForMobile\android_demo\demo_tflite_gpu\openCVLibrary420\libcxx_helper
+-DCMAKE_BUILD_TYPE=Release
+-DCMAKE_TOOLCHAIN_FILE=C:\Users\Utilisateur\AppData\Local\Android\Sdk\ndk\20.0.5594570\build\cmake\android.toolchain.cmake
+-DANDROID_ABI=x86
+-DANDROID_NDK=C:\Users\Utilisateur\AppData\Local\Android\Sdk\ndk\20.0.5594570
+-DANDROID_PLATFORM=android-21
+-DCMAKE_ANDROID_ARCH_ABI=x86
+-DCMAKE_ANDROID_NDK=C:\Users\Utilisateur\AppData\Local\Android\Sdk\ndk\20.0.5594570
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=C:\Users\Utilisateur\Documents\GitHub\PoseEstimationForMobile\android_demo\demo_tflite_gpu\openCVLibrary420\build\intermediates\cmake\release\obj\x86
+-DCMAKE_MAKE_PROGRAM=C:\Users\Utilisateur\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_SYSTEM_VERSION=21
+-DANDROID_STL=c++_shared
+-BC:\Users\Utilisateur\Documents\GitHub\PoseEstimationForMobile\android_demo\demo_tflite_gpu\openCVLibrary420\.cxx\cmake\release\x86
+-GNinja
+jvmArgs : 
+
+Build command args:

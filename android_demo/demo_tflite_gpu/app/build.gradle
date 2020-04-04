@@ -18,15 +18,9 @@ android {
             }
         }
         ndk {
-            abiFilters 'armeabi-v7a'
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
-
-//    externalNativeBuild {
-//        cmake {
-//            path "CMakeLists.txt"
-//        }
-//    }
 
     lintOptions {
         abortOnError false
@@ -58,6 +52,11 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+   externalNativeBuild {
+        ndkBuild {
+            path file('../openCVLibrary420/native/jni/OpenCV.mk')
+        }
+    }
 }
 
 repositories {
@@ -71,7 +70,6 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':openCVLibrary341')
     implementation deps.kotlin.stdlib.jdk
     implementation deps.android.support.appcompatV7
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -80,12 +78,13 @@ dependencies {
     implementation deps.android.support.supportV13
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    implementation 'org.tensorflow:tensorflow-lite:2.1.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.1.0'
+    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
 
     testImplementation 'junit:junit:4.13'
 
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    implementation project(path: ':openCVLibrary420')
 }
