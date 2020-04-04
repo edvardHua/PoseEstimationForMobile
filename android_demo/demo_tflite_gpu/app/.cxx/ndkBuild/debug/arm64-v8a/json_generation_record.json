@@ -7,61 +7,7 @@
   },
   {
     "level": "INFO",
-    "message": "rebuilding JSON C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\.cxx\\ndkBuild\\debug\\arm64-v8a\\android_gradle_build.json due to:",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "- force flag, will remove stale json folder",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "removing stale contents from \u0027C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\.cxx\\ndkBuild\\debug\\arm64-v8a\u0027",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "created folder \u0027C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\.cxx\\ndkBuild\\debug\\arm64-v8a\u0027",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "executing ndkBuild Executable : C:\\Users\\Utilisateur\\AppData\\Local\\Android\\Sdk\\ndk\\20.0.5594570\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dC:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk\nAPP_ABI\u003darm64-v8a\nNDK_ALL_ABIS\u003darm64-v8a\nNDK_DEBUG\u003d1\nAPP_PLATFORM\u003dandroid-23\nNDK_OUT\u003dC:/Users/Utilisateur/Documents/GitHub/PoseEstimationForMobile/android_demo/demo_tflite_gpu/app/build/intermediates/ndkBuild/debug/obj\nNDK_LIBS_OUT\u003dC:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\build\\intermediates\\ndkBuild\\debug\\lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "Executable : C:\\Users\\Utilisateur\\AppData\\Local\\Android\\Sdk\\ndk\\20.0.5594570\\ndk-build.cmd\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003dC:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk\nAPP_ABI\u003darm64-v8a\nNDK_ALL_ABIS\u003darm64-v8a\nNDK_DEBUG\u003d1\nAPP_PLATFORM\u003dandroid-23\nNDK_OUT\u003dC:/Users/Utilisateur/Documents/GitHub/PoseEstimationForMobile/android_demo/demo_tflite_gpu/app/build/intermediates/ndkBuild/debug/obj\nNDK_LIBS_OUT\u003dC:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\build\\intermediates\\ndkBuild\\debug\\lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "done executing ndkBuild",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "write build output C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\.cxx\\ndkBuild\\debug\\arm64-v8a\\build_output.txt",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "parse and convert ndk-build output to build configuration JSON",
-    "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
-    "tag": "debug|arm64-v8a"
-  },
-  {
-    "level": "INFO",
-    "message": "write command file C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\.cxx\\ndkBuild\\debug\\arm64-v8a\\build_command.txt",
+    "message": "JSON \u0027C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\app\\.cxx\\ndkBuild\\debug\\arm64-v8a\\android_gradle_build.json\u0027 was up-to-date",
     "file": "C:\\Users\\Utilisateur\\Documents\\GitHub\\PoseEstimationForMobile\\android_demo\\demo_tflite_gpu\\openCVLibrary420\\native\\jni\\OpenCV.mk",
     "tag": "debug|arm64-v8a"
   },

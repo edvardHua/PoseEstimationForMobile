@@ -13,33 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.edvard.poseestimation.AutoFitFrameLayout
         android:id="@+id/layout_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        >
+        android:layout_gravity="center_vertical">
 
         <com.edvard.poseestimation.AutoFitTextureView
             android:id="@+id/texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            />
+            android:layout_gravity="center_vertical" />
 
         <com.edvard.poseestimation.DrawView
             android:id="@+id/drawview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            />
+            android:layout_gravity="center_vertical" />
 
     </com.edvard.poseestimation.AutoFitFrameLayout>
 
@@ -48,93 +44,94 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:orientation="vertical"
         android:background="#1c000000"
+        android:orientation="vertical"
         android:paddingStart="10dp"
-        android:paddingEnd="0dp"
-        >
+        android:paddingEnd="0dp">
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="top"
-          android:textColor="@color/color_top"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="top"
+            android:textColor="@color/color_top" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/neck"
-          android:textColor="@color/color_neck"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/neck"
+            android:textColor="@color/color_neck" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/l_shoulder"
-          android:textColor="@color/color_l_shoulder"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_shoulder"
+            android:textColor="@color/color_l_shoulder" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/l_elbow"
-          android:textColor="@color/color_l_elbow"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_elbow"
+            android:textColor="@color/color_l_elbow" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/l_wrist"
-          android:textColor="@color/color_l_wrist"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_wrist"
+            android:textColor="@color/color_l_wrist" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/l_hip"
-          android:textColor="@color/color_l_hip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_hip"
+            android:textColor="@color/color_l_hip" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/l_knee"
-          android:textColor="@color/color_l_knee"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_knee"
+            android:textColor="@color/color_l_knee" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/l_ankle"
-          android:textColor="@color/color_l_ankle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/l_ankle"
+            android:textColor="@color/color_l_ankle" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/r_shoulder"
-          android:textColor="@color/color_r_shoulder"/>
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/r_elbow"
-          android:textColor="@color/color_r_elbow"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/r_shoulder"
+            android:textColor="@color/color_r_shoulder" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/r_wrist"
-          android:textColor="@color/color_r_wrist"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/r_elbow"
+            android:textColor="@color/color_r_elbow" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/r_hip"
-          android:textColor="@color/color_r_hip"/>
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/r_knee"
-          android:textColor="@color/color_r_knee"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/r_wrist"
+            android:textColor="@color/color_r_wrist" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/r_ankle"
-          android:textColor="@color/color_r_ankle"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/r_hip"
+            android:textColor="@color/color_r_hip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/r_knee"
+            android:textColor="@color/color_r_knee" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/r_ankle"
+            android:textColor="@color/color_r_ankle" />
     </LinearLayout>
 
     <TextView
@@ -144,24 +141,28 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="asd"/>
+        tools:text="asd" />
 
     <RadioGroup
         android:id="@+id/radiogroup"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="horizontal">
-        <RadioButton android:id="@+id/radio_gpu"
-            android:textColor="@color/black"
+
+        <RadioButton
+            android:id="@+id/radio_gpu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="GPU"/>
-        <RadioButton android:id="@+id/radio_cpu"
-            android:textColor="@color/black"
+            android:text="GPU"
+            android:textColor="@color/black" />
+
+        <RadioButton
+            android:id="@+id/radio_cpu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CPU"/>
+            android:text="CPU"
+            android:textColor="@color/black" />
     </RadioGroup>
 </FrameLayout>

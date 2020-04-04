@@ -1,3 +1,2 @@
 ninja: Entering directory `C:\Users\Utilisateur\Documents\GitHub\PoseEstimationForMobile\android_demo\demo_tflite_gpu\openCVLibrary420\.cxx\cmake\debug\arm64-v8a'
-[1/2] Building CXX object CMakeFiles/opencv_jni_shared.dir/dummy.cpp.o
-[2/2] Linking CXX static library libopencv_jni_shared.a
+ninja: no work to do.
