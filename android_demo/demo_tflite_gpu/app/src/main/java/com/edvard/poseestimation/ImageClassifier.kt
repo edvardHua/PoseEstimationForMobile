@@ -60,7 +60,7 @@ internal constructor(
         val tfliteOptions = Interpreter.Options()
         tfliteOptions.setNumThreads(1)
         if (useGPU) {
-            tfliteOptions.addDelegate(GpuDelegate())
+            //tfliteOptions.addDelegate(GpuDelegate())  //Comment out this line when using an emulator
         }
         tflite = Interpreter(loadModelFile(activity), tfliteOptions)
     }

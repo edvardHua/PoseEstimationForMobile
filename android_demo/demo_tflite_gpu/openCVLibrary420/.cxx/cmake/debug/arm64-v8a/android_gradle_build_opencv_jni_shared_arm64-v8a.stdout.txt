@@ -1,2 +1,0 @@
-ninja: Entering directory `C:\Users\Utilisateur\Documents\GitHub\PoseEstimationForMobile\android_demo\demo_tflite_gpu\openCVLibrary420\.cxx\cmake\debug\arm64-v8a'
-ninja: no work to do.
