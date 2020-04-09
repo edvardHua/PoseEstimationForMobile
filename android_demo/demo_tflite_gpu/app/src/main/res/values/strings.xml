@@ -36,4 +36,8 @@
     <string name="l_knee">LKnee</string>
     <string name="l_ankle">LAnkle</string>
     <string name="background">Background</string>
+
+
+    <string name="debug">Debug : </string>
+    <string name="hello">Hello </string>
 </resources>

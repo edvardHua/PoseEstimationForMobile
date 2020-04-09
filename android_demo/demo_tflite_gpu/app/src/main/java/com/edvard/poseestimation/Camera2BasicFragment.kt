@@ -428,7 +428,11 @@ class Camera2BasicFragment : Fragment() {
                     drawView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
                 }
 
-                this.cameraId = cameraId
+                //this.cameraId = cameraId
+                // In my case (razer phone 1)
+                // "0" back camera
+                // "1" front camera
+                this.cameraId = "1"
                 return
             }
         } catch (e: CameraAccessException) {
