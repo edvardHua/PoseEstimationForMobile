@@ -650,7 +650,7 @@ class Camera2BasicFragment : Fragment() {
 
         drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-        showToast(textToShow)
+        showToast(drawView!!.angleValues.toString())
     }
 
     /**
