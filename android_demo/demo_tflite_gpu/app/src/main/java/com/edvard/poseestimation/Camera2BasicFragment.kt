@@ -69,6 +69,7 @@ class Camera2BasicFragment : Fragment() {
     private var runClassifier = false
     private var checkedPermissions = false
     private var textView: TextView? = null
+    private var debugView: TextView? = null
     private var textureView: AutoFitTextureView? = null
     private var layoutFrame: AutoFitFrameLayout? = null
     private var drawView: DrawView? = null
@@ -270,6 +271,7 @@ class Camera2BasicFragment : Fragment() {
     ) {
         textureView = view.findViewById(R.id.texture)
         textView = view.findViewById(R.id.text)
+        debugView = view.findViewById(R.id.debug)
         layoutFrame = view.findViewById(R.id.layout_frame)
         drawView = view.findViewById(R.id.drawview)
         layoutBottom = view.findViewById(R.id.layout_bottom)
@@ -644,13 +646,33 @@ class Camera2BasicFragment : Fragment() {
             return
         }
         val bitmap = textureView!!.getBitmap(classifier!!.imageSizeX, classifier!!.imageSizeY)
-        val textToShow = classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
+        drawView!!.movement.startingAngle = 0
+        drawView!!.movement.endingAngle = 90
+
+        drawView!!.exercice.numberOfRepetitionToDo = 15
+        drawView!!.exercice.movementList.add(drawView!!.movement)
 
         drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-        showToast(drawView!!.angleValues.toString())
+        if(drawView!!.mDrawPoint.size != 0)
+        {
+            drawView!!.exercice.exerciceVerification(drawView!!)
+
+            showToast(drawView!!.exercice.movementList[0].angleAvg!!.toString())
+            showDebugUI(drawView!!.exercice.numberOfRepititionReached.toString())
+        }
+
+    }
+
+    private fun showDebugUI (text: String)
+    {
+        val activity = activity
+        activity?.runOnUiThread {
+            debugView!!.text = text
+            drawView!!.invalidate()
+        }
     }
 
     /**

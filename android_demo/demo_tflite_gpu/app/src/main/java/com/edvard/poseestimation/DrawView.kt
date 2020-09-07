@@ -25,6 +25,7 @@ import android.view.View
 import java.lang.Math.*
 import java.util.ArrayList
 import kotlin.math.atan
+import kotlin.math.roundToInt
 
 /**
  * Created by edvard on 18-3-23.
@@ -32,10 +33,13 @@ import kotlin.math.atan
 
 class DrawView : View {
 
+    var movement: Movement = Movement(BodyPart.L_SHOULDER.ordinal, BodyPart.L_ELBOW.ordinal, BodyPart.L_WRIST.ordinal)
+    var exercice: Exercice = Exercice()
+
     private var mRatioWidth = 0
     private var mRatioHeight = 0
 
-    private val mDrawPoint = ArrayList<PointF>()
+    val mDrawPoint = ArrayList<PointF>()
     private var mWidth: Int = 0
     private var mHeight: Int = 0
     private var mRatioX: Float = 0.toFloat()
@@ -43,7 +47,7 @@ class DrawView : View {
     private var mImgWidth: Int = 0
     private var mImgHeight: Int = 0
 
-    var angleValues: Double = 0.toDouble()
+    val frameCounterMax : Int = 5
 
     private val mColorArray = intArrayOf(
             resources.getColor(R.color.color_top, null),
@@ -167,27 +171,6 @@ class DrawView : View {
             mPaint.color = mColorArray[index]
             canvas.drawCircle(pointF.x, pointF.y, circleRadius, mPaint)
         }
-
-        angleValues = CalculateAngle(mDrawPoint[2], mDrawPoint[3], mDrawPoint[4])
-    }
-
-    private fun CalculateAngle(p0: PointF, p1: PointF, p2: PointF): Double
-    {
-        var deltaX1 = (p0.x -p1.x)
-        var deltaY1 = (p0.y -p1.y)
-
-        var deltaX2 = (p2.x-p1.x)
-        var deltaY2 = (p2.y-p1.y)
-
-        var m1 = deltaY1/deltaX1
-        var m2 = deltaY2/deltaX2
-
-        var angle = (kotlin.math.atan(abs((m2-m1)/(1+(m2*m1))))*180)/ PI
-
-        if(deltaX1*deltaX2 >= 0 || deltaY1*deltaY2 >= 0)
-            return angle
-        else
-            return 180 - angle
     }
 
     override fun onMeasure(
