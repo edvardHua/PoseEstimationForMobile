@@ -646,24 +646,21 @@ class Camera2BasicFragment : Fragment() {
             return
         }
         val bitmap = textureView!!.getBitmap(classifier!!.imageSizeX, classifier!!.imageSizeY)
+        classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
         drawView!!.movement.startingAngle = 0
         drawView!!.movement.endingAngle = 90
 
-        drawView!!.exercice.numberOfRepetitionToDo = 15
+        drawView!!.exercice.numberOfRepetitionToDo = 5
         drawView!!.exercice.movementList.add(drawView!!.movement)
 
         drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-        if(drawView!!.mDrawPoint.size != 0)
-        {
-            drawView!!.exercice.exerciceVerification(drawView!!)
+        drawView!!.exercice.exerciceVerification(drawView!!)
 
-            showToast(drawView!!.exercice.movementList[0].angleAvg!!.toString())
-            showDebugUI(drawView!!.exercice.numberOfRepititionReached.toString())
-        }
-
+        showToast(drawView!!.exercice.numberOfRepetition.toString())
+        showDebugUI(drawView!!.exercice.movementList[0].angleAvg.toString() + " " + drawView!!.exercice.movementList[0].movementState)
     }
 
     private fun showDebugUI (text: String)

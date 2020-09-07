@@ -4,7 +4,7 @@ import java.util.ArrayList
 
 data class Movement(val  bodyPart0_Index: Int, val  bodyPart1_Index: Int, val  bodyPart2_Index: Int) {
 
-    val acceptableAngleVariation : Int = 5
+    val acceptableAngleVariation : Int = 10
 
     var  startingAngle: Int? = null
     var  endingAngle: Int? = null
