@@ -65,6 +65,8 @@ import java.util.concurrent.TimeUnit
  */
 class Camera2BasicFragment : Fragment() {
 
+    private val statistiques = ArrayList<Exercice>()
+
     private val lock = Any()
     private var runClassifier = false
     private var checkedPermissions = false
@@ -251,6 +253,44 @@ class Camera2BasicFragment : Fragment() {
         }
     }
 
+    private fun showValues(exercises: Exercice)
+    {
+        var labelVitesse: String = ""
+        if (exercises.lastTimer != null)
+        {
+            if (exercises.lastTimer!! < exercises.minExecutionTime!!)
+            {
+                labelVitesse = "-"
+            }
+            else if (exercises.lastTimer!! > exercises.maxExecutionTime!!)
+            {
+                labelVitesse = "+"
+            }
+            else
+            {
+                labelVitesse = "="
+            }
+        }
+
+        var text = "ϴ: " + exercises.movementList[0].angleAvg +
+                "; État: " + exercises.movementList[0].movementState +
+                "; Vit.: " + exercises.lastTimer + " s (" + labelVitesse + ")"
+        var debug = "Répét.: " + exercises.numberOfRepetition +
+                "; Tot.: " + exercises.numberOfRepetitionToDo +
+                "; Fini? " + exercises.numberOfRepetitionReached
+
+        val activity = activity
+        activity?.runOnUiThread {
+            textView!!.text = text
+            drawView!!.invalidate()
+
+            var textView2: TextView? = null
+            textView2 = view.findViewById(R.id.debug)
+            textView2!!.text = debug
+            drawView!!.invalidate()
+        }
+
+    }
     /**
      * Layout the preview and buttons.
      */
@@ -651,6 +691,8 @@ class Camera2BasicFragment : Fragment() {
 
         drawView!!.movement.startingAngle = 0
         drawView!!.movement.endingAngle = 90
+        drawView!!.exercice.minExecutionTime = 1.0f
+        drawView!!.exercice.maxExecutionTime = 3.0f
 
         drawView!!.exercice.numberOfRepetitionToDo = 5
         drawView!!.exercice.movementList.add(drawView!!.movement)
@@ -659,8 +701,9 @@ class Camera2BasicFragment : Fragment() {
 
         drawView!!.exercice.exerciceVerification(drawView!!)
 
-        showToast(drawView!!.exercice.numberOfRepetition.toString())
-        showDebugUI(drawView!!.exercice.movementList[0].angleAvg.toString() + " " + drawView!!.exercice.movementList[0].movementState)
+        showValues(drawView!!.exercice)
+
+        statistiques.add(drawView!!.exercice.copy())
     }
 
     private fun showDebugUI (text: String)

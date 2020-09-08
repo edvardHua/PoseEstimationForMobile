@@ -141,7 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:text="@string/hello"
         tools:text="asd" />
@@ -151,7 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:paddingTop="@dimen/margin_large"
         android:text="@string/debug" />

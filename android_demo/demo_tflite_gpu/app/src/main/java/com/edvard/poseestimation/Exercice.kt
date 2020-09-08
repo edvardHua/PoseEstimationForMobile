@@ -6,15 +6,17 @@ import kotlin.math.roundToInt
 
 class Exercice {
 
-    val maxExecutionTime: Float? = null
-    val minExecutionTime: Float? = null
+    var maxExecutionTime: Float? = null
+    var minExecutionTime: Float? = null
+    var startTimer: Long?= null
+    var lastTimer: Float?= null
 
     var numberOfRepetitionToDo: Int? = null
     var numberOfRepetition: Int = 0
-    var numberOfRepititionReached: Boolean = false
+    var numberOfRepetitionReached: Boolean = false
 
-    val simultaneousMovement: Boolean? = null
-    val movementList = ArrayList<Movement>()
+    var simultaneousMovement: Boolean? = null
+    var movementList = ArrayList<Movement>()
 
     fun exerciceVerification(drawView: DrawView)
     {
@@ -25,22 +27,28 @@ class Exercice {
             {
                 when(it!!.movementState)
                 {
-                    0 -> {it.movementState = 1}
+                    0 -> {
+                        it.movementState = 1
+                        startTimer = System.currentTimeMillis()
+                    }
                     1 -> {it.movementState = 2}
                     2 ->
                     {
                         it.movementState = 1
                         numberOfRepetition++
+                        lastTimer = calculateTime()
                     }
                 }
             }
         }
 
+
+
         if(numberOfRepetitionToDo != null)
         {
             if(numberOfRepetitionToDo == numberOfRepetition)
             {
-                numberOfRepititionReached = true
+                numberOfRepetitionReached = true
             }
         }
     }
@@ -97,4 +105,29 @@ class Exercice {
         }
     }
 
+    private fun calculateTime (): Float?
+    {
+        var timeInSecond: Float?= null
+        if (startTimer != null)
+        {
+            timeInSecond = ((System.currentTimeMillis() - startTimer!!).toFloat())/1000
+        }
+        startTimer = System.currentTimeMillis()
+        return timeInSecond
+    }
+
+    fun copy(): Exercice
+    {
+        val exercices = Exercice()
+        exercices.maxExecutionTime = maxExecutionTime
+        exercices.minExecutionTime = minExecutionTime
+        exercices.startTimer = startTimer
+        exercices.lastTimer = lastTimer
+        exercices.numberOfRepetitionToDo = numberOfRepetitionToDo
+        exercices.numberOfRepetition = numberOfRepetition
+        exercices.numberOfRepetitionReached = numberOfRepetitionReached
+        exercices.simultaneousMovement = simultaneousMovement
+        exercices.movementList = movementList
+        return exercices
+    }
 }
