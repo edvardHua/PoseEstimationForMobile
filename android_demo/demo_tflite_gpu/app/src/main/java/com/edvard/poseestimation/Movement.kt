@@ -5,8 +5,9 @@ import java.util.ArrayList
 data class Movement(val  bodyPart0_Index: Int, val  bodyPart1_Index: Int, val  bodyPart2_Index: Int) {
     //Const
     val acceptableAngleVariation: Int = 10
-    var  startingAngle: Int? = null
-    var  endingAngle: Int? = null
+    var startingAngle: Int? = null
+    var endingAngle: Int? = null
+    var isAngleClockWise: Boolean? = null
 
     val executionTime: Float? = null
 

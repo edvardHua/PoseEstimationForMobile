@@ -2,14 +2,17 @@ package com.edvard.poseestimation
 
 import android.graphics.PointF
 import java.util.ArrayList
+import kotlin.math.acos
+import kotlin.math.pow
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 class Exercice {
-
+    // add to fun .copy() if there is a modif
     var maxExecutionTime: Float? = null
     var minExecutionTime: Float? = null
-    var startTimer: Long?= null
-    var lastTimer: Float?= null
+    var startTimer: Long? = null
+    var lastTimer: Float? = null
 
     var numberOfRepetitionToDo: Int? = null
     var numberOfRepetition: Int = 0
@@ -22,7 +25,7 @@ class Exercice {
     {
         movementList.forEach()
         {
-            calculateAngle(it!!, drawView!!)
+            calculateAngleV2(it!!, drawView!!)
             if(isAngleMatching(it!!))
             {
                 when(it!!.movementState)
@@ -53,6 +56,7 @@ class Exercice {
         }
     }
 
+    /*
     private fun calculateAngle(movement: Movement, drawView: DrawView)
     {
         var p0: PointF = drawView.mDrawPoint[movement.bodyPart0_Index]
@@ -87,6 +91,64 @@ class Exercice {
         if(movement.angleValuesLastFrames.size != 0)
             movement.angleAvg = movement.angleValuesLastFrames.average().roundToInt()
     }
+    */
+
+    fun calculateAngleV2(movement: Movement, drawView: DrawView)
+    {
+        var pointX0: Float = drawView.mDrawPoint[movement.bodyPart0_Index].x
+        var pointY0: Float = drawView.mDrawPoint[movement.bodyPart0_Index].y
+        var pointX1: Float = drawView.mDrawPoint[movement.bodyPart1_Index].x
+        var pointY1: Float = drawView.mDrawPoint[movement.bodyPart1_Index].y
+        var pointX2: Float = drawView.mDrawPoint[movement.bodyPart2_Index].x
+        var pointY2: Float = drawView.mDrawPoint[movement.bodyPart2_Index].y
+
+        var X1ToX0: Float = pointX0 - pointX1
+        var Y1ToY0: Float = pointY0 - pointY1
+        var X1ToX2: Float = pointX2 - pointX1
+        var Y1ToY2: Float = pointY2 - pointY1
+
+        var X1X0mod: Float = sqrt((X1ToX0*X1ToX0) + (Y1ToY0*Y1ToY0))
+        var X1X2mod: Float = sqrt((X1ToX2*X1ToX2) + (Y1ToY2*Y1ToY2))
+
+        var vectorProduct: Float = X1ToX0 * X1ToX2 + Y1ToY0 * Y1ToY2
+
+        var angleRad: Float = kotlin.math.acos(vectorProduct/(X1X0mod*X1X2mod))
+        var angleDeg : Double = ((angleRad*180)/Math.PI).toDouble()
+
+        //Adding anti/clockwise effect
+        var a = Y1ToY0/X1ToX0
+        var b = pointY0 - (a * pointX0)
+        var tmpPointY2 = (a * pointX2) + b
+        if (movement.isAngleClockWise!!)
+        {
+            if (tmpPointY2 < pointY2)
+            {
+                angleDeg = 360 - angleDeg
+            }
+        }
+        else
+        {
+            if (tmpPointY2 > pointY2)
+            {
+                angleDeg = 360 - angleDeg
+            }
+        }
+
+
+        if(! angleDeg.isNaN())
+        {
+            if(movement.angleValuesLastFrames.size == drawView.frameCounterMax)
+            {
+                movement.angleValuesLastFrames.removeAt(0)
+            }
+            movement.angleValuesLastFrames.add(angleDeg)
+        }
+
+        if(movement.angleValuesLastFrames.size != 0)
+            movement.angleAvg = movement.angleValuesLastFrames.average().roundToInt()
+
+    }
+
 
     fun isAngleMatching(movement: Movement): Boolean
     {

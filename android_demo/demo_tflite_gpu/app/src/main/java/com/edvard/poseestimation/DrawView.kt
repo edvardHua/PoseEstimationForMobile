@@ -35,6 +35,7 @@ class DrawView : View {
 
     var movement: Movement = Movement(BodyPart.L_SHOULDER.ordinal, BodyPart.L_ELBOW.ordinal, BodyPart.L_WRIST.ordinal)
     var exercice: Exercice = Exercice()
+    val frameCounterMax : Int = 5
 
     private var mRatioWidth = 0
     private var mRatioHeight = 0
@@ -47,7 +48,6 @@ class DrawView : View {
     private var mImgWidth: Int = 0
     private var mImgHeight: Int = 0
 
-    val frameCounterMax : Int = 5
 
     private val mColorArray = intArrayOf(
             resources.getColor(R.color.color_top, null),

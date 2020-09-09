@@ -691,6 +691,8 @@ class Camera2BasicFragment : Fragment() {
 
         drawView!!.movement.startingAngle = 0
         drawView!!.movement.endingAngle = 90
+        drawView!!.movement.isAngleClockWise = true
+
         drawView!!.exercice.minExecutionTime = 1.0f
         drawView!!.exercice.maxExecutionTime = 3.0f
 
@@ -704,6 +706,8 @@ class Camera2BasicFragment : Fragment() {
         showValues(drawView!!.exercice)
 
         statistiques.add(drawView!!.exercice.copy())
+
+        //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
     }
 
     private fun showDebugUI (text: String)
