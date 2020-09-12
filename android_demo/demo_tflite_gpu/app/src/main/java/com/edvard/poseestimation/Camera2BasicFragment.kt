@@ -40,8 +40,8 @@ import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.util.Log
 import android.util.Size
 import android.view.LayoutInflater
@@ -284,8 +284,9 @@ class Camera2BasicFragment : Fragment() {
             textView!!.text = text
             drawView!!.invalidate()
 
-            var textView2: TextView = view.findViewById(R.id.debug)
-            textView2.text = debug
+            var textView2: TextView? = null
+            textView2 = view?.findViewById(R.id.debug)
+            textView2!!.text = debug
             drawView!!.invalidate()
         }
 
