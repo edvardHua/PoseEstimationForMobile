@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -76,13 +77,23 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation deps.android.support.supportV13
+    implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.preference:preference:1.1.1'
 
     implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
     implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
 
     testImplementation 'junit:junit:4.13'
 
+    implementation 'org.mongodb:stitch-android-sdk:4.7.0'
+
+    implementation 'com.xwray:groupie:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

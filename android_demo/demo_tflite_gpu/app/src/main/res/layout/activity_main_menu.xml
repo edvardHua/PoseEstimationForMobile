@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainMenuActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <Button
+        android:id="@+id/activity_program"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="2"
+        android:background="@drawable/rounded_edit_text"
+        android:gravity="center"
+        android:text="@string/title_activity_program"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/activity_statistics"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="2"
+        android:background="@drawable/rounded_edit_text"
+        android:gravity="center"
+        android:text="@string/title_activity_statistics"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/activity_messaging"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_edit_text"
+        android:text="@string/title_activity_messaging"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/activity_alerts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_edit_text"
+        android:text="@string/title_activity_alerts"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textSize="30sp" />
+</LinearLayout>

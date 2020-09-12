@@ -39,4 +39,8 @@
 
     <color name="white">#fff</color>
     <color name="black">#000</color>
+
+    <color name="colorPrimary">@android:color/holo_blue_light</color>
+    <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
+    <color name="colorAccent">@android:color/holo_blue_light</color>
 </resources>

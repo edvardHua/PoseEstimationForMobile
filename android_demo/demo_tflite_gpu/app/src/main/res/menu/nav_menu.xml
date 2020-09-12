@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="ExtraText">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    <item android:id="@+id/menu_new_message"
+        android:title="@string/new_message"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/menu_sign_out"
+        android:title="@string/sign_out"
+        app:showAsAction="ifRoom"/>
+
+</menu>
