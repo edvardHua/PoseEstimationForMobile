@@ -25,10 +25,10 @@ class Exercice {
     {
         movementList.forEach()
         {
-            calculateAngleV2(it!!, drawView!!)
-            if(isAngleMatching(it!!))
+            calculateAngleV2(it, drawView)
+            if(isAngleMatching(it))
             {
-                when(it!!.movementState)
+                when(it.movementState)
                 {
                     0 -> {
                         it.movementState = 1
@@ -156,8 +156,8 @@ class Exercice {
         {
             when(movement.movementState)
             {
-                0,2 -> {return movement.angleAvg!! > movement.startingAngle!! - movement.acceptableAngleVariation!! && movement.angleAvg!! < movement.startingAngle!! + movement.acceptableAngleVariation!!}
-                1 -> {return movement.angleAvg!! > movement.endingAngle!! - movement.acceptableAngleVariation!! && movement.angleAvg!! < movement.endingAngle!! + movement.acceptableAngleVariation!!}
+                0,2 -> {return movement.angleAvg!! > movement.startingAngle!! - movement.acceptableAngleVariation && movement.angleAvg!! < movement.startingAngle!! + movement.acceptableAngleVariation}
+                1 -> {return movement.angleAvg!! > movement.endingAngle!! - movement.acceptableAngleVariation && movement.angleAvg!! < movement.endingAngle!! + movement.acceptableAngleVariation}
                 else -> {return false}
             }
         }

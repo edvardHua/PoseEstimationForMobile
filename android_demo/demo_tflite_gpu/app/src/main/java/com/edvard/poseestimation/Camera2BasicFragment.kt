@@ -284,9 +284,8 @@ class Camera2BasicFragment : Fragment() {
             textView!!.text = text
             drawView!!.invalidate()
 
-            var textView2: TextView? = null
-            textView2 = view.findViewById(R.id.debug)
-            textView2!!.text = debug
+            var textView2: TextView = view.findViewById(R.id.debug)
+            textView2.text = debug
             drawView!!.invalidate()
         }
 
