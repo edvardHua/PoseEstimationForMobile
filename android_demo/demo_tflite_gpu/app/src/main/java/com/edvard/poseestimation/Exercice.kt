@@ -25,27 +25,55 @@ class Exercice {
     {
         movementList.forEach()
         {
+
             calculateAngleV2(it!!, drawView!!)
-            if(isAngleMatching(it!!))
+
+            if(simultaneousMovement == false || simultaneousMovement == null)
             {
-                when(it!!.movementState)
+                if(isAngleMatching(it!!))
                 {
-                    0 -> {
-                        it.movementState = 1
-                        startTimer = System.currentTimeMillis()
-                    }
-                    1 -> {it.movementState = 2}
-                    2 ->
+                    when(it!!.movementState)
                     {
-                        it.movementState = 1
-                        numberOfRepetition++
-                        lastTimer = calculateTime()
+                        0 -> {
+                            it.movementState = 1
+                            startTimer = System.currentTimeMillis()
+                        }
+                        1 -> {it.movementState = 2}
+                        2 ->
+                        {
+                            it.movementState = 1
+                            numberOfRepetition++
+                            lastTimer = calculateTime()
+                        }
+                    }
+                }
+            }
+
+            else
+            {
+                if(isAngleMatching(it!!))
+                {
+                    when(it!!.movementState)
+                    {
+                        0 -> {
+                            it.movementState = 1
+                            startTimer = System.currentTimeMillis()
+                        }
+                        1 -> {it.movementState = 2}
+                        2 -> {it.movementState = 3}
                     }
                 }
             }
         }
 
-
+        if(isRepetitionSimultaneousExerciceDone(movementList) == true)
+        {
+            movementList.forEach()
+            {
+                it.movementState = 1
+            }
+            numberOfRepetition++
+        }
 
         if(numberOfRepetitionToDo != null)
         {
@@ -54,6 +82,19 @@ class Exercice {
                 numberOfRepetitionReached = true
             }
         }
+    }
+
+    private fun isRepetitionSimultaneousExerciceDone(movementList: ArrayList<Movement>): Boolean
+    {
+        var repetitionDone = true
+        movementList.forEach()
+        {
+            if(it.movementState != 3)
+            {
+                repetitionDone = false
+            }
+        }
+        return repetitionDone
     }
 
     /*
