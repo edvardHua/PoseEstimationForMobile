@@ -14,6 +14,8 @@
  limitations under the License.
 -->
 <resources>
+    <string name="app_name">EpmusMobile</string>
+
     <string name="picture">Picture</string>
     <string name="description_info">Info</string>
     <string name="request_permission">This sample needs camera permission.</string>
@@ -40,4 +42,43 @@
 
     <string name="debug">Debug : </string>
     <string name="hello">Hello </string>
+
+    <string name="title_activity_login">Se connecter</string>
+    <string name="prompt_email">Adresse de courriel</string>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">Se connecter</string>
+    <string name="action_sign_in_short">Se connecter</string>
+    <string name="welcome">"Bienvenue !!"</string>
+    <string name="invalid_username">Adresse de courriel non valide</string>
+    <string name="invalid_password">Le mot de passe doit avoir plus de 5 caractères</string>
+    <string name="login_failed">La connection n\'a pas réussi</string>
+    <string name="checkbox">Rester connecté</string>
+    <string name="forgot_password">Mot de passe oublié?</string>
+    <string name="title_activity_program">"Programmes"</string>
+    <string name="title_activity_statistics">"Statistiques"</string>
+    <string name="title_activity_messaging">"Messagerie"</string>
+    <string name="title_activity_alerts">"Alertes"</string>
+    <string name="action_account">"Compte"</string>
+    <string name="action_settings">"Paramètres"</string>
+    <string name="action_history">"Historique"</string>
+    <string name="action_logout">"Déconnexion"</string>
+
+    <string name="title_activity_settings">Paramètres</string>
+
+    <string name="language_setting">Option de langue</string>
+    <string name="account_settings">Options du compte</string>
+    <string name="application_settings">Options de l\'application</string>
+
+    <string name="change_password">Changer le mot de passe</string>
+    <string name="language">Langue</string>
+
+    <string name="audio_setting">Désactiver l\'audio</string>
+    <string name="visual_setting">Désactiver l\'aide visuel</string>
+
+    <string name="new_message">New Message</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="username">Username</string>
+    <string name="this_is_my_message">This is my message</string>
+    <string name="message_hint">Écrire votre message</string>
+    <string name="send">Envoyer</string>
 </resources>
