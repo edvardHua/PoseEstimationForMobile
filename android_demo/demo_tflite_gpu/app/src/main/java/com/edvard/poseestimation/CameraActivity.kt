@@ -17,10 +17,10 @@ package com.edvard.poseestimation
 
 import android.app.Activity
 import android.os.Bundle
-
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
+
 
 /**
  * Main `Activity` class for the Camera app.
@@ -49,6 +49,7 @@ class CameraActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+        val sessionId = intent.getStringExtra("exercice")
         if (null == savedInstanceState) {
             fragmentManager
                     .beginTransaction()

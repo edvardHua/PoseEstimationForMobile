@@ -28,6 +28,7 @@ class ProgramActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_account -> {
             intent = Intent(this, CameraActivity::class.java)
+            intent.putExtra("exercice", "test")
             startActivity(intent)
             /*val intent = Intent(this, AccountActivity::class.java)
             startActivity(intent)*/
