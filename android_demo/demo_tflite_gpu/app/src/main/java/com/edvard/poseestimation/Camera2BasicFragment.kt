@@ -23,40 +23,23 @@ import android.app.Fragment
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.ImageFormat
-import android.graphics.Matrix
-import android.graphics.Point
-import android.graphics.RectF
-import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
-import android.hardware.camera2.CaptureResult
-import android.hardware.camera2.TotalCaptureResult
+import android.graphics.*
+import android.hardware.camera2.*
 import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import android.util.Log
 import android.util.Size
-import android.view.LayoutInflater
-import android.view.Surface
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collections
-import java.util.Comparator
+import java.io.Serializable
+import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
@@ -316,6 +299,8 @@ class Camera2BasicFragment : Fragment() {
         drawView = view.findViewById(R.id.drawview)
         layoutBottom = view.findViewById(R.id.layout_bottom)
         radiogroup = view.findViewById(R.id.radiogroup)
+
+        drawView!!.exercice = getArguments().getSerializable("exercice") as Exercice
 
         radiogroup!!.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.radio_cpu) {
@@ -689,28 +674,18 @@ class Camera2BasicFragment : Fragment() {
         classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
-        drawView!!.movement.startingAngle = 0
-        drawView!!.movement.endingAngle = 90
-        drawView!!.movement.isAngleClockWise = true
-
-        drawView!!.exercice.minExecutionTime = 1.0f
-        drawView!!.exercice.maxExecutionTime = 3.0f
-
-        drawView!!.exercice.numberOfRepetitionToDo = 5
-        drawView!!.exercice.movementList.add(drawView!!.movement)
-
         drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-        drawView!!.exercice.exerciceVerification(drawView!!)
+        drawView!!.exercice!!.exerciceVerification(drawView!!)
 
-        showValues(drawView!!.exercice)
+        showValues(drawView!!.exercice!!)
 
-        statistiques.add(drawView!!.exercice.copy())
+        statistiques.add(drawView!!.exercice!!.copy())
 
         //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
     }
 
-    private fun showDebugUI (text: String)
+    private fun showDebugUI(text: String)
     {
         val activity = activity
         activity?.runOnUiThread {
@@ -849,8 +824,14 @@ class Camera2BasicFragment : Fragment() {
             }
         }
 
-        fun newInstance(): Camera2BasicFragment {
-            return Camera2BasicFragment()
+        fun newInstance(exerice: Serializable?): Camera2BasicFragment {
+            val myFragment = Camera2BasicFragment()
+
+            val args = Bundle()
+            args.putSerializable("exercice", exerice)
+            myFragment.setArguments(args)
+
+            return myFragment
         }
     }
 }

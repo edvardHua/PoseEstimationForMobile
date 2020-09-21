@@ -33,8 +33,7 @@ import kotlin.math.roundToInt
 
 class DrawView : View {
 
-    var movement: Movement = Movement(BodyPart.L_SHOULDER.ordinal, BodyPart.L_ELBOW.ordinal, BodyPart.L_WRIST.ordinal)
-    var exercice: Exercice = Exercice()
+    var exercice: Exercice? = null
     val frameCounterMax : Int = 5
 
     private var mRatioWidth = 0

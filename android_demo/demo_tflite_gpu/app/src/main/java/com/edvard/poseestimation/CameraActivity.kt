@@ -49,11 +49,12 @@ class CameraActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-        val sessionId = intent.getStringExtra("exercice")
+        var bundle :Bundle ?=intent.extras
+        var exercice = bundle!!.getSerializable("exercice")
         if (null == savedInstanceState) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.container, Camera2BasicFragment.newInstance())
+                    .replace(R.id.container, Camera2BasicFragment.newInstance(exercice))
                     .commit()
         }
     }
