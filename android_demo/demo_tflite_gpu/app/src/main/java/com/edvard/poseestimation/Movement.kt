@@ -1,8 +1,9 @@
 package com.edvard.poseestimation
 
+import java.io.Serializable
 import java.util.ArrayList
 
-data class Movement(val  bodyPart0_Index: Int, val  bodyPart1_Index: Int, val  bodyPart2_Index: Int) {
+data class Movement(val  bodyPart0_Index: Int, val  bodyPart1_Index: Int, val  bodyPart2_Index: Int) : Serializable {
     //Const
     val acceptableAngleVariation: Int = 10
     var startingAngle: Int? = null

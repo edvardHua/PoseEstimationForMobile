@@ -1,13 +1,14 @@
 package com.edvard.poseestimation
 
 import android.graphics.PointF
+import java.io.Serializable
 import java.util.ArrayList
 import kotlin.math.acos
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-class Exercice {
+class Exercice: Serializable {
     // add to fun .copy() if there is a modif
     var maxExecutionTime: Float? = null
     var minExecutionTime: Float? = null

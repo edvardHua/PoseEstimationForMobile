@@ -28,7 +28,17 @@ class ProgramActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_account -> {
             intent = Intent(this, CameraActivity::class.java)
-            intent.putExtra("exercice", "test")
+            // TODO: Remove this, temp
+            var movement = Movement(BodyPart.L_SHOULDER.ordinal, BodyPart.L_ELBOW.ordinal, BodyPart.L_WRIST.ordinal)
+            var exercice = Exercice()
+            movement.startingAngle = 0
+            movement.endingAngle = 90
+            movement.isAngleClockWise = true
+            exercice.minExecutionTime = 1.0f
+            exercice.maxExecutionTime = 3.0f
+            exercice.numberOfRepetitionToDo = 5
+            exercice.movementList.add(movement)
+            intent.putExtra("exercice", exercice)
             startActivity(intent)
             /*val intent = Intent(this, AccountActivity::class.java)
             startActivity(intent)*/
