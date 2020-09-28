@@ -178,4 +178,12 @@
             android:text="CPU"
             android:textColor="@color/black" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/background_initialize"
+        android:layout_marginTop="71dp"
+        android:background="@color/black"
+        android:alpha="0.0"
+        android:layout_width="match_parent"
+        android:layout_height="639dp" />
 </FrameLayout>

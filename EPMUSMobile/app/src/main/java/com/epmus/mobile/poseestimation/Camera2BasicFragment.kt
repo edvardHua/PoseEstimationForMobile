@@ -675,15 +675,82 @@ class Camera2BasicFragment : Fragment() {
         classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
-        drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
+        if (drawView!!.exercice.numberOfRepetitionReached == false) {
+            drawView!!.movement.startingAngle = 90
+            drawView!!.movement.endingAngle = 180
+            drawView!!.movement.isAngleClockWise = true
 
-        drawView!!.exercice!!.exerciceVerification(drawView!!)
+            drawView!!.exercice.minExecutionTime = 1.0f
+            drawView!!.exercice.maxExecutionTime = 3.0f
 
-        showValues(drawView!!.exercice!!)
+            drawView!!.exercice.numberOfRepetitionToDo = 5
+            drawView!!.exercice.movementList.add(drawView!!.movement)
 
-        statistiques.add(drawView!!.exercice!!.copy())
+            drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-        //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
+            //initialize bodyparts
+            if (drawView!!.exercice.initList.count() == 0)
+            {
+                enumValues<BodyPart>().forEach()
+                {
+                    var pF = PointF(-1.0f, -1.0f)
+                    var aList = arrayListOf<PointF>(pF)
+                    drawView!!.exercice.initList.add(aList)
+                    drawView!!.exercice.notMovingInitList.add(false)
+                }
+            }
+
+
+            // hide background
+            val activity = activity
+            activity?.runOnUiThread {
+                var textView2: TextView? = null
+                textView2 = view?.findViewById(R.id.background_initialize)
+                drawView!!.invalidate()
+                textView2!!.alpha = 0.0F
+            }
+
+            //if initialize needed
+            if (drawView!!.exercice.isInit == false)
+            {
+                drawView!!.exercice.initialisationVerification(drawView!!)
+                //debug
+                if (drawView!!.exercice.initList[0].count() > 1)
+                {
+                    showToast("X: " + drawView!!.exercice.initList[0][0].x.toString() +
+                            ";; Y: " + drawView!!.exercice.initList[0][0].y.toString())
+
+                    showDebugUI("Time: " + drawView!!.exercice.notMovingTimer.toString() +
+                            ";; Done: " + drawView!!.exercice.isInit.toString())
+
+                    // alpha > 0
+                    if (drawView!!.exercice.notMovingTimer < 5)
+                    {
+                        val activity = activity
+                        activity?.runOnUiThread {
+                            var textView2: TextView? = null
+                            textView2 = view?.findViewById(R.id.background_initialize)
+                            drawView!!.invalidate()
+                            textView2!!.alpha = 0.7F
+                        }
+                    }
+                }
+            }
+            else
+            {
+                drawView!!.exercice.exerciceVerification(drawView!!)
+
+                showValues(drawView!!.exercice)
+
+                statistiques.add(drawView!!.exercice.copy())
+
+                //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
+            }
+        }
+        else
+        {
+            showToast("Done")
+        }
     }
 
     private fun showDebugUI(text: String)

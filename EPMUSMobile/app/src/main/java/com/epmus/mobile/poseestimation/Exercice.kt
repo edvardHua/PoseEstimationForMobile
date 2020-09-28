@@ -22,6 +22,124 @@ class Exercice: Serializable {
     var simultaneousMovement: Boolean? = null
     var movementList = ArrayList<Movement>()
 
+    var initList = ArrayList<ArrayList<PointF>>()
+    var notMovingInitList = ArrayList<Boolean>()
+    var isInit: Boolean = false
+    var notMovingStartTime: Long? = null
+    var notMovingTimer: Int = 0
+
+
+    fun initialisationVerification(drawView: DrawView)
+    {
+        //For Each body part
+        initList.forEachIndexed()
+        { index, item ->
+
+            //Calculate average (mean) and standart deviation (ecart type)
+            var meanX: Float = -1.0f
+            var meanY: Float = -1.0f
+            var stdDevX: Float = -1.0f
+            var stdDevY: Float = -1.0f
+            if (item.count() == drawView.frameCounterMaxInit) {
+                //sum
+                var totalX: Float = 0.0000f
+                var totalY: Float = 0.0000f
+                item.forEach()
+                {
+                    totalX += it.x
+                    totalY += it.y
+                }
+
+                //mean
+                meanX = totalX / item.count()
+                meanY = totalY / item.count()
+
+                //Variance
+                var varianceX: Float = 0.0000f
+                var varianceY: Float = 0.0000f
+                item.forEach()
+                {
+                    var differenceX = it.x - meanX
+                    varianceX += (differenceX * differenceX)
+                    var differenceY = it.y - meanY
+                    varianceY += (differenceY * differenceY)
+                }
+
+                //standart deviation
+                stdDevX = sqrt(varianceX)
+                stdDevY = sqrt(varianceX)
+            }
+
+
+            // Modify list
+            var pointX: Float = drawView.mDrawPoint[index].x
+            var pointY: Float = drawView.mDrawPoint[index].y
+            var pF = PointF(pointX, pointY)
+            if (!pointX.isNaN() && !pointY.isNaN() ) {
+                if (item.count() == drawView.frameCounterMaxInit) {
+                    item.removeAt(0)
+                }
+                // add only if not 0 (out of frame)
+                if (pointX.toInt() != 0 && pointY.toInt() != 0) {
+                    item.add(pF)
+                }
+            }
+
+
+            //
+            if (item.count() == drawView.frameCounterMaxInit) {
+                //sum
+                var totalX: Float = 0.0000f
+                var totalY: Float = 0.0000f
+                item.forEach()
+                {
+                    totalX += it.x
+                    totalY += it.y
+                }
+
+                //mean
+                var avgX = totalX / item.count()
+                var avgY = totalY / item.count()
+
+                //If not moving
+                notMovingInitList[index] = avgX <= meanX + drawView.nearPointFInit && avgX >= meanX - drawView.nearPointFInit &&
+                        avgY <= meanY + drawView.nearPointFInit && avgY >= meanY - drawView.nearPointFInit
+            }
+
+        }
+
+        //look if every body part are not moving
+        var isNotMoving: Boolean = true
+        notMovingInitList.forEach()
+        {
+            if (it == false) {
+                isNotMoving = false
+            }
+        }
+
+        if (isNotMoving) {
+            if (notMovingStartTime == null)
+            {
+                notMovingStartTime = System.currentTimeMillis()
+                notMovingTimer = 5
+            }
+            else
+            {
+                var currentTime: Long = System.currentTimeMillis()
+                var targetTime: Long = 5000
+                notMovingTimer = 5 - ((currentTime - notMovingStartTime!!)/1000).toInt()
+                if (currentTime - notMovingStartTime!! >= targetTime)
+                {
+                    isInit = true
+                }
+            }
+        }
+        else {
+            notMovingStartTime = null
+        }
+    }
+
+
     fun exerciceVerification(drawView: DrawView)
     {
         movementList.forEach()
@@ -97,43 +215,6 @@ class Exercice: Serializable {
         }
         return repetitionDone
     }
-
-    /*
-    private fun calculateAngle(movement: Movement, drawView: DrawView)
-    {
-        var p0: PointF = drawView.mDrawPoint[movement.bodyPart0_Index]
-        var p1: PointF = drawView.mDrawPoint[movement.bodyPart1_Index]
-        var p2: PointF = drawView.mDrawPoint[movement.bodyPart2_Index]
-
-        var deltaX1 = (p0.x -p1.x)
-        var deltaY1 = (p0.y -p1.y)
-
-        var deltaX2 = (p2.x-p1.x)
-        var deltaY2 = (p2.y-p1.y)
-
-        var m1 = deltaY1/deltaX1
-        var m2 = deltaY2/deltaX2
-
-        var angle = ((kotlin.math.atan(Math.abs((m2 - m1) / (1 + (m2 * m1)))) * 180) / Math.PI)
-
-        if(deltaX1*deltaX2 >= 0 || deltaY1*deltaY2 >= 0)
-            //Do nothing
-        else
-            angle = 180 - angle
-
-        if(! angle.isNaN())
-        {
-            if(movement.angleValuesLastFrames.size == drawView.frameCounterMax)
-            {
-                movement.angleValuesLastFrames.removeAt(0)
-            }
-            movement.angleValuesLastFrames.add(angle)
-        }
-
-        if(movement.angleValuesLastFrames.size != 0)
-            movement.angleAvg = movement.angleValuesLastFrames.average().roundToInt()
-    }
-    */
 
     fun calculateAngleV2(movement: Movement, drawView: DrawView)
     {

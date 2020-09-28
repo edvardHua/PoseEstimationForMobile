@@ -36,6 +36,8 @@ class DrawView : View {
 
     var exercice: Exercice? = null
     val frameCounterMax : Int = 5
+    val frameCounterMaxInit : Int = 10
+    val nearPointFInit: Float = 50.0f
 
     private var mRatioWidth = 0
     private var mRatioHeight = 0
