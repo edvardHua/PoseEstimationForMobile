@@ -701,15 +701,6 @@ class Camera2BasicFragment : Fragment() {
             }
 
 
-            // hide background
-            val activity = activity
-            activity?.runOnUiThread {
-                var textView2: TextView? = null
-                textView2 = view?.findViewById(R.id.background_initialize)
-                drawView!!.invalidate()
-                textView2!!.alpha = 0.0F
-            }
-
             //if initialize needed
             if (drawView!!.exercice.isInit == false)
             {
@@ -717,23 +708,48 @@ class Camera2BasicFragment : Fragment() {
                 //debug
                 if (drawView!!.exercice.initList[0].count() > 1)
                 {
+                    /*
                     showToast("X: " + drawView!!.exercice.initList[0][0].x.toString() +
                             ";; Y: " + drawView!!.exercice.initList[0][0].y.toString())
 
                     showDebugUI("Time: " + drawView!!.exercice.notMovingTimer.toString() +
                             ";; Done: " + drawView!!.exercice.isInit.toString())
+                    */
+                    showToast("")
+                    showDebugUI("")
 
-                    // alpha > 0
-                    if (drawView!!.exercice.notMovingTimer < 5)
+                    // show timer to start
+                    if (drawView!!.exercice.notMovingTimer < 5 && drawView!!.exercice.notMovingTimer > 0)
                     {
                         val activity = activity
                         activity?.runOnUiThread {
-                            var textView2: TextView? = null
-                            textView2 = view?.findViewById(R.id.background_initialize)
+                            var textViewBackground: TextView? = null
+                            textViewBackground = view?.findViewById(R.id.background_initialize)
+                            textViewBackground!!.alpha = 0.7F
+
+                            var textViewCountdown: TextView? = null
+                            textViewCountdown = view?.findViewById(R.id.countdown)
+                            textViewCountdown!!.text = drawView!!.exercice.notMovingTimer.toString()
+
                             drawView!!.invalidate()
-                            textView2!!.alpha = 0.7F
                         }
                     }
+                    else {
+                        val activity = activity
+                        activity?.runOnUiThread {
+                            var textViewBackground: TextView? = null
+                            textViewBackground = view?.findViewById(R.id.background_initialize)
+                            textViewBackground!!.alpha = 0.0F
+
+                            var textViewCountdown: TextView? = null
+                            textViewCountdown = view?.findViewById(R.id.countdown)
+                            textViewCountdown!!.text = ""
+
+                            drawView!!.invalidate()
+                        }
+
+                    }
+
                 }
             }
             else
