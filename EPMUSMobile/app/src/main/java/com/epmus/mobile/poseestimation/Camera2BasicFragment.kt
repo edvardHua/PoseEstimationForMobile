@@ -675,38 +675,30 @@ class Camera2BasicFragment : Fragment() {
         classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
-        if (drawView!!.exercice.numberOfRepetitionReached == false) {
-            drawView!!.movement.startingAngle = 90
-            drawView!!.movement.endingAngle = 180
-            drawView!!.movement.isAngleClockWise = true
+        if (drawView!!.exercice!!.numberOfRepetitionReached == false) {
 
-            drawView!!.exercice.minExecutionTime = 1.0f
-            drawView!!.exercice.maxExecutionTime = 3.0f
-
-            drawView!!.exercice.numberOfRepetitionToDo = 5
-            drawView!!.exercice.movementList.add(drawView!!.movement)
 
             drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
             //initialize bodyparts
-            if (drawView!!.exercice.initList.count() == 0)
+            if (drawView!!.exercice!!.initList.count() == 0)
             {
                 enumValues<BodyPart>().forEach()
                 {
                     var pF = PointF(-1.0f, -1.0f)
                     var aList = arrayListOf<PointF>(pF)
-                    drawView!!.exercice.initList.add(aList)
-                    drawView!!.exercice.notMovingInitList.add(false)
+                    drawView!!.exercice!!.initList.add(aList)
+                    drawView!!.exercice!!.notMovingInitList.add(false)
                 }
             }
 
 
             //if initialize needed
-            if (drawView!!.exercice.isInit == false)
+            if (drawView!!.exercice?.isInit == false)
             {
-                drawView!!.exercice.initialisationVerification(drawView!!)
+                drawView!!.exercice?.initialisationVerification(drawView!!)
                 //debug
-                if (drawView!!.exercice.initList[0].count() > 1)
+                if (drawView!!.exercice!!.initList[0].count() > 1)
                 {
                     /*
                     showToast("X: " + drawView!!.exercice.initList[0][0].x.toString() +
@@ -719,7 +711,7 @@ class Camera2BasicFragment : Fragment() {
                     showDebugUI("")
 
                     // show timer to start
-                    if (drawView!!.exercice.notMovingTimer < 5 && drawView!!.exercice.notMovingTimer > 0)
+                    if (drawView!!.exercice!!.notMovingTimer < 5 && drawView!!.exercice!!.notMovingTimer > 0)
                     {
                         val activity = activity
                         activity?.runOnUiThread {
@@ -729,7 +721,7 @@ class Camera2BasicFragment : Fragment() {
 
                             var textViewCountdown: TextView? = null
                             textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = drawView!!.exercice.notMovingTimer.toString()
+                            textViewCountdown!!.text = drawView!!.exercice!!.notMovingTimer.toString()
 
                             drawView!!.invalidate()
                         }
@@ -754,11 +746,11 @@ class Camera2BasicFragment : Fragment() {
             }
             else
             {
-                drawView!!.exercice.exerciceVerification(drawView!!)
+                drawView!!.exercice!!.exerciceVerification(drawView!!)
 
-                showValues(drawView!!.exercice)
+                showValues(drawView!!.exercice!!)
 
-                statistiques.add(drawView!!.exercice.copy())
+                statistiques.add(drawView!!.exercice!!.copy())
 
                 //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
             }
