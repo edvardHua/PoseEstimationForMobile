@@ -16,10 +16,10 @@
 package com.epmus.mobile.poseestimation
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.Paint.Style.FILL
 import android.graphics.PointF
+import android.graphics.Paint.Style.STROKE
 import android.util.AttributeSet
 import android.view.View
 import com.epmus.mobile.R
@@ -27,6 +27,8 @@ import java.lang.Math.*
 import java.util.ArrayList
 import kotlin.math.atan
 import kotlin.math.roundToInt
+import java.lang.Math.sin
+import java.util.*
 
 /**
  * Created by edvard on 18-3-23.
@@ -142,6 +144,81 @@ class DrawView : View {
         requestLayout()
     }
 
+    private val outlinePaint: Paint by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG).apply {
+            style = STROKE
+            strokeWidth = dip(2).toFloat()
+            textSize = sp(13).toFloat()
+        }
+    }
+
+    fun movementIndicator(canvas: Canvas)
+    {
+        this.exercice!!.movementList.forEach()
+        {
+            var pX = mDrawPoint[it.bodyPart1_Index].x
+            var pY = mDrawPoint[it.bodyPart1_Index].y
+
+            var angleRad = 0.0
+            var angleDeg : Int? = null
+
+            when(it.movementState)
+            {
+                0,2 -> {
+                    angleRad = it.startingAngle!!*Math.PI/180
+                    angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
+                    outlinePaint.color = 0xfffc0303.toInt()
+                }
+
+                1 -> {
+                    angleRad = it.endingAngle!!*Math.PI/180
+                    angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
+                    outlinePaint.color = 0xfffc0303.toInt()
+                }
+
+                3 -> {
+                    angleRad = it.endingAngle!!*Math.PI/180
+                    angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
+                    outlinePaint.color = 0xff1cb833.toInt()
+                }
+
+                4 -> {
+                    angleRad = it.startingAngle!!*Math.PI/180
+                    angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
+                    outlinePaint.color = 0xff1cb833.toInt()
+                }
+            }
+
+            this.exercice!!.calculateAngleHorizontalOffset(it!!, this, it.bodyPart1_Index, it.bodyPart0_Index)
+
+            if(it!!.angleOffset != null)
+            {
+
+                var bottom = pY.toInt()
+                var top = bottom + it.member2Length!!
+
+                var angleVariationRad = it.acceptableAngleVariation!!*Math.PI/180
+
+                var left = (pX - (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
+                var right = (pX + (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
+
+                var rect = Rect(left, top, right, bottom)
+
+                canvas.save()
+                canvas.rotate((it!!.angleOffset!!+ angleDeg!! - 90).toFloat(), pX, pY);
+                canvas.drawRect(rect, outlinePaint)
+                canvas.restore();
+
+                var angleOffsetRad = it!!.angleOffset!!*Math.PI/180
+
+                var positionXIndicator = pX + (it.member2Length!! * kotlin.math.cos(angleRad + angleOffsetRad))
+                var positionYIndicator = pY + (it.member2Length!! * kotlin.math.sin(angleRad + angleOffsetRad))
+
+                canvas.drawLine(pX, pY, positionXIndicator.toFloat(), positionYIndicator.toFloat(), mPaint)
+            }
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (mDrawPoint.isEmpty()) return
@@ -167,6 +244,7 @@ class DrawView : View {
                 }
             }
             prePointF = pointF
+            movementIndicator(canvas)
         }
 
         for ((index, pointF) in mDrawPoint.withIndex()) {
