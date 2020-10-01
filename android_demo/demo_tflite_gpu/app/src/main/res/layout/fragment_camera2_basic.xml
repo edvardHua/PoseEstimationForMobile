@@ -19,25 +19,25 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <com.edvard.poseestimation.AutoFitFrameLayout
+    <com.epmus.mobile.poseestimation.AutoFitFrameLayout
         android:id="@+id/layout_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical">
 
-        <com.edvard.poseestimation.AutoFitTextureView
+        <com.epmus.mobile.poseestimation.AutoFitTextureView
             android:id="@+id/texture"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical" />
 
-        <com.edvard.poseestimation.DrawView
+        <com.epmus.mobile.poseestimation.DrawView
             android:id="@+id/drawview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical" />
 
-    </com.edvard.poseestimation.AutoFitFrameLayout>
+    </com.epmus.mobile.poseestimation.AutoFitFrameLayout>
 
     <LinearLayout
         android:id="@+id/layout_bottom"

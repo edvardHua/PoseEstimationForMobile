@@ -103,4 +103,5 @@
         android:text="@string/forgot_password"
         app:layout_constraintTop_toBottomOf="@+id/checkBox"
         app:layout_constraintStart_toStartOf="@+id/checkBox"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

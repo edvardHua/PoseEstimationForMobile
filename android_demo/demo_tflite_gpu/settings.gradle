@@ -1,1 +1,3 @@
-include ':app', ':openCVLibrary420'
+include ':openCVLibrary420'
+include ':app'
+rootProject.name = "EPMUS Mobile"
