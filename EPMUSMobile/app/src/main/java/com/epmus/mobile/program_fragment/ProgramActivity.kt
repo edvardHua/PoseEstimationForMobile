@@ -38,8 +38,8 @@ class ProgramActivity : AppCompatActivity() {
             // TODO: Remove this, temp
             var movement = Movement(BodyPart.L_SHOULDER.ordinal, BodyPart.L_ELBOW.ordinal, BodyPart.L_WRIST.ordinal)
             var exercice = Exercice()
-            movement.startingAngle = 0
-            movement.endingAngle = 90
+            movement.startingAngle = 90
+            movement.endingAngle = 180
             movement.isAngleClockWise = true
             exercice.minExecutionTime = 1.0f
             exercice.maxExecutionTime = 3.0f
