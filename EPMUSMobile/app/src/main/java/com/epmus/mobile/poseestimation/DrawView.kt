@@ -159,31 +159,26 @@ class DrawView : View {
             var pX = mDrawPoint[it.bodyPart1_Index].x
             var pY = mDrawPoint[it.bodyPart1_Index].y
 
-            var angleRad = 0.0
             var angleDeg : Int? = null
 
             when(it.movementState)
             {
                 0,2 -> {
-                    angleRad = it.startingAngle!!*Math.PI/180
                     angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
                     outlinePaint.color = 0xfffc0303.toInt()
                 }
 
                 1 -> {
-                    angleRad = it.endingAngle!!*Math.PI/180
                     angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
                     outlinePaint.color = 0xfffc0303.toInt()
                 }
 
                 3 -> {
-                    angleRad = it.endingAngle!!*Math.PI/180
                     angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
                     outlinePaint.color = 0xff1cb833.toInt()
                 }
 
                 4 -> {
-                    angleRad = it.startingAngle!!*Math.PI/180
                     angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
                     outlinePaint.color = 0xff1cb833.toInt()
                 }
@@ -208,13 +203,6 @@ class DrawView : View {
                 canvas.rotate((it!!.angleOffset!!+ angleDeg!! - 90).toFloat(), pX, pY);
                 canvas.drawRect(rect, outlinePaint)
                 canvas.restore();
-
-                var angleOffsetRad = it!!.angleOffset!!*Math.PI/180
-
-                var positionXIndicator = pX + (it.member2Length!! * kotlin.math.cos(angleRad + angleOffsetRad))
-                var positionYIndicator = pY + (it.member2Length!! * kotlin.math.sin(angleRad + angleOffsetRad))
-
-                canvas.drawLine(pX, pY, positionXIndicator.toFloat(), positionYIndicator.toFloat(), mPaint)
             }
         }
     }
