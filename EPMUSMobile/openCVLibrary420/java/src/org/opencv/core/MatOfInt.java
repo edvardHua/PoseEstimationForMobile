@@ -63,8 +63,8 @@ public class MatOfInt extends Mat {
     public void fromList(List<Integer> lb) {
         if(lb==null || lb.size()==0)
             return;
-        Integer ab[] = lb.toArray(new Integer[0]);
-        int a[] = new int[ab.length];
+        Integer[] ab = lb.toArray(new Integer[0]);
+        int[] a = new int[ab.length];
         for(int i=0; i<ab.length; i++)
             a[i] = ab[i];
         fromArray(a);
@@ -72,7 +72,7 @@ public class MatOfInt extends Mat {
 
     public List<Integer> toList() {
         int[] a = toArray();
-        Integer ab[] = new Integer[a.length];
+        Integer[] ab = new Integer[a.length];
         for(int i=0; i<a.length; i++)
             ab[i] = a[i];
         return Arrays.asList(ab);

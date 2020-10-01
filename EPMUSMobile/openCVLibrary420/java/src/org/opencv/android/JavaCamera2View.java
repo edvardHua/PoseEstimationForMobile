@@ -89,7 +89,7 @@ public class JavaCamera2View extends CameraBridgeViewBase {
         Log.i(LOGTAG, "initializeCamera");
         CameraManager manager = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
         try {
-            String camList[] = manager.getCameraIdList();
+            String[] camList = manager.getCameraIdList();
             if (camList.length == 0) {
                 Log.e(LOGTAG, "Error: camera isn't detected.");
                 return false;
@@ -443,5 +443,5 @@ public class JavaCamera2View extends CameraBridgeViewBase {
         private Image mImage;
         private Mat mRgba;
         private Mat mGray;
-    };
+    }
 }

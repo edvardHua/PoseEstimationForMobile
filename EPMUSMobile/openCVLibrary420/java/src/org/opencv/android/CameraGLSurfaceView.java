@@ -20,13 +20,13 @@ public class CameraGLSurfaceView extends GLSurfaceView {
          * @param width -  the width of the frames that will be delivered
          * @param height - the height of the frames that will be delivered
          */
-        public void onCameraViewStarted(int width, int height);
+        void onCameraViewStarted(int width, int height);
 
         /**
          * This method is invoked when camera preview has been stopped for some reason.
          * No frames will be delivered via onCameraFrame() callback after this method is called.
          */
-        public void onCameraViewStopped();
+        void onCameraViewStopped();
 
         /**
          * This method is invoked when a new preview frame from Camera is ready.
@@ -36,8 +36,8 @@ public class CameraGLSurfaceView extends GLSurfaceView {
          * @param height - the height of the frame
          * @return `true` if `texOut` should be displayed, `false` - to show `texIn`
          */
-        public boolean onCameraTexture(int texIn, int texOut, int width, int height);
-    };
+        boolean onCameraTexture(int texIn, int texOut, int width, int height);
+    }
 
     private CameraTextureListener mTexListener;
     private CameraGLRendererBase mRenderer;

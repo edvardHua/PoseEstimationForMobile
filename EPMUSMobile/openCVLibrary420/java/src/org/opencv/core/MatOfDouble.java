@@ -62,8 +62,8 @@ public class MatOfDouble extends Mat {
     public void fromList(List<Double> lb) {
         if(lb==null || lb.size()==0)
             return;
-        Double ab[] = lb.toArray(new Double[0]);
-        double a[] = new double[ab.length];
+        Double[] ab = lb.toArray(new Double[0]);
+        double[] a = new double[ab.length];
         for(int i=0; i<ab.length; i++)
             a[i] = ab[i];
         fromArray(a);
@@ -71,7 +71,7 @@ public class MatOfDouble extends Mat {
 
     public List<Double> toList() {
         double[] a = toArray();
-        Double ab[] = new Double[a.length];
+        Double[] ab = new Double[a.length];
         for(int i=0; i<a.length; i++)
             ab[i] = a[i];
         return Arrays.asList(ab);

@@ -142,14 +142,14 @@ class Exercice: Serializable {
         movementList.forEach()
         {
 
-            calculateMembersLength(it!!,drawView!!)
-            calculateAngleV2(it!!, drawView!!)
+            calculateMembersLength(it, drawView)
+            calculateAngleV2(it, drawView)
 
             if(simultaneousMovement == false || simultaneousMovement == null)
             {
-                if(isAngleMatching(it!!))
+                if(isAngleMatching(it))
                 {
-                    when(it!!.movementState)
+                    when(it.movementState)
                     {
                         0 -> {
                             it.movementState = 1
@@ -168,9 +168,9 @@ class Exercice: Serializable {
 
             else
             {
-                if(isAngleMatching(it!!))
+                if(isAngleMatching(it))
                 {
-                    when(it!!.movementState)
+                    when(it.movementState)
                     {
                         0 -> {
                             it.movementState = 1
@@ -182,7 +182,7 @@ class Exercice: Serializable {
                 }
                 else
                 {
-                    when(it!!.movementState)
+                    when(it.movementState)
                     {
                         3 -> {it.movementState = 1}
                         4 -> {it.movementState = 2}

@@ -45,7 +45,7 @@ public class MatOfPoint3 extends Mat {
             return;
         int num = a.length;
         alloc(num);
-        int buff[] = new int[num * _channels];
+        int[] buff = new int[num * _channels];
         for(int i=0; i<num; i++) {
             Point3 p = a[i];
             buff[_channels*i+0] = (int) p.x;
@@ -60,7 +60,7 @@ public class MatOfPoint3 extends Mat {
         Point3[] ap = new Point3[num];
         if(num == 0)
             return ap;
-        int buff[] = new int[num * _channels];
+        int[] buff = new int[num * _channels];
         get(0, 0, buff); //TODO: check ret val!
         for(int i=0; i<num; i++)
             ap[i] = new Point3(buff[i*_channels], buff[i*_channels+1], buff[i*_channels+2]);
@@ -68,7 +68,7 @@ public class MatOfPoint3 extends Mat {
     }
 
     public void fromList(List<Point3> lp) {
-        Point3 ap[] = lp.toArray(new Point3[0]);
+        Point3[] ap = lp.toArray(new Point3[0]);
         fromArray(ap);
     }
 

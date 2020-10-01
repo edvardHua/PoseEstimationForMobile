@@ -301,7 +301,7 @@ class Camera2BasicFragment : Fragment() {
         layoutBottom = view.findViewById(R.id.layout_bottom)
         radiogroup = view.findViewById(R.id.radiogroup)
 
-        drawView!!.exercice = getArguments().getSerializable("exercice") as Exercice
+        drawView!!.exercice = arguments.getSerializable("exercice") as Exercice
 
         radiogroup!!.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.radio_cpu) {
@@ -905,7 +905,7 @@ class Camera2BasicFragment : Fragment() {
 
             val args = Bundle()
             args.putSerializable("exercice", exerice)
-            myFragment.setArguments(args)
+            myFragment.arguments = args
 
             return myFragment
         }

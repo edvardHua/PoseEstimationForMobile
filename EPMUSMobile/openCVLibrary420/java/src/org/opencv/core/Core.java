@@ -5674,7 +5674,7 @@ public static MinMaxLocResult minMaxLoc(Mat src, Mat mask) {
     if (mask != null) {
         maskNativeObj=mask.nativeObj;
     }
-    double resarr[] = n_minMaxLocManual(src.nativeObj, maskNativeObj);
+    double[] resarr = n_minMaxLocManual(src.nativeObj, maskNativeObj);
     res.minVal=resarr[0];
     res.maxVal=resarr[1];
     res.minLoc.x=resarr[2];

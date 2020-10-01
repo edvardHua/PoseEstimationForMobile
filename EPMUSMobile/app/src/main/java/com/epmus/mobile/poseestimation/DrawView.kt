@@ -184,15 +184,15 @@ class DrawView : View {
                 }
             }
 
-            this.exercice!!.calculateAngleHorizontalOffset(it!!, this, it.bodyPart1_Index, it.bodyPart0_Index)
+            this.exercice!!.calculateAngleHorizontalOffset(it, this, it.bodyPart1_Index, it.bodyPart0_Index)
 
-            if(it!!.angleOffset != null)
+            if(it.angleOffset != null)
             {
 
                 var bottom = pY.toInt()
                 var top = bottom + it.member2Length!!
 
-                var angleVariationRad = it.acceptableAngleVariation!!*Math.PI/180
+                var angleVariationRad = it.acceptableAngleVariation *Math.PI/180
 
                 var left = (pX - (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
                 var right = (pX + (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
@@ -200,9 +200,9 @@ class DrawView : View {
                 var rect = Rect(left, top, right, bottom)
 
                 canvas.save()
-                canvas.rotate((it!!.angleOffset!!+ angleDeg!! - 90).toFloat(), pX, pY);
+                canvas.rotate((it.angleOffset!!+ angleDeg!! - 90).toFloat(), pX, pY)
                 canvas.drawRect(rect, outlinePaint)
-                canvas.restore();
+                canvas.restore()
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.epmus.mobile.poseestimation
 
-enum class BodyPart (){
+enum class BodyPart {
     HEAD,
     NECK,
     L_SHOULDER,
