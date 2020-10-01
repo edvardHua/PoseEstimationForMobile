@@ -1,6 +1,0 @@
-*/.DS_Store
-training/src/__pycache__
-.idea/*
-
-android_demo/demo_tflite_gpu/app/.cxx/
-android_demo/demo_tflite_gpu/openCVLibrary420/.cxx/
