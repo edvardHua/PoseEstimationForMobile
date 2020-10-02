@@ -305,9 +305,9 @@ class Camera2BasicFragment : Fragment() {
 
         radiogroup!!.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.radio_cpu) {
-                startBackgroundThread(Runnable { classifier!!.initTflite(false) })
+                startBackgroundThread { classifier!!.initTflite(false) }
             } else {
-                startBackgroundThread(Runnable { classifier!!.initTflite(true) })
+                startBackgroundThread { classifier!!.initTflite(true) }
             }
         }
     }
@@ -337,7 +337,7 @@ class Camera2BasicFragment : Fragment() {
         backgroundHandler = Handler(backgroundThread!!.looper)
         runClassifier = true
 
-        startBackgroundThread(Runnable { classifier!!.initTflite(true) })
+        startBackgroundThread { classifier!!.initTflite(true) }
         startBackgroundThread(periodicClassify)
 
         // When the screen is turned off and turned back on, the SurfaceTexture is already
@@ -683,8 +683,7 @@ class Camera2BasicFragment : Fragment() {
             //initialize bodyparts
             if (drawView!!.exercice!!.initList.count() == 0)
             {
-                enumValues<BodyPart>().forEach()
-                {
+                repeat(enumValues<BodyPart>().count()) {
                     var pF = PointF(-1.0f, -1.0f)
                     var aList = arrayListOf<PointF>(pF)
                     drawView!!.exercice!!.initList.add(aList)

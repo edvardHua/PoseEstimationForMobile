@@ -192,7 +192,7 @@ class DrawView : View {
                 var bottom = pY.toInt()
                 var top = bottom + it.member2Length!!
 
-                var angleVariationRad = it.acceptableAngleVariation *Math.PI/180
+                var angleVariationRad = it.acceptableAngleVariation *PI/180
 
                 var left = (pX - (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
                 var right = (pX + (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()

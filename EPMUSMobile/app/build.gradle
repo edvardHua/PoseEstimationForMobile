@@ -22,6 +22,7 @@ android {
             }
         }
         ndk {
+            //Comments this line to test UI with Emulator x86
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }

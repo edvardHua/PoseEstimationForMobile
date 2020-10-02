@@ -276,7 +276,7 @@ class Exercice: Serializable {
         var deltaY = endBodyPartY - bodyPartCenterOfRotationY
         var deltaX = endBodyPartX - bodyPartCenterOfRotationX
 
-        var angleRad: Float = kotlin.math.atan(deltaY/deltaX)
+        var angleRad: Float = atan(deltaY/deltaX)
         var angleDeg : Double = ((angleRad*180)/Math.PI)
 
         //First quadrant
@@ -349,8 +349,8 @@ class Exercice: Serializable {
 
         var vectorProduct: Float = X1ToX0 * X1ToX2 + Y1ToY0 * Y1ToY2
 
-        var angleRad: Float = kotlin.math.acos(vectorProduct/(X1X0mod*X1X2mod))
-        var angleDeg : Double = ((angleRad*180)/Math.PI).toDouble()
+        var angleRad: Float = acos(vectorProduct/(X1X0mod*X1X2mod))
+        var angleDeg : Double = ((angleRad*180)/Math.PI)
 
         //Adding anti/clockwise effect
         var a = Y1ToY0/X1ToX0
