@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.epmus.mobile.R
+import com.epmus.mobile.poseestimation.CameraActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -20,16 +21,20 @@ class NewProgramActivity : AppCompatActivity() {
 
         val adapter = GroupAdapter<ViewHolder>()
 
-        adapter.add(ProgramItem("Exercice dos"))
-        adapter.add(ProgramItem("Exercice bras"))
+        enumValues<ExerciceNameList>().forEach {
+            adapter.add(ProgramItem(it.exerciceName))
+        }
 
         recyclerView_Program.adapter = adapter
 
         adapter.setOnItemClickListener{item, view ->
             val programItem = item as ProgramItem
 
+            val exerciceData = ExerciceData.getExerciceData(ExerciceNameList.getEnumValue(programItem.text))
+
             val intent = Intent(view.context,
-                ProgramActivity::class.java )
+                CameraActivity::class.java)
+            intent.putExtra("exercice", exerciceData.exercice)
 
             startActivity(intent)
 
