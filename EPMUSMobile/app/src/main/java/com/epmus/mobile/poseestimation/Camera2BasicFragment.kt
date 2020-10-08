@@ -42,6 +42,9 @@ import com.epmus.mobile.ForgotPasswordActivity
 import com.epmus.mobile.R
 import com.epmus.mobile.program_fragment.ProgramActivity
 import com.epmus.mobile.ui.login.LoginActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.Serializable
 import java.util.*
@@ -680,130 +683,103 @@ class Camera2BasicFragment : Fragment() {
         classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
-        if (drawView!!.exercice!!.numberOfRepetitionReached == false) {
+        drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-
-            drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
-
-            //initialize bodyparts
-            if (drawView!!.exercice!!.initList.count() == 0)
-            {
-                repeat(enumValues<BodyPart>().count()) {
-                    var pF = PointF(-1.0f, -1.0f)
-                    var aList = arrayListOf<PointF>(pF)
-                    drawView!!.exercice!!.initList.add(aList)
-                    drawView!!.exercice!!.notMovingInitList.add(false)
-                }
+        //initialize bodyparts
+        if (drawView!!.exercice!!.initList.count() == 0)
+        {
+            repeat(enumValues<BodyPart>().count()) {
+                var pF = PointF(-1.0f, -1.0f)
+                var aList = arrayListOf<PointF>(pF)
+                drawView!!.exercice!!.initList.add(aList)
+                drawView!!.exercice!!.notMovingInitList.add(false)
             }
+        }
 
 
-            //if initialize needed
-            if (drawView!!.exercice?.isInit == false)
+        //if not initialized yet
+        if (drawView!!.exercice?.isInit == false)
+        {
+            showToast("")
+            showDebugUI("")
+
+            drawView!!.exercice?.initialisationVerification(drawView!!)
+            //debug
+            if (drawView!!.exercice!!.initList[0].count() > 1)
             {
-                drawView!!.exercice?.initialisationVerification(drawView!!)
-                //debug
-                if (drawView!!.exercice!!.initList[0].count() > 1)
+                // show timer to start
+                if (drawView!!.exercice!!.notMovingTimer < drawView!!.exercice!!.targetTime.toInt()/1000 &&
+                            drawView!!.exercice!!.notMovingTimer > 0)
                 {
-                    /*
-                    showToast("X: " + drawView!!.exercice.initList[0][0].x.toString() +
-                            ";; Y: " + drawView!!.exercice.initList[0][0].y.toString())
+                    val activity = activity
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        textViewBackground!!.alpha = 0.7F
 
-                    showDebugUI("Time: " + drawView!!.exercice.notMovingTimer.toString() +
-                            ";; Done: " + drawView!!.exercice.isInit.toString())
-                    */
-                    showToast("")
-                    showDebugUI("")
+                        var textViewCountdown: TextView? = null
+                        textViewCountdown = view?.findViewById(R.id.countdown)
+                        textViewCountdown!!.text = drawView!!.exercice!!.notMovingTimer.toString()
 
-                    // show timer to start
-                    if (drawView!!.exercice!!.notMovingTimer < drawView!!.exercice!!.targetTime.toInt()/1000 &&
-                                drawView!!.exercice!!.notMovingTimer > 0)
-                    {
-                        val activity = activity
-                        activity?.runOnUiThread {
-                            var textViewBackground: TextView? = null
-                            textViewBackground = view?.findViewById(R.id.background_initialize)
-                            textViewBackground!!.alpha = 0.7F
-
-                            var textViewCountdown: TextView? = null
-                            textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = drawView!!.exercice!!.notMovingTimer.toString()
-
-                            drawView!!.invalidate()
-                        }
+                        drawView!!.invalidate()
                     }
-                    else {
-                        val activity = activity
-                        activity?.runOnUiThread {
-                            var textViewBackground: TextView? = null
-                            textViewBackground = view?.findViewById(R.id.background_initialize)
-                            textViewBackground!!.alpha = 0.0F
+                }
 
-                            var textViewCountdown: TextView? = null
-                            textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = ""
+                // hide background if moving
+                else {
+                    val activity = activity
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        textViewBackground!!.alpha = 0.0F
 
-                            drawView!!.invalidate()
-                        }
+                        var textViewCountdown: TextView? = null
+                        textViewCountdown = view?.findViewById(R.id.countdown)
+                        textViewCountdown!!.text = ""
 
+                        drawView!!.invalidate()
                     }
 
                 }
+
             }
-            else
-            {
-                    drawView!!.exercice!!.exerciceVerification(drawView!!)
+        }
 
-                    showValues(drawView!!.exercice!!)
+        else
+        {
+            // Verify angle
+            drawView!!.exercice!!.exerciceVerification(drawView!!)
+            showValues(drawView!!.exercice!!)
+            //showToast(drawView!!.exercice!!.lastTimer.toString())
+            statistiques.add(drawView!!.exercice!!.copy())
 
-                    statistiques.add(drawView!!.exercice!!.copy())
+            // Done -> exit exercise
+            if (drawView!!.exercice!!.numberOfRepetitionReached == true) {
+                val activity = activity
 
+                activity?.runOnUiThread {
+                    var textViewBackground: TextView? = null
+                    textViewBackground = view?.findViewById(R.id.background_initialize)
+                    textViewBackground!!.alpha = 0.7F
 
-                if (drawView!!.exercice!!.numberOfRepetitionReached == true) {
-                    var endTimer : Long = drawView!!.exercice!!.numberOfRepetitionReachedTimer!! - System.currentTimeMillis()
-                    val activity = activity
+                    var textViewCountdown: TextView? = null
+                    textViewCountdown = view?.findViewById(R.id.countdown)
+                    textViewCountdown!!.text = "Terminé"
+                    drawView!!.invalidate()
 
-                    /*
-                    //Ecrit Completer 2 seconde
-                    if (endTimer < 2000) {
-                        activity?.runOnUiThread {
-                            var textViewBackground: TextView? = null
-                            textViewBackground = view?.findViewById(R.id.background_initialize)
-                            textViewBackground!!.alpha = 0.7F
+                    // must do a separate thread or the background wont show
+                    GlobalScope.launch {
+                        delay(2000L)
 
-                            var textViewCountdown: TextView? = null
-                            textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = endTimer.toString() + "\n" + System.currentTimeMillis()
-
-                            drawView!!.invalidate()
-                        }
-                    }
-                    //Close
-                    else {
-                        activity?.runOnUiThread {
-                            var textViewBackground: TextView? = null
-                            textViewBackground = view?.findViewById(R.id.background_initialize)
-                            textViewBackground!!.alpha = 0.0F
-
-                            var textViewCountdown: TextView? = null
-                            textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = ""
-
-                            drawView!!.invalidate()
-                        }
-                */
+                        //EXIT !
                         activity.let {
                             val intent = Intent(it, LoginActivity::class.java)
                             it.startActivity(intent)
                             it.finish()
                         }
-                    //}
-                    //Thread.sleep(50)
+                    }
                 }
             }
-        }
-        else
-        {
-            showToast("Done")
         }
     }
 
