@@ -21,6 +21,7 @@ import android.app.Dialog
 import android.app.DialogFragment
 import android.app.Fragment
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
@@ -37,12 +38,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.epmus.mobile.ForgotPasswordActivity
 import com.epmus.mobile.R
+import com.epmus.mobile.program_fragment.ProgramActivity
+import com.epmus.mobile.ui.login.LoginActivity
 import java.io.IOException
 import java.io.Serializable
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Basic fragments for the Camera.
@@ -710,7 +715,8 @@ class Camera2BasicFragment : Fragment() {
                     showDebugUI("")
 
                     // show timer to start
-                    if (drawView!!.exercice!!.notMovingTimer < 5 && drawView!!.exercice!!.notMovingTimer > 0)
+                    if (drawView!!.exercice!!.notMovingTimer < drawView!!.exercice!!.targetTime.toInt()/1000 &&
+                                drawView!!.exercice!!.notMovingTimer > 0)
                     {
                         val activity = activity
                         activity?.runOnUiThread {
@@ -745,13 +751,54 @@ class Camera2BasicFragment : Fragment() {
             }
             else
             {
-                drawView!!.exercice!!.exerciceVerification(drawView!!)
+                    drawView!!.exercice!!.exerciceVerification(drawView!!)
 
-                showValues(drawView!!.exercice!!)
+                    showValues(drawView!!.exercice!!)
 
-                statistiques.add(drawView!!.exercice!!.copy())
+                    statistiques.add(drawView!!.exercice!!.copy())
 
-                //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
+
+                if (drawView!!.exercice!!.numberOfRepetitionReached == true) {
+                    var endTimer : Long = drawView!!.exercice!!.numberOfRepetitionReachedTimer!! - System.currentTimeMillis()
+                    val activity = activity
+
+                    /*
+                    //Ecrit Completer 2 seconde
+                    if (endTimer < 2000) {
+                        activity?.runOnUiThread {
+                            var textViewBackground: TextView? = null
+                            textViewBackground = view?.findViewById(R.id.background_initialize)
+                            textViewBackground!!.alpha = 0.7F
+
+                            var textViewCountdown: TextView? = null
+                            textViewCountdown = view?.findViewById(R.id.countdown)
+                            textViewCountdown!!.text = endTimer.toString() + "\n" + System.currentTimeMillis()
+
+                            drawView!!.invalidate()
+                        }
+                    }
+                    //Close
+                    else {
+                        activity?.runOnUiThread {
+                            var textViewBackground: TextView? = null
+                            textViewBackground = view?.findViewById(R.id.background_initialize)
+                            textViewBackground!!.alpha = 0.0F
+
+                            var textViewCountdown: TextView? = null
+                            textViewCountdown = view?.findViewById(R.id.countdown)
+                            textViewCountdown!!.text = ""
+
+                            drawView!!.invalidate()
+                        }
+                */
+                        activity.let {
+                            val intent = Intent(it, LoginActivity::class.java)
+                            it.startActivity(intent)
+                            it.finish()
+                        }
+                    //}
+                    //Thread.sleep(50)
+                }
             }
         }
         else

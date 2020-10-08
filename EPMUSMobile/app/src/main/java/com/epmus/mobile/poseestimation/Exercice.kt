@@ -15,6 +15,7 @@ class Exercice: Serializable {
     var numberOfRepetitionToDo: Int? = null
     var numberOfRepetition: Int = 0
     var numberOfRepetitionReached: Boolean = false
+    var numberOfRepetitionReachedTimer: Long? = null
 
     var simultaneousMovement: Boolean? = null
     var movementList = ArrayList<Movement>()
@@ -22,8 +23,10 @@ class Exercice: Serializable {
     var initList = ArrayList<ArrayList<PointF>>()
     var notMovingInitList = ArrayList<Boolean>()
     var isInit: Boolean = false
+    var isInitTimer: Long? = null
     var notMovingStartTime: Long? = null
     var notMovingTimer: Int = 0
+    var targetTime: Long = 4000
 
 
     fun initialisationVerification(drawView: DrawView)
@@ -123,11 +126,11 @@ class Exercice: Serializable {
             else
             {
                 var currentTime: Long = System.currentTimeMillis()
-                var targetTime: Long = 5000
-                notMovingTimer = 5 - ((currentTime - notMovingStartTime!!)/1000).toInt()
+                notMovingTimer = targetTime.toInt()/1000 - ((currentTime - notMovingStartTime!!)/1000).toInt()
                 if (currentTime - notMovingStartTime!! >= targetTime)
                 {
                     isInit = true
+                    isInitTimer = System.currentTimeMillis()
                 }
             }
         }
@@ -135,7 +138,6 @@ class Exercice: Serializable {
             notMovingStartTime = null
         }
     }
-
 
     fun exerciceVerification(drawView: DrawView)
     {
@@ -213,6 +215,7 @@ class Exercice: Serializable {
             if(numberOfRepetitionToDo == numberOfRepetition)
             {
                 numberOfRepetitionReached = true
+                numberOfRepetitionReachedTimer = System.currentTimeMillis()
             }
         }
     }

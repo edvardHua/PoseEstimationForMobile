@@ -41,7 +41,7 @@ class ExerciceData {
                 exercice.movementList.add(movement)
                 exercice.movementList.add(movement2)
             } else if (exerciceName == ExerciceNameList.ExerciceBrasGauche) {
-                movement.startingAngle = 180
+                movement.startingAngle = 170
                 movement.endingAngle = 90
                 movement.isAngleAntiClockWise = true
                 exercice.movementList.add(movement)
