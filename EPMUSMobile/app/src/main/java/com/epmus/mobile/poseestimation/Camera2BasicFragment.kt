@@ -39,6 +39,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.epmus.mobile.ForgotPasswordActivity
+import com.epmus.mobile.MainMenuActivity
 import com.epmus.mobile.R
 import com.epmus.mobile.program_fragment.ProgramActivity
 import com.epmus.mobile.ui.login.LoginActivity
@@ -248,13 +249,13 @@ class Camera2BasicFragment : Fragment() {
     private fun showValues(exercises: Exercice)
     {
         var labelVitesse: String = ""
-        if (exercises.lastTimer != null)
+        if (exercises.mouvementSpeedTime != null)
         {
-            if (exercises.lastTimer!! < exercises.minExecutionTime!!)
+            if (exercises.mouvementSpeedTime!! < exercises.minExecutionTime!!)
             {
                 labelVitesse = "-"
             }
-            else if (exercises.lastTimer!! > exercises.maxExecutionTime!!)
+            else if (exercises.mouvementSpeedTime!! > exercises.maxExecutionTime!!)
             {
                 labelVitesse = "+"
             }
@@ -266,7 +267,7 @@ class Camera2BasicFragment : Fragment() {
 
         var text = "ϴ: " + exercises.movementList[0].angleAvg +
                 "; État: " + exercises.movementList[0].movementState +
-                "; Vit.: " + exercises.lastTimer + " s (" + labelVitesse + ")"
+                "; Vit.: " + exercises.mouvementSpeedTime + " s (" + labelVitesse + ")"
         var debug = "Répét.: " + exercises.numberOfRepetition +
                 "; Tot.: " + exercises.numberOfRepetitionToDo +
                 "; Fini? " + exercises.numberOfRepetitionReached
@@ -760,7 +761,7 @@ class Camera2BasicFragment : Fragment() {
                 activity?.runOnUiThread {
                     var textViewBackground: TextView? = null
                     textViewBackground = view?.findViewById(R.id.background_initialize)
-                    textViewBackground!!.alpha = 0.7F
+                    textViewBackground!!.alpha = 1.0F
 
                     var textViewCountdown: TextView? = null
                     textViewCountdown = view?.findViewById(R.id.countdown)

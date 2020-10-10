@@ -28,7 +28,6 @@ class ExerciceData {
 
             exercice.minExecutionTime = 1.0f
             exercice.maxExecutionTime = 3.0f
-            exercice.simultaneousMovement = true
             exercice.numberOfRepetitionToDo = 5
 
             if (exerciceName == ExerciceNameList.ExerciceBras) {
