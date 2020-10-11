@@ -143,7 +143,7 @@ class LoginActivity : AppCompatActivity() {
                 // TODO finish might not work, watch for the already done redirection
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username, password)
-                val intent = Intent(this@LoginActivity, MainMenuActivity::class.java)
+                val intent = Intent(this, MainMenuActivity::class.java)
                 startActivity(intent)
             }
         }
