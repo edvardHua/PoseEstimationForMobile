@@ -16,10 +16,7 @@
 package com.epmus.mobile.poseestimation
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
-import android.app.DialogFragment
-import android.app.Fragment
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -33,9 +30,7 @@ import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import android.view.*
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.epmus.mobile.ForgotPasswordActivity
@@ -459,10 +454,39 @@ class Camera2BasicFragment : Fragment() {
                     layoutFrame!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
                     textureView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
                     drawView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
-                } else {
-                    layoutFrame!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
-                    textureView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
-                    drawView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
+
+                    //Adjust textfield background_initialize to fit the camera overlay
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        var tmpHeight : Int = displaySize.x * previewSize!!.height / previewSize!!.width // to keep the ratio
+                        var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                        tmpLayout.gravity = Gravity.CENTER
+                        textViewBackground!!.layoutParams = tmpLayout
+                        drawView!!.invalidate()
+                    }
+
+                }
+                // This one will run most of the times
+                else {
+                    var newWidth = previewSize!!.height
+                    var newHeight = previewSize!!.width
+
+                    layoutFrame!!.setAspectRatio(newWidth, newHeight)
+                    textureView!!.setAspectRatio(newWidth, newHeight)
+                    drawView!!.setAspectRatio(newWidth, newHeight)
+
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        var tmpHeight : Int = displaySize.x * newHeight / newWidth 
+                        var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                                    FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                        tmpLayout.gravity = Gravity.CENTER
+                        textViewBackground!!.layoutParams = tmpLayout
+                        drawView!!.invalidate()
+                    }
                 }
 
                 //this.cameraId = cameraId
@@ -751,7 +775,6 @@ class Camera2BasicFragment : Fragment() {
             // Verify angle
             drawView!!.exercice!!.exerciceVerification(drawView!!)
             showValues(drawView!!.exercice!!)
-            //showToast(drawView!!.exercice!!.lastTimer.toString())
             statistiques.add(drawView!!.exercice!!.copy())
 
             // Done -> exit exercise
