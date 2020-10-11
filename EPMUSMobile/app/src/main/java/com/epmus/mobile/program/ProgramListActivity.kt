@@ -2,17 +2,19 @@ package com.epmus.mobile.program
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
+import com.epmus.mobile.AccountActivity
+import com.epmus.mobile.HistoryActivity
 import com.epmus.mobile.R
+import com.epmus.mobile.SettingsActivity
+import com.epmus.mobile.ui.login.LoginActivity
 
 /**
  * An activity representing a list of Pings. This activity
@@ -34,9 +36,10 @@ class ProgramListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_program_list)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.my_toolbar_program)
+        toolbar.title = "Exercices"
         setSupportActionBar(toolbar)
-        toolbar.title = title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -52,6 +55,42 @@ class ProgramListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView(findViewById(R.id.program_list))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_actions, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_account -> {
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        R.id.action_history -> {
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        R.id.action_settings -> {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        R.id.action_logout -> {
+            // TODO: handle logout properly
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
