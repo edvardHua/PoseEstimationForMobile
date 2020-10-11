@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ProgramDetailActivity"
+    tools:context=".program.ProgramDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <com.google.android.material.appbar.AppBarLayout

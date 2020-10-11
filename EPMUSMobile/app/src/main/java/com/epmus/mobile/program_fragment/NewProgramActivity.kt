@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.epmus.mobile.R
 import com.epmus.mobile.poseestimation.CameraActivity
+import com.epmus.mobile.program.ExerciceData
+import com.epmus.mobile.program.ExerciceNameList
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder

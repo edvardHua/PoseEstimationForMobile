@@ -10,7 +10,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".ProgramListActivity">
+    tools:context=".program.ProgramListActivity">
 
     <!--
     This layout is a two-pane layout for the Items master/detail flow.
@@ -25,7 +25,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.epmus.mobile.ProgramListActivity"
+        tools:context="com.epmus.mobile.program.ProgramListActivity"
         tools:listitem="@layout/program_list_content" />
 
     <FrameLayout

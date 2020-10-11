@@ -1,4 +1,4 @@
-package com.epmus.mobile
+package com.epmus.mobile.program
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.epmus.mobile.program.ProgramContent
+import com.epmus.mobile.R
 
 /**
  * A fragment representing a single Program detail screen.

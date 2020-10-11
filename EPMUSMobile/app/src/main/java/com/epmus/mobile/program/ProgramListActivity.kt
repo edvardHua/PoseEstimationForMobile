@@ -1,4 +1,4 @@
-package com.epmus.mobile
+package com.epmus.mobile.program
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,8 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
-import com.epmus.mobile.program.ProgramContent
+import com.epmus.mobile.R
 
 /**
  * An activity representing a list of Pings. This activity

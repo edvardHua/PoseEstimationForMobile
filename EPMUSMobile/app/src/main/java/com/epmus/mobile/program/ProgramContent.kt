@@ -1,6 +1,5 @@
 package com.epmus.mobile.program
 
-import com.epmus.mobile.program_fragment.ExerciceNameList
 import java.util.ArrayList
 import java.util.HashMap
 

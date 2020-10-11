@@ -17,18 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ProgramListActivity"
+            android:name=".program.ProgramListActivity"
             android:label="@string/title_program_list"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainMenuActivity"></activity>
         <activity
-            android:name=".ProgramDetailActivity"
+            android:name=".program.ProgramDetailActivity"
             android:label="@string/title_program_detail"
-            android:parentActivityName=".ProgramListActivity"
+            android:parentActivityName=".program.ProgramListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.epmus.mobile.ProgramListActivity" />
+                android:value="com.epmus.mobile.program.ProgramListActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"

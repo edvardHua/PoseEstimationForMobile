@@ -1,11 +1,10 @@
-package com.epmus.mobile.program_fragment
+package com.epmus.mobile.program
 
 import com.epmus.mobile.poseestimation.BodyPart
 import com.epmus.mobile.poseestimation.Exercice
 import com.epmus.mobile.poseestimation.ExerciceType
 import com.epmus.mobile.poseestimation.Movement
-import com.epmus.mobile.program_fragment.ExerciceData.Companion.getExerciceData
-import java.lang.reflect.Type
+import com.epmus.mobile.program.ExerciceData.Companion.getExerciceData
 
 class ExerciceData {
     var name: String = ""

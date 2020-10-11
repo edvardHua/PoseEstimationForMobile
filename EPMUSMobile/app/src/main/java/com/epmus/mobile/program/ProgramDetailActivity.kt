@@ -1,14 +1,12 @@
-package com.epmus.mobile
+package com.epmus.mobile.program
 
 import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import com.epmus.mobile.R
 import com.epmus.mobile.poseestimation.CameraActivity
-import com.epmus.mobile.program.ProgramContent
-import com.epmus.mobile.program_fragment.ExerciceData
-import com.epmus.mobile.program_fragment.ExerciceNameList
 
 /**
  * An activity representing a single Program detail screen. This

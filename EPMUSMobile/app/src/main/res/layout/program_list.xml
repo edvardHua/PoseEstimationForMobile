@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ProgramListActivity"
+    tools:context=".program.ProgramListActivity"
     tools:listitem="@layout/program_list_content" />
