@@ -12,8 +12,11 @@ import com.google.android.material.snackbar.Snackbar
 import android.widget.TextView
 import com.epmus.mobile.AccountActivity
 import com.epmus.mobile.HistoryActivity
+import com.epmus.mobile.Messaging.MessagingActivity
+import com.epmus.mobile.Messaging.NewMessageActivity
 import com.epmus.mobile.R
 import com.epmus.mobile.SettingsActivity
+import com.epmus.mobile.poseestimation.CameraActivity
 import com.epmus.mobile.ui.login.LoginActivity
 
 /**
@@ -42,8 +45,8 @@ class ProgramListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val intent = Intent(view.context, NewMessageActivity::class.java)
+            startActivity(intent)
         }
 
         if (findViewById<NestedScrollView>(R.id.program_detail_container) != null) {

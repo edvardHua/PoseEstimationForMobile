@@ -23,9 +23,9 @@ object ProgramContent {
 
     private fun makeDetails(position: Int): String {
         val builder = StringBuilder()
-        builder.append("Details about Item: ").append(position)
+        builder.append("Détails à propos de Exercice: ").append(position)
         for (i in 0..position - 1) {
-            builder.append("\nMore details information here.")
+            builder.append("\nPlus de détails ici.")
         }
         return builder.toString()
     }
