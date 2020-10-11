@@ -25,7 +25,7 @@ class MainMenuActivity : AppCompatActivity() {
         val alerts = findViewById<Button>(R.id.activity_alerts)
 
         program.setOnClickListener{
-            val intent = Intent(this, NewProgramActivity::class.java)
+            val intent = Intent(this, ProgramListActivity::class.java)
             startActivity(intent)
         }
 

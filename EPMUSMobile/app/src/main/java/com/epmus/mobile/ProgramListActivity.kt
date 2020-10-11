@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-import com.epmus.mobile.dummy.DummyContent
+import com.epmus.mobile.program.ProgramContent
 
 /**
  * An activity representing a list of Pings. This activity
@@ -56,12 +56,12 @@ class ProgramListActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
+        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, ProgramContent.ITEMS, twoPane)
     }
 
     class SimpleItemRecyclerViewAdapter(
         private val parentActivity: ProgramListActivity,
-        private val values: List<DummyContent.DummyItem>,
+        private val values: List<ProgramContent.ProgramItem>,
         private val twoPane: Boolean
     ) :
         RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
@@ -70,7 +70,7 @@ class ProgramListActivity : AppCompatActivity() {
 
         init {
             onClickListener = View.OnClickListener { v ->
-                val item = v.tag as DummyContent.DummyItem
+                val item = v.tag as ProgramContent.ProgramItem
                 if (twoPane) {
                     val fragment = ProgramDetailFragment().apply {
                         arguments = Bundle().apply {

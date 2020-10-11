@@ -3,9 +3,12 @@ package com.epmus.mobile
 import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import com.epmus.mobile.poseestimation.CameraActivity
+import com.epmus.mobile.program.ProgramContent
+import com.epmus.mobile.program_fragment.ExerciceData
+import com.epmus.mobile.program_fragment.ExerciceNameList
 
 /**
  * An activity representing a single Program detail screen. This
@@ -20,9 +23,15 @@ class ProgramDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_program_detail)
         setSupportActionBar(findViewById(R.id.detail_toolbar))
 
+        val programId = intent.getSerializableExtra(ProgramDetailFragment.ARG_ITEM_ID)
+        val program = ProgramContent.ITEM_MAP[programId]
+
+        val exerciceData = ExerciceData.getExerciceData(ExerciceNameList.getEnumValue(program!!.content))
+
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val intent = Intent(view.context, CameraActivity::class.java)
+            intent.putExtra("exercice", exerciceData.exercice)
+            startActivity(intent)
         }
 
         // Show the Up button in the action bar.

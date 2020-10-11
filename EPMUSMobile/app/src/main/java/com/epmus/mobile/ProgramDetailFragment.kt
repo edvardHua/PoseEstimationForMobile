@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.epmus.mobile.dummy.DummyContent
+import com.epmus.mobile.program.ProgramContent
 
 /**
  * A fragment representing a single Program detail screen.
@@ -20,7 +20,7 @@ class ProgramDetailFragment : Fragment() {
     /**
      * The dummy content this fragment is presenting.
      */
-    private var item: DummyContent.DummyItem? = null
+    private var item: ProgramContent.ProgramItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class ProgramDetailFragment : Fragment() {
                 // Load the dummy content specified by the fragment
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
-                item = DummyContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
+                item = ProgramContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
                 activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title =
                     item?.content
             }

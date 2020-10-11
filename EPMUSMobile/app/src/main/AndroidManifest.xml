@@ -19,7 +19,8 @@
         <activity
             android:name=".ProgramListActivity"
             android:label="@string/title_program_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainMenuActivity"></activity>
         <activity
             android:name=".ProgramDetailActivity"
             android:label="@string/title_program_detail"
