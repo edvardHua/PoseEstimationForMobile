@@ -81,4 +81,6 @@
     <string name="this_is_my_message">This is my message</string>
     <string name="message_hint">Écrire votre message</string>
     <string name="send">Envoyer</string>
+    <string name="title_program_list">Items</string>
+    <string name="title_program_detail">Program Detail</string>
 </resources>
