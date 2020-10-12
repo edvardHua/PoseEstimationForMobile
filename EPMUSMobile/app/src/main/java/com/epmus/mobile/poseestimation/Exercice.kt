@@ -9,21 +9,23 @@ class Exercice: Serializable {
     // add to fun .copy() if there is a modif
     var maxExecutionTime: Float? = null
     var minExecutionTime: Float? = null
-    var startTimer: Long? = null
-    var lastTimer: Float? = null
+    var mouvementStartTimer: Long? = null
+    var mouvementSpeedTime: Float? = null
 
     var numberOfRepetitionToDo: Int? = null
     var numberOfRepetition: Int = 0
     var numberOfRepetitionReached: Boolean = false
+    var numberOfRepetitionReachedTimer: Long? = null
 
-    var simultaneousMovement: Boolean? = null
     var movementList = ArrayList<Movement>()
 
     var initList = ArrayList<ArrayList<PointF>>()
     var notMovingInitList = ArrayList<Boolean>()
     var isInit: Boolean = false
+    var isInitTimer: Long? = null
     var notMovingStartTime: Long? = null
     var notMovingTimer: Int = 0
+    var targetTime: Long = 4000
 
 
     fun initialisationVerification(drawView: DrawView)
@@ -123,11 +125,11 @@ class Exercice: Serializable {
             else
             {
                 var currentTime: Long = System.currentTimeMillis()
-                var targetTime: Long = 5000
-                notMovingTimer = 5 - ((currentTime - notMovingStartTime!!)/1000).toInt()
+                notMovingTimer = targetTime.toInt()/1000 - ((currentTime - notMovingStartTime!!)/1000).toInt()
                 if (currentTime - notMovingStartTime!! >= targetTime)
                 {
                     isInit = true
+                    isInitTimer = System.currentTimeMillis()
                 }
             }
         }
@@ -135,7 +137,6 @@ class Exercice: Serializable {
             notMovingStartTime = null
         }
     }
-
 
     fun exerciceVerification(drawView: DrawView)
     {
@@ -145,48 +146,25 @@ class Exercice: Serializable {
             calculateMembersLength(it, drawView)
             calculateAngleV2(it, drawView)
 
-            if(simultaneousMovement == false || simultaneousMovement == null)
+
+            if(isAngleMatching(it))
             {
-                if(isAngleMatching(it))
+                when(it.movementState)
                 {
-                    when(it.movementState)
-                    {
-                        0 -> {
-                            it.movementState = 1
-                            startTimer = System.currentTimeMillis()
-                        }
-                        1 -> {it.movementState = 2}
-                        2 ->
-                        {
-                            it.movementState = 1
-                            numberOfRepetition++
-                            lastTimer = calculateTime()
-                        }
+                    0 -> {
+                        it.movementState = 1
+                        mouvementStartTimer = System.currentTimeMillis()
                     }
+                    1 -> {it.movementState = 3}
+                    2 -> {it.movementState = 4}
                 }
             }
-
             else
             {
-                if(isAngleMatching(it))
+                when(it.movementState)
                 {
-                    when(it.movementState)
-                    {
-                        0 -> {
-                            it.movementState = 1
-                            startTimer = System.currentTimeMillis()
-                        }
-                        1 -> {it.movementState = 3}
-                        2 -> {it.movementState = 4}
-                    }
-                }
-                else
-                {
-                    when(it.movementState)
-                    {
-                        3 -> {it.movementState = 1}
-                        4 -> {it.movementState = 2}
-                    }
+                    3 -> {it.movementState = 1}
+                    4 -> {it.movementState = 2}
                 }
             }
         }
@@ -206,6 +184,7 @@ class Exercice: Serializable {
                 it.movementState = 1
             }
             numberOfRepetition++
+            mouvementSpeedTime = calculateTime()
         }
 
         if(numberOfRepetitionToDo != null)
@@ -213,6 +192,7 @@ class Exercice: Serializable {
             if(numberOfRepetitionToDo == numberOfRepetition)
             {
                 numberOfRepetitionReached = true
+                numberOfRepetitionReachedTimer = System.currentTimeMillis()
             }
         }
     }
@@ -407,11 +387,11 @@ class Exercice: Serializable {
     private fun calculateTime (): Float?
     {
         var timeInSecond: Float?= null
-        if (startTimer != null)
+        if (mouvementStartTimer != null)
         {
-            timeInSecond = ((System.currentTimeMillis() - startTimer!!).toFloat())/1000
+            timeInSecond = ((System.currentTimeMillis() - mouvementStartTimer!!).toFloat())/1000
         }
-        startTimer = System.currentTimeMillis()
+        mouvementStartTimer = System.currentTimeMillis()
         return timeInSecond
     }
 
@@ -420,13 +400,22 @@ class Exercice: Serializable {
         val exercices = Exercice()
         exercices.maxExecutionTime = maxExecutionTime
         exercices.minExecutionTime = minExecutionTime
-        exercices.startTimer = startTimer
-        exercices.lastTimer = lastTimer
+        exercices.mouvementStartTimer = mouvementStartTimer
+        exercices.mouvementSpeedTime = mouvementSpeedTime
         exercices.numberOfRepetitionToDo = numberOfRepetitionToDo
         exercices.numberOfRepetition = numberOfRepetition
         exercices.numberOfRepetitionReached = numberOfRepetitionReached
-        exercices.simultaneousMovement = simultaneousMovement
+        exercices.numberOfRepetitionReachedTimer = numberOfRepetitionReachedTimer
         exercices.movementList = movementList
+        exercices.initList = initList
+        exercices.notMovingInitList = notMovingInitList
+        exercices.isInit = isInit
+        exercices.isInitTimer = isInitTimer
+        exercices.notMovingStartTime = notMovingStartTime
+        exercices.notMovingTimer = notMovingTimer
+        exercices.targetTime = targetTime
         return exercices
     }
 }
+
+

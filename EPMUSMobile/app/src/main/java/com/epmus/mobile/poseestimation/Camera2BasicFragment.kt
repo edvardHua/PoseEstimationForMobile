@@ -16,11 +16,9 @@
 package com.epmus.mobile.poseestimation
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
-import android.app.DialogFragment
-import android.app.Fragment
+import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
@@ -32,17 +30,23 @@ import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import android.view.*
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.epmus.mobile.ForgotPasswordActivity
+import com.epmus.mobile.MainMenuActivity
 import com.epmus.mobile.R
+import com.epmus.mobile.program_fragment.ProgramActivity
+import com.epmus.mobile.ui.login.LoginActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.io.Serializable
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
+
 
 /**
  * Basic fragments for the Camera.
@@ -240,13 +244,13 @@ class Camera2BasicFragment : Fragment() {
     private fun showValues(exercises: Exercice)
     {
         var labelVitesse: String = ""
-        if (exercises.lastTimer != null)
+        if (exercises.mouvementSpeedTime != null)
         {
-            if (exercises.lastTimer!! < exercises.minExecutionTime!!)
+            if (exercises.mouvementSpeedTime!! < exercises.minExecutionTime!!)
             {
                 labelVitesse = "-"
             }
-            else if (exercises.lastTimer!! > exercises.maxExecutionTime!!)
+            else if (exercises.mouvementSpeedTime!! > exercises.maxExecutionTime!!)
             {
                 labelVitesse = "+"
             }
@@ -258,7 +262,7 @@ class Camera2BasicFragment : Fragment() {
 
         var text = "ϴ: " + exercises.movementList[0].angleAvg +
                 "; État: " + exercises.movementList[0].movementState +
-                "; Vit.: " + exercises.lastTimer + " s (" + labelVitesse + ")"
+                "; Vit.: " + exercises.mouvementSpeedTime + " s (" + labelVitesse + ")"
         var debug = "Répét.: " + exercises.numberOfRepetition +
                 "; Tot.: " + exercises.numberOfRepetitionToDo +
                 "; Fini? " + exercises.numberOfRepetitionReached
@@ -450,10 +454,39 @@ class Camera2BasicFragment : Fragment() {
                     layoutFrame!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
                     textureView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
                     drawView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
-                } else {
-                    layoutFrame!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
-                    textureView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
-                    drawView!!.setAspectRatio(previewSize!!.height, previewSize!!.width)
+
+                    //Adjust textfield background_initialize to fit the camera overlay
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        var tmpHeight : Int = displaySize.x * previewSize!!.height / previewSize!!.width // to keep the ratio
+                        var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                        tmpLayout.gravity = Gravity.CENTER
+                        textViewBackground!!.layoutParams = tmpLayout
+                        drawView!!.invalidate()
+                    }
+
+                }
+                // This one will run most of the times
+                else {
+                    var newWidth = previewSize!!.height
+                    var newHeight = previewSize!!.width
+
+                    layoutFrame!!.setAspectRatio(newWidth, newHeight)
+                    textureView!!.setAspectRatio(newWidth, newHeight)
+                    drawView!!.setAspectRatio(newWidth, newHeight)
+
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        var tmpHeight : Int = displaySize.x * newHeight / newWidth 
+                        var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                                    FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                        tmpLayout.gravity = Gravity.CENTER
+                        textViewBackground!!.layoutParams = tmpLayout
+                        drawView!!.invalidate()
+                    }
                 }
 
                 //this.cameraId = cameraId
@@ -675,88 +708,102 @@ class Camera2BasicFragment : Fragment() {
         classifier!!.classifyFrame(bitmap)
         bitmap.recycle()
 
-        if (drawView!!.exercice!!.numberOfRepetitionReached == false) {
+        drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
-
-            drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
-
-            //initialize bodyparts
-            if (drawView!!.exercice!!.initList.count() == 0)
-            {
-                repeat(enumValues<BodyPart>().count()) {
-                    var pF = PointF(-1.0f, -1.0f)
-                    var aList = arrayListOf<PointF>(pF)
-                    drawView!!.exercice!!.initList.add(aList)
-                    drawView!!.exercice!!.notMovingInitList.add(false)
-                }
-            }
-
-
-            //if initialize needed
-            if (drawView!!.exercice?.isInit == false)
-            {
-                drawView!!.exercice?.initialisationVerification(drawView!!)
-                //debug
-                if (drawView!!.exercice!!.initList[0].count() > 1)
-                {
-                    /*
-                    showToast("X: " + drawView!!.exercice.initList[0][0].x.toString() +
-                            ";; Y: " + drawView!!.exercice.initList[0][0].y.toString())
-
-                    showDebugUI("Time: " + drawView!!.exercice.notMovingTimer.toString() +
-                            ";; Done: " + drawView!!.exercice.isInit.toString())
-                    */
-                    showToast("")
-                    showDebugUI("")
-
-                    // show timer to start
-                    if (drawView!!.exercice!!.notMovingTimer < 5 && drawView!!.exercice!!.notMovingTimer > 0)
-                    {
-                        val activity = activity
-                        activity?.runOnUiThread {
-                            var textViewBackground: TextView? = null
-                            textViewBackground = view?.findViewById(R.id.background_initialize)
-                            textViewBackground!!.alpha = 0.7F
-
-                            var textViewCountdown: TextView? = null
-                            textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = drawView!!.exercice!!.notMovingTimer.toString()
-
-                            drawView!!.invalidate()
-                        }
-                    }
-                    else {
-                        val activity = activity
-                        activity?.runOnUiThread {
-                            var textViewBackground: TextView? = null
-                            textViewBackground = view?.findViewById(R.id.background_initialize)
-                            textViewBackground!!.alpha = 0.0F
-
-                            var textViewCountdown: TextView? = null
-                            textViewCountdown = view?.findViewById(R.id.countdown)
-                            textViewCountdown!!.text = ""
-
-                            drawView!!.invalidate()
-                        }
-
-                    }
-
-                }
-            }
-            else
-            {
-                drawView!!.exercice!!.exerciceVerification(drawView!!)
-
-                showValues(drawView!!.exercice!!)
-
-                statistiques.add(drawView!!.exercice!!.copy())
-
-                //showToast(drawView!!.exercice.calculateAngleV2(drawView!!.exercice.movementList[0], drawView!!).toString())
+        //initialize bodyparts
+        if (drawView!!.exercice!!.initList.count() == 0)
+        {
+            repeat(enumValues<BodyPart>().count()) {
+                var pF = PointF(-1.0f, -1.0f)
+                var aList = arrayListOf<PointF>(pF)
+                drawView!!.exercice!!.initList.add(aList)
+                drawView!!.exercice!!.notMovingInitList.add(false)
             }
         }
+
+
+        //if not initialized yet
+        if (drawView!!.exercice?.isInit == false)
+        {
+            showToast("")
+            showDebugUI("")
+
+            drawView!!.exercice?.initialisationVerification(drawView!!)
+            //debug
+            if (drawView!!.exercice!!.initList[0].count() > 1)
+            {
+                // show timer to start
+                if (drawView!!.exercice!!.notMovingTimer < drawView!!.exercice!!.targetTime.toInt()/1000 &&
+                            drawView!!.exercice!!.notMovingTimer > 0)
+                {
+                    val activity = activity
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        textViewBackground!!.alpha = 0.7F
+
+                        var textViewCountdown: TextView? = null
+                        textViewCountdown = view?.findViewById(R.id.countdown)
+                        textViewCountdown!!.text = drawView!!.exercice!!.notMovingTimer.toString()
+
+                        drawView!!.invalidate()
+                    }
+                }
+
+                // hide background if moving
+                else {
+                    val activity = activity
+                    activity?.runOnUiThread {
+                        var textViewBackground: TextView? = null
+                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        textViewBackground!!.alpha = 0.0F
+
+                        var textViewCountdown: TextView? = null
+                        textViewCountdown = view?.findViewById(R.id.countdown)
+                        textViewCountdown!!.text = ""
+
+                        drawView!!.invalidate()
+                    }
+
+                }
+
+            }
+        }
+
         else
         {
-            showToast("Done")
+            // Verify angle
+            drawView!!.exercice!!.exerciceVerification(drawView!!)
+            showValues(drawView!!.exercice!!)
+            statistiques.add(drawView!!.exercice!!.copy())
+
+            // Done -> exit exercise
+            if (drawView!!.exercice!!.numberOfRepetitionReached == true) {
+                val activity = activity
+
+                activity?.runOnUiThread {
+                    var textViewBackground: TextView? = null
+                    textViewBackground = view?.findViewById(R.id.background_initialize)
+                    textViewBackground!!.alpha = 1.0F
+
+                    var textViewCountdown: TextView? = null
+                    textViewCountdown = view?.findViewById(R.id.countdown)
+                    textViewCountdown!!.text = "Terminé"
+                    drawView!!.invalidate()
+
+                    // must do a separate thread or the background wont show
+                    GlobalScope.launch {
+                        delay(2000L)
+
+                        //EXIT !
+                        activity.let {
+                            val intent = Intent(it, LoginActivity::class.java)
+                            it.startActivity(intent)
+                            it.finish()
+                        }
+                    }
+                }
+            }
         }
     }
 
