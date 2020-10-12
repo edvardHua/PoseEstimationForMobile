@@ -1,6 +1,6 @@
 package com.epmus.mobile.data
 
-import com.epmus.mobile.data.model.LoggedInUser
+import io.realm.mongodb.User
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -10,7 +10,7 @@ import com.epmus.mobile.data.model.LoggedInUser
 class LoginRepository(val dataSource: LoginDataSource) {
 
     // in-memory cache of the loggedInUser object
-    var user: LoggedInUser? = null
+    var user: User? = null
         private set
 
     val isLoggedIn: Boolean
@@ -27,9 +27,9 @@ class LoginRepository(val dataSource: LoginDataSource) {
         dataSource.logout()
     }
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(user: User?): Result<User> {
         // handle login
-        val result = dataSource.login(username, password)
+        val result = dataSource.login(user)
 
         if (result is Result.Success) {
             setLoggedInUser(result.data)
@@ -38,7 +38,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
         return result
     }
 
-    private fun setLoggedInUser(loggedInUser: LoggedInUser) {
+    private fun setLoggedInUser(loggedInUser: User?) {
         this.user = loggedInUser
         // TODO: Save user credentials locally
         // If user credentials will be cached in local storage, it is recommended it be encrypted

@@ -8,6 +8,7 @@ import com.epmus.mobile.data.LoginRepository
 import com.epmus.mobile.data.Result
 
 import com.epmus.mobile.R
+import io.realm.mongodb.User
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -17,13 +18,13 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    fun login(username: String, password: String) {
+    fun login(user: User?) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        val result = loginRepository.login(user)
 
         if (result is Result.Success) {
             _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
+                LoginResult(success = LoggedInUserView(displayName = result.data.toString()))
         } else {
             _loginResult.value = LoginResult(error = R.string.login_failed)
         }

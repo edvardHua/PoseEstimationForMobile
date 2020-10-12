@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.epmus.mobile.ForgotPasswordActivity
 import com.epmus.mobile.MainMenuActivity
 import com.epmus.mobile.R
@@ -22,29 +21,23 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
 
-    private lateinit var username: EditText
-    private lateinit var password: EditText
-    private lateinit var login: Button
-    private lateinit var loading: ProgressBar
-    private lateinit var forgetPassword: TextView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
 
-        username = findViewById<EditText>(R.id.username)
-        password = findViewById<EditText>(R.id.password)
-        login = findViewById<Button>(R.id.login)
-        loading = findViewById<ProgressBar>(R.id.loading)
-        forgetPassword = findViewById<TextView>(R.id.forgotPassword)
+        val username = findViewById<EditText>(R.id.username)
+        val password = findViewById<EditText>(R.id.password)
+        val login = findViewById<Button>(R.id.login)
+        val loading = findViewById<ProgressBar>(R.id.loading)
+        val forgetPassword = findViewById<TextView>(R.id.forgotPassword)
 
         forgetPassword.setOnClickListener {
             val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
@@ -73,8 +66,10 @@ class LoginActivity : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
+
+
             //Complete and destroy login activity once successful
-            finish()
+            //finish()
         })
 
         username.afterTextChanged {
@@ -95,22 +90,14 @@ class LoginActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
+                        validateCredentials(username.text.toString(), password.text.toString())
                 }
                 false
             }
 
             login.setOnClickListener {
-                validateCredentials()
-                /*if(validateCredentials()) {
-                    loading.visibility = View.VISIBLE
-                    loginViewModel.login(username.text.toString(), password.text.toString())
-                    val intent = Intent(this@LoginActivity, MainMenuActivity::class.java)
-                    startActivity(intent)
-                }*/
+                loading.visibility = View.VISIBLE
+                validateCredentials(username.text.toString(), password.text.toString())
             }
         }
     }
@@ -118,7 +105,10 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
+
+        val intent = Intent(this, MainMenuActivity::class.java)
+        startActivity(intent)
+
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",
@@ -130,21 +120,15 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    private fun validateCredentials() {
-
-        val username = username.text.toString()
-        val password = password.text.toString()
-
+    private fun validateCredentials(username:String, password:String) {
         val creds = Credentials.emailPassword(username, password)
         realmApp.loginAsync(creds) {
             if (!it.isSuccess) {
+                loginViewModel.login(null)
                 Toast.makeText(baseContext, it.error.message ?: "Mot de passe et/ou nom d'utilisateur invalide", Toast.LENGTH_LONG).show()
             } else {
-                // TODO finish might not work, watch for the already done redirection
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username, password)
-                val intent = Intent(this, MainMenuActivity::class.java)
-                startActivity(intent)
+                val user = realmApp.currentUser()
+                loginViewModel.login(user)
             }
         }
     }
