@@ -92,7 +92,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'org.mongodb:stitch-android-sdk:4.7.0'
 
     /*MongoDB Realm Connection*/
     implementation "io.realm:android-adapters:4.0.0"
