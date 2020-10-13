@@ -22,6 +22,7 @@ import android.graphics.PointF
 import android.graphics.Paint.Style.STROKE
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Chronometer
 import com.epmus.mobile.R
 import java.lang.Math.*
 import java.util.ArrayList
@@ -51,7 +52,6 @@ class DrawView : View {
     private var mRatioY: Float = 0.toFloat()
     private var mImgWidth: Int = 0
     private var mImgHeight: Int = 0
-
 
     private val mColorArray = intArrayOf(
             resources.getColor(R.color.color_top, null),
@@ -163,22 +163,22 @@ class DrawView : View {
 
             when(it.movementState)
             {
-                0,2 -> {
+                MovementState.INIT, MovementState.ENDING_ANGLE_REACHED -> {
                     angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
                     outlinePaint.color = 0xfffc0303.toInt()
                 }
 
-                1 -> {
+                MovementState.STARTING_ANGLE_REACHED -> {
                     angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
                     outlinePaint.color = 0xfffc0303.toInt()
                 }
 
-                3 -> {
+                MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE -> {
                     angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
                     outlinePaint.color = 0xff1cb833.toInt()
                 }
 
-                4 -> {
+                MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE -> {
                     angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
                     outlinePaint.color = 0xff1cb833.toInt()
                 }

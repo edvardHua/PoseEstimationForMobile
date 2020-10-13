@@ -260,12 +260,34 @@ class Camera2BasicFragment : Fragment() {
             }
         }
 
-        var text = "ϴ: " + exercises.movementList[0].angleAvg +
-                "; État: " + exercises.movementList[0].movementState +
-                "; Vit.: " + exercises.mouvementSpeedTime + " s (" + labelVitesse + ")"
-        var debug = "Répét.: " + exercises.numberOfRepetition +
-                "; Tot.: " + exercises.numberOfRepetitionToDo +
-                "; Fini? " + exercises.numberOfRepetitionReached
+        var text = ""
+        var debug = ""
+        when(exercises.exerciceType)
+        {
+            ExerciceType.HOLD -> {
+                text = "holdTime: " + ((exercises.holdTime + exercises.currentHoldTime)/1000).toInt()
+                debug = "; Fini? " + exercises.exitStateReached
+            }
+
+            ExerciceType.REPETITION -> {
+                text = "ϴ: " + exercises.movementList[0].angleAvg +
+                        "; État: " + exercises.movementList[0].movementState.ordinal +
+                        "; Vit.: " + exercises.mouvementSpeedTime + " s (" + labelVitesse + ")"
+                debug = "Répét.: " + exercises.numberOfRepetition +
+                        "; Tot.: " + exercises.numberOfRepetitionToDo +
+                        "; Fini? " + exercises.exitStateReached
+            }
+
+            ExerciceType.CHRONO -> {
+                text = "ϴ: " + exercises.movementList[0].angleAvg +
+                        "; État: " + exercises.movementList[0].movementState.ordinal +
+                        "; Vit.: " + exercises.mouvementSpeedTime + " s (" + labelVitesse + ")"
+                debug = "Répét.: " + exercises.numberOfRepetition +
+                        "; Chrono.: " + exercises.chronoTime!! +
+                        "; Fini? " + exercises.exitStateReached
+            }
+        }
+
 
         val activity = activity
         activity?.runOnUiThread {
@@ -778,7 +800,7 @@ class Camera2BasicFragment : Fragment() {
             statistiques.add(drawView!!.exercice!!.copy())
 
             // Done -> exit exercise
-            if (drawView!!.exercice!!.numberOfRepetitionReached == true) {
+            if (drawView!!.exercice!!.exitStateReached == true) {
                 val activity = activity
 
                 activity?.runOnUiThread {

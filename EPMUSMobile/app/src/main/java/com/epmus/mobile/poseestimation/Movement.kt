@@ -25,5 +25,5 @@ data class Movement(val  bodyPart0_Index: Int, val  bodyPart1_Index: Int, val  b
     var angleOffset: Int? = null
     val angleOffsetLastFrames = ArrayList<Double>()
 
-    var movementState: Int = 0
+    var movementState: MovementState = MovementState.INIT
 }

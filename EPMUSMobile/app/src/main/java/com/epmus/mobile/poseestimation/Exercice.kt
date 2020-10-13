@@ -1,6 +1,7 @@
 package com.epmus.mobile.poseestimation
 
 import android.graphics.PointF
+import android.widget.Chronometer
 import java.io.Serializable
 import java.util.ArrayList
 import kotlin.math.*
@@ -14,7 +15,7 @@ class Exercice: Serializable {
 
     var numberOfRepetitionToDo: Int? = null
     var numberOfRepetition: Int = 0
-    var numberOfRepetitionReached: Boolean = false
+    var exitStateReached: Boolean = false
     var numberOfRepetitionReachedTimer: Long? = null
 
     var movementList = ArrayList<Movement>()
@@ -27,6 +28,19 @@ class Exercice: Serializable {
     var notMovingTimer: Int = 0
     var targetTime: Long = 4000
 
+    var exerciceType: ExerciceType? = null
+
+    //Variable for type CHRONO
+    var chronoTime: Int? = 0
+    var allowedTimeForExercice: Int? = null
+    var exerciceStartTime: Long? = null
+
+    //Variable for type HOLD
+    var targetHoldTime: Int? = null
+    var holdTime: Long = 0.toLong()
+    var wasHolding: Boolean = false
+    var holdingStartTime: Long? = null
+    var currentHoldTime: Long = 0
 
     fun initialisationVerification(drawView: DrawView)
     {
@@ -138,65 +152,231 @@ class Exercice: Serializable {
         }
     }
 
+    // Verify the state in which every movement is for the given exercice
     fun exerciceVerification(drawView: DrawView)
     {
+        when(this.exerciceType)
+        {
+            ExerciceType.CHRONO ->  exerciceVerificationChrono(drawView)
+            ExerciceType.REPETITION -> exerciceVerificationRepetition(drawView)
+            ExerciceType.HOLD -> exerciceVerificationHold(drawView)
+            else -> {}
+        }
+    }
+
+    //Verify the state for an exercice type in CHRONO
+    fun exerciceVerificationChrono(drawView: DrawView)
+    {
+        //Sets the start time of the exercice if not started
+        if(exerciceStartTime == null)
+        {
+            exerciceStartTime = System.currentTimeMillis()/1000
+        }
+
         movementList.forEach()
         {
 
+            //Calculate new values for this frame
             calculateMembersLength(it, drawView)
             calculateAngleV2(it, drawView)
 
-
+            //Sets new state for movement according to if the angle is matching or not
             if(isAngleMatching(it))
             {
                 when(it.movementState)
                 {
-                    0 -> {
-                        it.movementState = 1
+                    MovementState.INIT -> {
+                        it.movementState = MovementState.STARTING_ANGLE_REACHED
                         mouvementStartTimer = System.currentTimeMillis()
                     }
-                    1 -> {it.movementState = 3}
-                    2 -> {it.movementState = 4}
+                    MovementState.STARTING_ANGLE_REACHED -> {it.movementState = MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE}
+                    MovementState.ENDING_ANGLE_REACHED -> {it.movementState = MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE}
                 }
             }
             else
             {
                 when(it.movementState)
                 {
-                    3 -> {it.movementState = 1}
-                    4 -> {it.movementState = 2}
+                    MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE -> {it.movementState = MovementState.STARTING_ANGLE_REACHED }
+                    MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE -> {it.movementState = MovementState.ENDING_ANGLE_REACHED }
                 }
             }
         }
 
-        if(isRepetitionSimultaneousExerciceDone(movementList) == true)
+        //Verifies if repetition is done and changes state of movements to ENDING_ANGLE_REACHED
+        if(isRepetitionSimultaneousExerciceDone(movementList))
         {
             movementList.forEach()
             {
-                it.movementState = 2
-            }
-        }
-
-        if(isInStartingPositionSimultaneousExercice(movementList) == true)
-        {
-            movementList.forEach()
-            {
-                it.movementState = 1
+                it.movementState = MovementState.ENDING_ANGLE_REACHED
             }
             numberOfRepetition++
             mouvementSpeedTime = calculateTime()
         }
 
+        //Verifies if each movement is at startingAngle is done and changes state of movements to ENDING_ANGLE_REACHED
+        if(isInStartingPositionSimultaneousExercice(movementList))
+        {
+            movementList.forEach()
+            {
+                it.movementState = MovementState.STARTING_ANGLE_REACHED
+            }
+        }
+
+        //Calculates remaining chrono time
+        var currentTime = System.currentTimeMillis()/1000
+        chronoTime = (currentTime - exerciceStartTime!!).toInt()
+        chronoTime = allowedTimeForExercice!! - chronoTime!!
+
+        //If no time is left, then the exercice is done
+        if(chronoTime!! == 0)
+        {
+            exitStateReached = true
+        }
+    }
+
+    fun exerciceVerificationHold(drawView: DrawView)
+    {
+        //Sets the start time of the exercice if not started
+        if(exerciceStartTime == null)
+        {
+            exerciceStartTime = System.currentTimeMillis()/1000
+        }
+
+        movementList.forEach()
+        {
+
+            //Sets initial value of movement state to STARTING_ANGLE_REACHED since startingAngle is not used for this exercice type
+            if(it.movementState == MovementState.INIT)
+            {
+                it.movementState = MovementState.STARTING_ANGLE_REACHED
+            }
+
+            //Calculate new values for this frame
+            calculateMembersLength(it, drawView)
+            calculateAngleV2(it, drawView)
+
+            //Sets new state for movement according to if the angle is matching or not
+            if(isAngleMatching(it))
+            {
+                when(it.movementState)
+                {
+                    MovementState.STARTING_ANGLE_REACHED -> {
+                        it.movementState = MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE
+                        mouvementStartTimer = System.currentTimeMillis()}
+                }
+            }
+            else
+            {
+                when(it.movementState)
+                {
+                    MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE -> {
+                        it.movementState = MovementState.STARTING_ANGLE_REACHED
+                        holdTime += currentHoldTime
+                        currentHoldTime = 0
+                        wasHolding = false}
+                }
+            }
+        }
+
+        //Verify if the patient was not holding the correct position and is now holding to set the holdingStartTime
+        if(isInHoldPosition(movementList) && !wasHolding)
+        {
+            holdingStartTime = System.currentTimeMillis()
+            wasHolding = true
+        }
+
+        //Verify if the targetHoldTime is reached and set exit state to true
+        if(holdingStartTime != null && isInHoldPosition(movementList))
+        {
+            currentHoldTime = System.currentTimeMillis() - holdingStartTime!!
+
+            if (((holdTime + currentHoldTime) / 1000).toInt() >= targetHoldTime!!) {
+                exitStateReached = true
+                numberOfRepetitionReachedTimer = System.currentTimeMillis()
+                holdTime += currentHoldTime
+            }
+        }
+    }
+
+    //Verify if every movement is at state WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE
+    private fun isInHoldPosition(movementList: ArrayList<Movement>): Boolean
+    {
+        var isHolding = true
+        movementList.forEach()
+        {
+            if(it.movementState != MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE)
+            {
+                isHolding = false
+            }
+        }
+        return isHolding
+    }
+
+    fun exerciceVerificationRepetition(drawView: DrawView)
+    {
+        movementList.forEach()
+        {
+
+            //Calculate new values for this frame
+            calculateMembersLength(it, drawView)
+            calculateAngleV2(it, drawView)
+
+            //Sets new state for movement according to if the angle is matching or not
+            if(isAngleMatching(it))
+            {
+                when(it.movementState)
+                {
+                    MovementState.INIT -> {
+                        it.movementState = MovementState.STARTING_ANGLE_REACHED
+                        mouvementStartTimer = System.currentTimeMillis()
+                    }
+                    MovementState.STARTING_ANGLE_REACHED -> {it.movementState = MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE }
+                    MovementState.ENDING_ANGLE_REACHED -> {it.movementState = MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE }
+                }
+            }
+            else
+            {
+                when(it.movementState)
+                {
+                    MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE -> {it.movementState = MovementState.STARTING_ANGLE_REACHED }
+                    MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE -> {it.movementState = MovementState.ENDING_ANGLE_REACHED }
+                }
+            }
+        }
+
+        //Verifies if repetition is done and changes state of movements to ENDING_ANGLE_REACHED
+        if(isRepetitionSimultaneousExerciceDone(movementList))
+        {
+            movementList.forEach()
+            {
+                it.movementState = MovementState.ENDING_ANGLE_REACHED
+            }
+            numberOfRepetition++
+            mouvementSpeedTime = calculateTime()
+        }
+
+        //Verifies if each movement is at startingAngle is done and changes state of movements to ENDING_ANGLE_REACHED
+        if(isInStartingPositionSimultaneousExercice(movementList))
+        {
+            movementList.forEach()
+            {
+                it.movementState = MovementState.STARTING_ANGLE_REACHED
+            }
+        }
+
+        //Verify if the number of repetition is reached and sets exit value to true
         if(numberOfRepetitionToDo != null)
         {
             if(numberOfRepetitionToDo == numberOfRepetition)
             {
-                numberOfRepetitionReached = true
+                exitStateReached = true
                 numberOfRepetitionReachedTimer = System.currentTimeMillis()
             }
         }
     }
 
+    //Calculates the length of member1 and member2 for a given movement
     fun calculateMembersLength(movement: Movement, drawView: DrawView)
     {
         var pointX0: Float = drawView.mDrawPoint[movement.bodyPart0_Index].x
@@ -232,12 +412,13 @@ class Exercice: Serializable {
         }
     }
 
+    //Verify if every movement for a given exercice is in state WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE
     private fun isInStartingPositionSimultaneousExercice(movementList: ArrayList<Movement>): Boolean
     {
         var inStartingPosition = true
         movementList.forEach()
         {
-            if(it.movementState != 4)
+            if(it.movementState != MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE)
             {
                 inStartingPosition = false
             }
@@ -262,7 +443,7 @@ class Exercice: Serializable {
         //First quadrant
         if(sign(deltaX).toInt() == 1 && sign(deltaY).toInt() == 1)
         {
-            //angleDeg = 180 - angleDeg
+
         }
 
         //Second quadrant
@@ -280,7 +461,7 @@ class Exercice: Serializable {
         //Fourth quadrant
         else
         {
-            //angleDeg *= -1
+
         }
 
         if(! angleDeg.isNaN())
@@ -297,12 +478,13 @@ class Exercice: Serializable {
 
     }
 
+    //Verify if every movement for a given exercice is in state WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE
     private fun isRepetitionSimultaneousExerciceDone(movementList: ArrayList<Movement>): Boolean
     {
         var repetitionDone = true
         movementList.forEach()
         {
-            if(it.movementState != 3)
+            if(it.movementState != MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE)
             {
                 repetitionDone = false
             }
@@ -310,6 +492,7 @@ class Exercice: Serializable {
         return repetitionDone
     }
 
+    //Calculates the angle between the three points in a movement
     fun calculateAngleV2(movement: Movement, drawView: DrawView)
     {
         var pointX0: Float = drawView.mDrawPoint[movement.bodyPart0_Index].x
@@ -367,14 +550,15 @@ class Exercice: Serializable {
     }
 
 
+    //Verify if the angle is matching according to the state of the movement
     fun isAngleMatching(movement: Movement): Boolean
     {
         if(movement.angleAvg != null)
         {
             when(movement.movementState)
             {
-                0,2,4 -> {return movement.angleAvg!! > movement.startingAngle!! - movement.acceptableAngleVariation && movement.angleAvg!! < movement.startingAngle!! + movement.acceptableAngleVariation}
-                1,3 -> {return movement.angleAvg!! > movement.endingAngle!! - movement.acceptableAngleVariation && movement.angleAvg!! < movement.endingAngle!! + movement.acceptableAngleVariation}
+                MovementState.INIT, MovementState.ENDING_ANGLE_REACHED, MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE -> {return movement.angleAvg!! > movement.startingAngle!! - movement.acceptableAngleVariation && movement.angleAvg!! < movement.startingAngle!! + movement.acceptableAngleVariation}
+                MovementState.STARTING_ANGLE_REACHED, MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE -> {return movement.angleAvg!! > movement.endingAngle!! - movement.acceptableAngleVariation && movement.angleAvg!! < movement.endingAngle!! + movement.acceptableAngleVariation}
                 else -> {return false}
             }
         }
@@ -404,7 +588,7 @@ class Exercice: Serializable {
         exercices.mouvementSpeedTime = mouvementSpeedTime
         exercices.numberOfRepetitionToDo = numberOfRepetitionToDo
         exercices.numberOfRepetition = numberOfRepetition
-        exercices.numberOfRepetitionReached = numberOfRepetitionReached
+        exercices.exitStateReached = exitStateReached
         exercices.numberOfRepetitionReachedTimer = numberOfRepetitionReachedTimer
         exercices.movementList = movementList
         exercices.initList = initList
