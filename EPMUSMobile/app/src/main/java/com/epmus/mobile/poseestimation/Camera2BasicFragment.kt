@@ -36,7 +36,7 @@ import androidx.core.content.ContextCompat
 import com.epmus.mobile.ForgotPasswordActivity
 import com.epmus.mobile.MainMenuActivity
 import com.epmus.mobile.R
-import com.epmus.mobile.program_fragment.ProgramActivity
+import com.epmus.mobile.program.ProgramListActivity
 import com.epmus.mobile.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -819,7 +819,7 @@ class Camera2BasicFragment : Fragment() {
 
                         //EXIT !
                         activity.let {
-                            val intent = Intent(it, LoginActivity::class.java)
+                            val intent = Intent(it, ProgramListActivity::class.java)
                             it.startActivity(intent)
                             it.finish()
                         }
