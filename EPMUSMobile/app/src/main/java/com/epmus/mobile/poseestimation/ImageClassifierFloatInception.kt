@@ -73,17 +73,11 @@ class ImageClassifierFloatInception private constructor(
         val outputs = tflite?.process(inputFeature0)
         val outputFeature0 = outputs?.outputFeature0AsTensorBuffer?.floatArray
 
-
-        for (y in 0 until outputW) {
-            for (x in 0 until outputH) {
-                for (i in 0..13) {
-                    heatMapArray[0][y][x][i] = outputFeature0?.get(i + (14 * x) + (y * 14 * outputH))!!
-                }
-            }
-        }
+        val pointQty = 14
+        val yShift = pointQty * outputH
 
         if (mPrintPointArray == null)
-            mPrintPointArray = Array(2) { FloatArray(14) }
+            mPrintPointArray = Array(2) { FloatArray(pointQty) }
 
         if (!CameraActivity.isOpenCVInit)
             return
@@ -94,11 +88,11 @@ class ImageClassifierFloatInception private constructor(
 
         val tempArray = FloatArray(outputW * outputH)
         val outTempArray = FloatArray(outputW * outputH)
-        for (i in 0..13) {
+        for (i in 0 until pointQty) {
             var index = 0
             for (x in 0 until outputW) {
                 for (y in 0 until outputH) {
-                    tempArray[index] = heatMapArray[0][y][x][i]
+                    tempArray[index] = outputFeature0?.get(i + (x * pointQty) + (y * yShift))!!
                     index++
                 }
             }
