@@ -58,13 +58,15 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-            assets.srcDirs = ['assets']
         }
     }
     externalNativeBuild {
         ndkBuild {
             path file('../openCVLibrary420/native/jni/OpenCV.mk')
         }
+    }
+    buildFeatures {
+        mlModelBinding true
     }
 }
 
@@ -102,12 +104,14 @@ dependencies {
     implementation 'com.xwray:groupie:2.1.0'
 
     /*Poseestimation*/
-    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
+    implementation 'org.tensorflow:tensorflow-lite:2.3.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation project(path: ':openCVLibrary420')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

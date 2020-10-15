@@ -20,8 +20,11 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.os.SystemClock
 import android.util.Log
+import android.view.Display
+import com.epmus.mobile.ml.PoseModel
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
+import org.tensorflow.lite.support.model.Model
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -39,7 +42,6 @@ internal constructor(
         activity: Activity,
         val imageSizeX: Int, // Get the image size along the x axis.
         val imageSizeY: Int, // Get the image size along the y axis.
-        private val modelPath: String, // Get the name of the model file stored in Assets.
         // Get the number of bytes that is used to store a single color channel value.
         numBytesPerChannel: Int
 ) {
@@ -48,7 +50,7 @@ internal constructor(
     private val intValues = IntArray(imageSizeX * imageSizeY)
 
     /** An instance of the driver class to run model inference with Tensorflow Lite.  */
-    protected var tflite: Interpreter? = null
+    protected var tflite: PoseModel? = null
 
     /** A ByteBuffer to hold image data, to be feed into Tensorflow Lite as inputs.  */
     protected var imgData: ByteBuffer? = null
@@ -57,12 +59,8 @@ internal constructor(
 
     val activity = activity
     fun initTflite(useGPU: Boolean) {
-        val tfliteOptions = Interpreter.Options()
-        tfliteOptions.setNumThreads(1)
-        if (useGPU) {
-            tfliteOptions.addDelegate(GpuDelegate())  //Comment out this line when using an emulator
-        }
-        tflite = Interpreter(loadModelFile(activity), tfliteOptions)
+        val options = Model.Options.Builder().setDevice(Model.Device.GPU).build()
+        tflite = PoseModel.newInstance(activity, options)
     }
 
     init {
@@ -101,17 +99,6 @@ internal constructor(
     fun close() {
         tflite!!.close()
         tflite = null
-    }
-
-    /** Memory-map the model file in Assets.  */
-    @Throws(IOException::class)
-    private fun loadModelFile(activity: Activity): MappedByteBuffer {
-        val fileDescriptor = activity.assets.openFd(modelPath)
-        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        val startOffset = fileDescriptor.startOffset
-        val declaredLength = fileDescriptor.declaredLength
-        return fileChannel.map(MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
     /** Writes Image data into a `ByteBuffer`.  */

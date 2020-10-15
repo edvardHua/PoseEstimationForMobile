@@ -20,6 +20,8 @@ import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 
 /**
  * Pose Estimator
@@ -30,9 +32,8 @@ class ImageClassifierFloatInception private constructor(
         imageSizeY: Int,
         private val outputW: Int,
         private val outputH: Int,
-        modelPath: String,
         numBytesPerChannel: Int = 4 // a 32bit float value requires 4 bytes
-) : ImageClassifier(activity, imageSizeX, imageSizeY, modelPath, numBytesPerChannel) {
+) : ImageClassifier(activity, imageSizeX, imageSizeY, numBytesPerChannel) {
 
     /**
      * An array to hold inference results, to be feed into Tensorflow Lite as outputs.
@@ -67,7 +68,19 @@ class ImageClassifierFloatInception private constructor(
     }
 
     override fun runInference() {
-        tflite?.run(imgData!!, heatMapArray)
+        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, imageSizeX, imageSizeY, 3), DataType.FLOAT32)
+        inputFeature0.loadBuffer(imgData!!)
+        val outputs = tflite?.process(inputFeature0)
+        val outputFeature0 = outputs?.outputFeature0AsTensorBuffer?.floatArray
+
+
+        for (y in 0 until outputW) {
+            for (x in 0 until outputH) {
+                for (i in 0..13) {
+                    heatMapArray[0][y][x][i] = outputFeature0?.get(i + (14 * x) + (y * 14 * outputH))!!
+                }
+            }
+        }
 
         if (mPrintPointArray == null)
             mPrintPointArray = Array(2) { FloatArray(14) }
@@ -138,7 +151,6 @@ class ImageClassifierFloatInception private constructor(
          * @param imageSizeY Get the image size along the y axis.
          * @param outputW The output width of model
          * @param outputH The output height of model
-         * @param modelPath Get the name of the model file stored in Assets.
          * @param numBytesPerChannel Get the number of bytes that is used to store a single
          * color channel value.
          */
@@ -148,7 +160,6 @@ class ImageClassifierFloatInception private constructor(
                 imageSizeY: Int = 192,
                 outputW: Int = 96,
                 outputH: Int = 96,
-                modelPath: String = "model.tflite",
                 numBytesPerChannel: Int = 4
         ): ImageClassifierFloatInception =
                 ImageClassifierFloatInception(
@@ -157,7 +168,6 @@ class ImageClassifierFloatInception private constructor(
                         imageSizeY,
                         outputW,
                         outputH,
-                        modelPath,
                         numBytesPerChannel)
     }
 }
