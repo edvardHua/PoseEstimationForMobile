@@ -19,8 +19,8 @@
         <activity
             android:name=".program.ProgramListActivity"
             android:label="@string/title_program_list"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainMenuActivity"></activity>
+            android:parentActivityName=".MainMenuActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".program.ProgramDetailActivity"
             android:label="@string/title_program_detail"
@@ -51,8 +51,7 @@
             android:name=".HistoryActivity"
             android:parentActivityName=".MainMenuActivity" />
         <activity android:name=".MainMenuActivity" />
-        <activity
-            android:name=".ui.login.LoginActivity">
+        <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,8 +70,7 @@
         </activity>
         <activity
             android:name=".poseestimation.CameraActivity"
-            android:screenOrientation="nosensor">
-        </activity>
+            android:screenOrientation="nosensor"></activity>
     </application>
 
 </manifest>

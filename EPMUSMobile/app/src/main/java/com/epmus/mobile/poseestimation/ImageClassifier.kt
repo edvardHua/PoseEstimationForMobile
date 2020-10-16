@@ -20,17 +20,11 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.os.SystemClock
 import android.util.Log
-import android.view.Display
 import com.epmus.mobile.ml.PoseModel
-import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.gpu.GpuDelegate
 import org.tensorflow.lite.support.model.Model
-import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.MappedByteBuffer
-import java.nio.channels.FileChannel.MapMode
 
 /**
  * Classifies images with Tensorflow Lite.
@@ -39,11 +33,11 @@ abstract class ImageClassifier
 /** Initializes an `ImageClassifier`.  */
 @Throws(IOException::class)
 internal constructor(
-        activity: Activity,
-        val imageSizeX: Int, // Get the image size along the x axis.
-        val imageSizeY: Int, // Get the image size along the y axis.
-        // Get the number of bytes that is used to store a single color channel value.
-        numBytesPerChannel: Int
+    activity: Activity,
+    val imageSizeX: Int, // Get the image size along the x axis.
+    val imageSizeY: Int, // Get the image size along the y axis.
+    // Get the number of bytes that is used to store a single color channel value.
+    numBytesPerChannel: Int
 ) {
 
     /* Preallocated buffers for storing image data in. */
@@ -65,11 +59,11 @@ internal constructor(
 
     init {
         imgData = ByteBuffer.allocateDirect(
-                DIM_BATCH_SIZE
-                        * imageSizeX
-                        * imageSizeY
-                        * DIM_PIXEL_SIZE
-                        * numBytesPerChannel
+            DIM_BATCH_SIZE
+                    * imageSizeX
+                    * imageSizeY
+                    * DIM_PIXEL_SIZE
+                    * numBytesPerChannel
         )
         imgData!!.order(ByteOrder.nativeOrder())
         Log.d(TAG, "Created a Tensorflow Lite Image Classifier.")
@@ -120,8 +114,8 @@ internal constructor(
         }
         val endTime = SystemClock.uptimeMillis()
         Log.d(
-                TAG,
-                "Timecost to put values into ByteBuffer: " + (endTime - startTime).toString()
+            TAG,
+            "Timecost to put values into ByteBuffer: " + (endTime - startTime).toString()
         )
     }
 
@@ -148,8 +142,8 @@ internal constructor(
      * @param value
      */
     protected abstract fun setProbability(
-            labelIndex: Int,
-            value: Number
+        labelIndex: Int,
+        value: Number
     )
 
     /**

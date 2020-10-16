@@ -31,14 +31,14 @@ class AutoFitFrameLayout : FrameLayout {
     constructor(context: Context) : super(context)
 
     constructor(
-            context: Context,
-            attrs: AttributeSet?
+        context: Context,
+        attrs: AttributeSet?
     ) : super(context, attrs)
 
     constructor(
-            context: Context,
-            attrs: AttributeSet?,
-            defStyleAttr: Int
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
     /**
@@ -50,8 +50,8 @@ class AutoFitFrameLayout : FrameLayout {
      * @param height Relative vertical size
      */
     fun setAspectRatio(
-            width: Int,
-            height: Int
+        width: Int,
+        height: Int
     ) {
         if (width < 0 || height < 0) {
             throw IllegalArgumentException("Size cannot be negative.")
@@ -62,8 +62,8 @@ class AutoFitFrameLayout : FrameLayout {
     }
 
     override fun onMeasure(
-            widthMeasureSpec: Int,
-            heightMeasureSpec: Int
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int
     ) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val width = MeasureSpec.getSize(widthMeasureSpec)

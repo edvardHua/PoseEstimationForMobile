@@ -4,7 +4,6 @@ import com.epmus.mobile.poseestimation.BodyPart
 import com.epmus.mobile.poseestimation.Exercice
 import com.epmus.mobile.poseestimation.ExerciceType
 import com.epmus.mobile.poseestimation.Movement
-import com.epmus.mobile.program.ExerciceData.Companion.getExerciceData
 
 class ExerciceData {
     var name: String = ""
@@ -54,8 +53,7 @@ class ExerciceData {
                 exercice.movementList.add(movement2)
                 exercice.numberOfRepetitionToDo = 5
                 exercice.exerciceType = ExerciceType.REPETITION
-            }
-            else if (exerciceName == ExerciceNameList.ExerciceBrasChrono) {
+            } else if (exerciceName == ExerciceNameList.ExerciceBrasChrono) {
                 movement.startingAngle = 180
                 movement.endingAngle = 90
                 movement.isAngleAntiClockWise = true
@@ -80,8 +78,7 @@ class ExerciceData {
                 exercice.movementList.add(movement2)
                 exercice.exerciceType = ExerciceType.CHRONO
                 exercice.allowedTimeForExercice = 15
-            }
-            else if (exerciceName == ExerciceNameList.ExerciceBrasHold) {
+            } else if (exerciceName == ExerciceNameList.ExerciceBrasHold) {
                 movement.startingAngle = 180
                 movement.endingAngle = 90
                 movement.isAngleAntiClockWise = true
@@ -129,7 +126,8 @@ enum class ExerciceNameList(val exerciceName: String) {
     ExerciceBrasHold("Exercice Bras Hold");
 
     companion object {
-        fun getEnumValue(value: String): ExerciceNameList? = values().find { it.exerciceName == value }
+        fun getEnumValue(value: String): ExerciceNameList? =
+            values().find { it.exerciceName == value }
     }
 }
 

@@ -72,17 +72,17 @@ class Camera2BasicFragment : Fragment() {
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(
-                texture: SurfaceTexture,
-                width: Int,
-                height: Int
+            texture: SurfaceTexture,
+            width: Int,
+            height: Int
         ) {
             openCamera(width, height)
         }
 
         override fun onSurfaceTextureSizeChanged(
-                texture: SurfaceTexture,
-                width: Int,
-                height: Int
+            texture: SurfaceTexture,
+            width: Int,
+            height: Int
         ) {
             configureTransform(width, height)
         }
@@ -133,8 +133,8 @@ class Camera2BasicFragment : Fragment() {
         }
 
         override fun onError(
-                currentCameraDevice: CameraDevice,
-                error: Int
+            currentCameraDevice: CameraDevice,
+            error: Int
         ) {
             cameraOpenCloseLock.release()
             currentCameraDevice.close()
@@ -180,16 +180,16 @@ class Camera2BasicFragment : Fragment() {
     private val captureCallback = object : CameraCaptureSession.CaptureCallback() {
 
         override fun onCaptureProgressed(
-                session: CameraCaptureSession,
-                request: CaptureRequest,
-                partialResult: CaptureResult
+            session: CameraCaptureSession,
+            request: CaptureRequest,
+            partialResult: CaptureResult
         ) {
         }
 
         override fun onCaptureCompleted(
-                session: CameraCaptureSession,
-                request: CaptureRequest,
-                result: TotalCaptureResult
+            session: CameraCaptureSession,
+            request: CaptureRequest,
+            result: TotalCaptureResult
         ) {
         }
     }
@@ -240,31 +240,24 @@ class Camera2BasicFragment : Fragment() {
         }
     }
 
-    private fun showValues(exercises: Exercice)
-    {
+    private fun showValues(exercises: Exercice) {
         var labelVitesse: String = ""
-        if (exercises.mouvementSpeedTime != null)
-        {
-            if (exercises.mouvementSpeedTime!! < exercises.minExecutionTime!!)
-            {
+        if (exercises.mouvementSpeedTime != null) {
+            if (exercises.mouvementSpeedTime!! < exercises.minExecutionTime!!) {
                 labelVitesse = "-"
-            }
-            else if (exercises.mouvementSpeedTime!! > exercises.maxExecutionTime!!)
-            {
+            } else if (exercises.mouvementSpeedTime!! > exercises.maxExecutionTime!!) {
                 labelVitesse = "+"
-            }
-            else
-            {
+            } else {
                 labelVitesse = "="
             }
         }
 
         var text = ""
         var debug = ""
-        when(exercises.exerciceType)
-        {
+        when (exercises.exerciceType) {
             ExerciceType.HOLD -> {
-                text = "holdTime: " + ((exercises.holdTime + exercises.currentHoldTime)/1000).toInt()
+                text =
+                    "holdTime: " + ((exercises.holdTime + exercises.currentHoldTime) / 1000).toInt()
                 debug = "; Fini? " + exercises.exitStateReached
             }
 
@@ -299,13 +292,14 @@ class Camera2BasicFragment : Fragment() {
         }
 
     }
+
     /**
      * Layout the preview and buttons.
      */
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_camera2_basic, container, false)
     }
@@ -314,8 +308,8 @@ class Camera2BasicFragment : Fragment() {
      * Connect the buttons to their event handler.
      */
     override fun onViewCreated(
-            view: View,
-            savedInstanceState: Bundle?
+        view: View,
+        savedInstanceState: Bundle?
     ) {
         textureView = view.findViewById(R.id.texture)
         textView = view.findViewById(R.id.text)
@@ -384,8 +378,8 @@ class Camera2BasicFragment : Fragment() {
      * @param height The height of available size for camera preview
      */
     private fun setUpCameraOutputs(
-            width: Int,
-            height: Int
+        width: Int,
+        height: Int
     ) {
         val activity = activity
         val manager = activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
@@ -400,15 +394,15 @@ class Camera2BasicFragment : Fragment() {
                 }
 
                 val map =
-                        characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                                ?: continue
+                    characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                        ?: continue
 
                 // // For still image captures, we use the largest available size.
                 val largest = Collections.max(
-                        listOf(*map.getOutputSizes(ImageFormat.JPEG)), CompareSizesByArea()
+                    listOf(*map.getOutputSizes(ImageFormat.JPEG)), CompareSizesByArea()
                 )
                 imageReader = ImageReader.newInstance(
-                        largest.width, largest.height, ImageFormat.JPEG, /*maxImages*/ 2
+                    largest.width, largest.height, ImageFormat.JPEG, /*maxImages*/ 2
                 )
 
                 // Find out if we need to swap dimension to get the preview size relative to sensor
@@ -416,7 +410,8 @@ class Camera2BasicFragment : Fragment() {
                 val displayRotation = activity.windowManager.defaultDisplay.rotation
 
                 /* Orientation of the camera sensor */
-                val sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)!!
+                val sensorOrientation =
+                    characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)!!
                 var swappedDimensions = false
                 when (displayRotation) {
                     Surface.ROTATION_0, Surface.ROTATION_180 -> if (sensorOrientation == 90 || sensorOrientation == 270) {
@@ -451,12 +446,12 @@ class Camera2BasicFragment : Fragment() {
                 }
 
                 previewSize = chooseOptimalSize(
-                        map.getOutputSizes(SurfaceTexture::class.java),
-                        rotatedPreviewWidth,
-                        rotatedPreviewHeight,
-                        maxPreviewWidth,
-                        maxPreviewHeight,
-                        largest
+                    map.getOutputSizes(SurfaceTexture::class.java),
+                    rotatedPreviewWidth,
+                    rotatedPreviewHeight,
+                    maxPreviewWidth,
+                    maxPreviewHeight,
+                    largest
                 )
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
@@ -468,10 +463,13 @@ class Camera2BasicFragment : Fragment() {
 
                     //Adjust textfield background_initialize to fit the camera overlay
                     activity.runOnUiThread {
-                        var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
-                        var tmpHeight : Int = displaySize.x * previewSize!!.height / previewSize!!.width // to keep the ratio
+                        var textViewBackground: TextView? =
+                            view?.findViewById(R.id.background_initialize)
+                        var tmpHeight: Int =
+                            displaySize.x * previewSize!!.height / previewSize!!.width // to keep the ratio
                         var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight
+                        )
                         tmpLayout.gravity = Gravity.CENTER
                         textViewBackground!!.layoutParams = tmpLayout
                         drawView!!.invalidate()
@@ -488,10 +486,12 @@ class Camera2BasicFragment : Fragment() {
                     drawView!!.setAspectRatio(newWidth, newHeight)
 
                     activity.runOnUiThread {
-                        val textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
-                        val tmpHeight : Int = displaySize.x * newHeight / newWidth
+                        val textViewBackground: TextView? =
+                            view?.findViewById(R.id.background_initialize)
+                        val tmpHeight: Int = displaySize.x * newHeight / newWidth
                         val tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight
+                        )
                         tmpLayout.gravity = Gravity.CENTER
                         textViewBackground!!.layoutParams = tmpLayout
                         drawView!!.invalidate()
@@ -511,7 +511,7 @@ class Camera2BasicFragment : Fragment() {
             // Currently an NPE is thrown when the Camera2API is used but not supported on the
             // device this code runs.
             ErrorDialog.newInstance(getString(R.string.camera_error))
-                    .show(childFragmentManager, FRAGMENT_DIALOG)
+                .show(childFragmentManager, FRAGMENT_DIALOG)
         }
 
     }
@@ -521,11 +521,17 @@ class Camera2BasicFragment : Fragment() {
      */
     @SuppressLint("MissingPermission")
     private fun openCamera(
-            width: Int,
-            height: Int
+        width: Int,
+        height: Int
     ) {
         if (!checkedPermissions && !allPermissionsGranted()) {
-            this.activity?.let { ActivityCompat.requestPermissions(it, requiredPermissions, PERMISSIONS_REQUEST_CODE) }
+            this.activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    requiredPermissions,
+                    PERMISSIONS_REQUEST_CODE
+                )
+            }
             return
         } else {
             checkedPermissions = true
@@ -628,44 +634,45 @@ class Camera2BasicFragment : Fragment() {
             val surface = Surface(texture)
 
             // We set up a CaptureRequest.Builder with the output Surface.
-            previewRequestBuilder = cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+            previewRequestBuilder =
+                cameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
             previewRequestBuilder!!.addTarget(surface)
 
             // Here, we create a CameraCaptureSession for camera preview.
             cameraDevice!!.createCaptureSession(
-                    listOf(surface),
-                    object : CameraCaptureSession.StateCallback() {
+                listOf(surface),
+                object : CameraCaptureSession.StateCallback() {
 
-                        override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
-                            // The camera is already closed
-                            if (null == cameraDevice) {
-                                return
-                            }
-
-                            // When the session is ready, we start displaying the preview.
-                            captureSession = cameraCaptureSession
-                            try {
-                                // Auto focus should be continuous for camera preview.
-                                previewRequestBuilder!!.set(
-                                        CaptureRequest.CONTROL_AF_MODE,
-                                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
-                                )
-
-                                // Finally, we start displaying the camera preview.
-                                previewRequest = previewRequestBuilder!!.build()
-                                captureSession!!.setRepeatingRequest(
-                                        previewRequest!!, captureCallback, backgroundHandler
-                                )
-                            } catch (e: CameraAccessException) {
-                                Log.e(TAG, "Failed to set up config to capture Camera", e)
-                            }
-
+                    override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
+                        // The camera is already closed
+                        if (null == cameraDevice) {
+                            return
                         }
 
-                        override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
-                            showToast("Failed")
+                        // When the session is ready, we start displaying the preview.
+                        captureSession = cameraCaptureSession
+                        try {
+                            // Auto focus should be continuous for camera preview.
+                            previewRequestBuilder!!.set(
+                                CaptureRequest.CONTROL_AF_MODE,
+                                CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE
+                            )
+
+                            // Finally, we start displaying the camera preview.
+                            previewRequest = previewRequestBuilder!!.build()
+                            captureSession!!.setRepeatingRequest(
+                                previewRequest!!, captureCallback, backgroundHandler
+                            )
+                        } catch (e: CameraAccessException) {
+                            Log.e(TAG, "Failed to set up config to capture Camera", e)
                         }
-                    }, null
+
+                    }
+
+                    override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
+                        showToast("Failed")
+                    }
+                }, null
             )
         } catch (e: CameraAccessException) {
             Log.e(TAG, "Failed to preview Camera", e)
@@ -682,8 +689,8 @@ class Camera2BasicFragment : Fragment() {
      * @param viewHeight The height of `textureView`
      */
     private fun configureTransform(
-            viewWidth: Int,
-            viewHeight: Int
+        viewWidth: Int,
+        viewHeight: Int
     ) {
         val activity = activity
         if (null == textureView || null == previewSize || null == activity) {
@@ -692,13 +699,15 @@ class Camera2BasicFragment : Fragment() {
         val rotation = activity.windowManager.defaultDisplay.rotation
         val matrix = Matrix()
         val viewRect = RectF(0f, 0f, viewWidth.toFloat(), viewHeight.toFloat())
-        val bufferRect = RectF(0f, 0f, previewSize!!.height.toFloat(), previewSize!!.width.toFloat())
+        val bufferRect =
+            RectF(0f, 0f, previewSize!!.height.toFloat(), previewSize!!.width.toFloat())
         val centerX = viewRect.centerX()
         val centerY = viewRect.centerY()
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY())
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL)
-            val scale = (viewHeight.toFloat() / previewSize!!.height).coerceAtLeast(viewWidth.toFloat() / previewSize!!.width)
+            val scale =
+                (viewHeight.toFloat() / previewSize!!.height).coerceAtLeast(viewWidth.toFloat() / previewSize!!.width)
             matrix.postScale(scale, scale, centerX, centerY)
             matrix.postRotate((90 * (rotation - 2)).toFloat(), centerX, centerY)
         } else if (Surface.ROTATION_180 == rotation) {
@@ -722,8 +731,7 @@ class Camera2BasicFragment : Fragment() {
         drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
         //initialize bodyparts
-        if (drawView!!.exercice!!.initList.count() == 0)
-        {
+        if (drawView!!.exercice!!.initList.count() == 0) {
             repeat(enumValues<BodyPart>().count()) {
                 var pF = PointF(-1.0f, -1.0f)
                 var aList = arrayListOf<PointF>(pF)
@@ -734,22 +742,21 @@ class Camera2BasicFragment : Fragment() {
 
 
         //if not initialized yet
-        if (drawView!!.exercice?.isInit == false)
-        {
+        if (drawView!!.exercice?.isInit == false) {
             showToast("")
             showDebugUI("")
 
             drawView!!.exercice?.initialisationVerification(drawView!!)
             //debug
-            if (drawView!!.exercice!!.initList[0].count() > 1)
-            {
+            if (drawView!!.exercice!!.initList[0].count() > 1) {
                 // show timer to start
-                if (drawView!!.exercice!!.notMovingTimer < drawView!!.exercice!!.targetTime.toInt()/1000 &&
-                            drawView!!.exercice!!.notMovingTimer > 0)
-                {
+                if (drawView!!.exercice!!.notMovingTimer < drawView!!.exercice!!.targetTime.toInt() / 1000 &&
+                    drawView!!.exercice!!.notMovingTimer > 0
+                ) {
                     val activity = activity
                     activity?.runOnUiThread {
-                        var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
+                        var textViewBackground: TextView? =
+                            view?.findViewById(R.id.background_initialize)
                         textViewBackground!!.alpha = 0.7F
 
                         var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
@@ -763,7 +770,8 @@ class Camera2BasicFragment : Fragment() {
                 else {
                     val activity = activity
                     activity?.runOnUiThread {
-                        var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
+                        var textViewBackground: TextView? =
+                            view?.findViewById(R.id.background_initialize)
                         textViewBackground!!.alpha = 0.0F
 
                         var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
@@ -775,10 +783,7 @@ class Camera2BasicFragment : Fragment() {
                 }
 
             }
-        }
-
-        else
-        {
+        } else {
             // Verify angle
             drawView!!.exercice!!.exerciceVerification(drawView!!)
             showValues(drawView!!.exercice!!)
@@ -789,7 +794,8 @@ class Camera2BasicFragment : Fragment() {
                 val activity = activity
 
                 activity?.runOnUiThread {
-                    var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
+                    var textViewBackground: TextView? =
+                        view?.findViewById(R.id.background_initialize)
                     textViewBackground!!.alpha = 1.0F
 
                     var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
@@ -812,8 +818,7 @@ class Camera2BasicFragment : Fragment() {
         }
     }
 
-    private fun showDebugUI(text: String)
-    {
+    private fun showDebugUI(text: String) {
         val activity = activity
         activity?.runOnUiThread {
             debugView!!.text = text
@@ -827,12 +832,12 @@ class Camera2BasicFragment : Fragment() {
     private class CompareSizesByArea : Comparator<Size> {
 
         override fun compare(
-                lhs: Size,
-                rhs: Size
+            lhs: Size,
+            rhs: Size
         ): Int {
             // We cast here to ensure the multiplications won't overflow
             return java.lang.Long.signum(
-                    lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height
+                lhs.width.toLong() * lhs.height - rhs.width.toLong() * rhs.height
             )
         }
     }
@@ -912,12 +917,12 @@ class Camera2BasicFragment : Fragment() {
          * @return The optimal `Size`, or an arbitrary one if none were big enough
          */
         private fun chooseOptimalSize(
-                choices: Array<Size>,
-                textureViewWidth: Int,
-                textureViewHeight: Int,
-                maxWidth: Int,
-                maxHeight: Int,
-                aspectRatio: Size
+            choices: Array<Size>,
+            textureViewWidth: Int,
+            textureViewHeight: Int,
+            maxWidth: Int,
+            maxHeight: Int,
+            aspectRatio: Size
         ): Size {
 
             // Collect the supported resolutions that are at least as big as the preview Surface
@@ -928,8 +933,8 @@ class Camera2BasicFragment : Fragment() {
             val h = aspectRatio.height
             for (option in choices) {
                 if (option.width <= maxWidth
-                        && option.height <= maxHeight
-                        && option.height == option.width * h / w
+                    && option.height <= maxHeight
+                    && option.height == option.width * h / w
                 ) {
                     if (option.width >= textureViewWidth && option.height >= textureViewHeight) {
                         bigEnough.add(option)

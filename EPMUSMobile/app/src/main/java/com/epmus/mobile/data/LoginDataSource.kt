@@ -10,7 +10,7 @@ class LoginDataSource {
 
     fun login(user: User?): Result<User> {
         return try {
-            if(user == null){
+            if (user == null) {
                 throw IOException()
             }
             Result.Success(user)

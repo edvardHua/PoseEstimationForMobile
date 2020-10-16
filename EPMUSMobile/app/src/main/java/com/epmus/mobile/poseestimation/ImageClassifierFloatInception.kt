@@ -27,12 +27,12 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
  * Pose Estimator
  */
 class ImageClassifierFloatInception private constructor(
-        activity: Activity,
-        imageSizeX: Int,
-        imageSizeY: Int,
-        private val outputW: Int,
-        private val outputH: Int,
-        numBytesPerChannel: Int = 4 // a 32bit float value requires 4 bytes
+    activity: Activity,
+    imageSizeX: Int,
+    imageSizeY: Int,
+    private val outputW: Int,
+    private val outputH: Int,
+    numBytesPerChannel: Int = 4 // a 32bit float value requires 4 bytes
 ) : ImageClassifier(activity, imageSizeX, imageSizeY, numBytesPerChannel) {
 
     private val pointQty = 14
@@ -58,7 +58,8 @@ class ImageClassifierFloatInception private constructor(
     }
 
     override fun runInference() {
-        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, imageSizeX, imageSizeY, 3), DataType.FLOAT32)
+        val inputFeature0 =
+            TensorBuffer.createFixedSize(intArrayOf(1, imageSizeX, imageSizeY, 3), DataType.FLOAT32)
         inputFeature0.loadBuffer(imgData!!)
 
         val outputBuffer = tflite?.process(inputFeature0)?.outputFeature0AsTensorBuffer
@@ -116,9 +117,9 @@ class ImageClassifierFloatInception private constructor(
     }
 
     private operator fun get(
-            x: Int,
-            y: Int,
-            arr: FloatArray
+        x: Int,
+        y: Int,
+        arr: FloatArray
     ): Float {
         return if (x < 0 || y < 0 || x >= outputW || y >= outputH) -1f else arr[x * outputW + y]
     }
@@ -136,19 +137,20 @@ class ImageClassifierFloatInception private constructor(
          * color channel value.
          */
         fun create(
-                activity: Activity,
-                imageSizeX: Int = 192,
-                imageSizeY: Int = 192,
-                outputW: Int = 96,
-                outputH: Int = 96,
-                numBytesPerChannel: Int = 4
+            activity: Activity,
+            imageSizeX: Int = 192,
+            imageSizeY: Int = 192,
+            outputW: Int = 96,
+            outputH: Int = 96,
+            numBytesPerChannel: Int = 4
         ): ImageClassifierFloatInception =
-                ImageClassifierFloatInception(
-                        activity,
-                        imageSizeX,
-                        imageSizeY,
-                        outputW,
-                        outputH,
-                        numBytesPerChannel)
+            ImageClassifierFloatInception(
+                activity,
+                imageSizeX,
+                imageSizeY,
+                outputW,
+                outputH,
+                numBytesPerChannel
+            )
     }
 }

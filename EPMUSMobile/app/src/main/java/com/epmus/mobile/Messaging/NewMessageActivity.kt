@@ -24,11 +24,13 @@ class NewMessageActivity : AppCompatActivity() {
 
         recyclerView_newMessage.adapter = adapter
 
-        adapter.setOnItemClickListener{item, view ->
+        adapter.setOnItemClickListener { item, view ->
             val userItem = item as UserItem
 
-            val intent = Intent(view.context,
-                Chatlog::class.java )
+            val intent = Intent(
+                view.context,
+                Chatlog::class.java
+            )
 
             startActivity(intent)
 
@@ -37,7 +39,7 @@ class NewMessageActivity : AppCompatActivity() {
     }
 }
 
-class UserItem: Item<ViewHolder>() {
+class UserItem : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.Username_textView_newMessage.text = "Physiothérapeute"
     }

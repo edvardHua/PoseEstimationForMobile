@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.chat_from_row.view.textView
 
 class Chatlog : AppCompatActivity() {
 
-    companion object{
+    companion object {
         val TAG = "ChatLog"
     }
 
@@ -24,13 +24,13 @@ class Chatlog : AppCompatActivity() {
 
         setupDummyData()
 
-        send_button_chat_log.setOnClickListener{
+        send_button_chat_log.setOnClickListener {
             Log.d(TAG, "Attemp to send message...")
         }
     }
 
 
-    private fun setupDummyData(){
+    private fun setupDummyData() {
         val adapter = GroupAdapter<ViewHolder>()
 
         adapter.add(ChatToItem("Bonjour! J'ai de la difficulté à bien comprendre comment faire l'exercice pour mon biceps."))
@@ -45,20 +45,22 @@ class Chatlog : AppCompatActivity() {
     }
 }
 
-class ChatFromItem(val text: String): Item<ViewHolder>() {
+class ChatFromItem(val text: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView.text = text
     }
+
     override fun getLayout(): Int {
         return R.layout.chat_from_row
     }
 
 }
 
-class ChatToItem(val text: String): Item<ViewHolder>() {
+class ChatToItem(val text: String) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView.text = text
     }
+
     override fun getLayout(): Int {
         return R.layout.chat_to_row
     }

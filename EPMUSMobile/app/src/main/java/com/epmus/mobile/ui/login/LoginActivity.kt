@@ -67,7 +67,6 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
 
-
             //Complete and destroy login activity once successful
             //finish()
         })
@@ -120,12 +119,16 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    private fun validateCredentials(username:String, password:String) {
+    private fun validateCredentials(username: String, password: String) {
         val creds = Credentials.emailPassword(username, password)
         realmApp.loginAsync(creds) {
             if (!it.isSuccess) {
                 loginViewModel.login(null)
-                Toast.makeText(baseContext, it.error.message ?: "Mot de passe et/ou nom d'utilisateur invalide", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    baseContext,
+                    it.error.message ?: "Mot de passe et/ou nom d'utilisateur invalide",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
                 val user = realmApp.currentUser()
                 loginViewModel.login(user)

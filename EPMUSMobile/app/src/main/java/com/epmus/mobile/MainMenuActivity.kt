@@ -24,22 +24,22 @@ class MainMenuActivity : AppCompatActivity() {
         val messaging = findViewById<Button>(R.id.activity_messaging)
         val alerts = findViewById<Button>(R.id.activity_alerts)
 
-        program.setOnClickListener{
+        program.setOnClickListener {
             val intent = Intent(this, ProgramListActivity::class.java)
             startActivity(intent)
         }
 
-        statistics.setOnClickListener{
+        statistics.setOnClickListener {
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent)
         }
 
-        messaging.setOnClickListener{
+        messaging.setOnClickListener {
             val intent = Intent(this, NewMessageActivity::class.java)
             startActivity(intent)
         }
 
-        alerts.setOnClickListener{
+        alerts.setOnClickListener {
             val intent = Intent(this, AlertsActivity::class.java)
             startActivity(intent)
         }

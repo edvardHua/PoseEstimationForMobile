@@ -50,13 +50,13 @@ class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-        var bundle :Bundle ?=intent.extras
+        var bundle: Bundle? = intent.extras
         var exercice = bundle!!.getSerializable("exercice")
         if (null == savedInstanceState) {
             supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container, Camera2BasicFragment.newInstance(exercice))
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.container, Camera2BasicFragment.newInstance(exercice))
+                .commit()
         }
 
     }

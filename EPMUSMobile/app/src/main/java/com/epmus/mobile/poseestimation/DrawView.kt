@@ -22,14 +22,9 @@ import android.graphics.PointF
 import android.graphics.Paint.Style.STROKE
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Chronometer
 import com.epmus.mobile.R
 import java.lang.Math.*
 import java.util.ArrayList
-import kotlin.math.atan
-import kotlin.math.roundToInt
-import java.lang.Math.sin
-import java.util.*
 
 /**
  * Created by edvard on 18-3-23.
@@ -38,8 +33,8 @@ import java.util.*
 class DrawView : View {
 
     var exercice: Exercice? = null
-    val frameCounterMax : Int = 5
-    val frameCounterMaxInit : Int = 10
+    val frameCounterMax: Int = 5
+    val frameCounterMaxInit: Int = 10
     val nearPointFInit: Float = 50.0f
 
     private var mRatioWidth = 0
@@ -54,21 +49,21 @@ class DrawView : View {
     private var mImgHeight: Int = 0
 
     private val mColorArray = intArrayOf(
-            resources.getColor(R.color.color_top, null),
-            resources.getColor(R.color.color_neck, null),
-            resources.getColor(R.color.color_l_shoulder, null),
-            resources.getColor(R.color.color_l_elbow, null),
-            resources.getColor(R.color.color_l_wrist, null),
-            resources.getColor(R.color.color_r_shoulder, null),
-            resources.getColor(R.color.color_r_elbow, null),
-            resources.getColor(R.color.color_r_wrist, null),
-            resources.getColor(R.color.color_l_hip, null),
-            resources.getColor(R.color.color_l_knee, null),
-            resources.getColor(R.color.color_l_ankle, null),
-            resources.getColor(R.color.color_r_hip, null),
-            resources.getColor(R.color.color_r_knee, null),
-            resources.getColor(R.color.color_r_ankle, null),
-            resources.getColor(R.color.color_background, null)
+        resources.getColor(R.color.color_top, null),
+        resources.getColor(R.color.color_neck, null),
+        resources.getColor(R.color.color_l_shoulder, null),
+        resources.getColor(R.color.color_l_elbow, null),
+        resources.getColor(R.color.color_l_wrist, null),
+        resources.getColor(R.color.color_r_shoulder, null),
+        resources.getColor(R.color.color_r_elbow, null),
+        resources.getColor(R.color.color_r_wrist, null),
+        resources.getColor(R.color.color_l_hip, null),
+        resources.getColor(R.color.color_l_knee, null),
+        resources.getColor(R.color.color_l_ankle, null),
+        resources.getColor(R.color.color_r_hip, null),
+        resources.getColor(R.color.color_r_knee, null),
+        resources.getColor(R.color.color_r_ankle, null),
+        resources.getColor(R.color.color_background, null)
     )
 
     private val circleRadius: Float by lazy {
@@ -86,19 +81,19 @@ class DrawView : View {
     constructor(context: Context) : super(context)
 
     constructor(
-            context: Context,
-            attrs: AttributeSet?
+        context: Context,
+        attrs: AttributeSet?
     ) : super(context, attrs)
 
     constructor(
-            context: Context,
-            attrs: AttributeSet?,
-            defStyleAttr: Int
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
     fun setImgSize(
-            width: Int,
-            height: Int
+        width: Int,
+        height: Int
     ) {
         mImgWidth = width
         mImgHeight = height
@@ -110,8 +105,8 @@ class DrawView : View {
      * @param point 2*14
      */
     fun setDrawPoint(
-            point: Array<FloatArray>,
-            ratio: Float
+        point: Array<FloatArray>,
+        ratio: Float
     ) {
         mDrawPoint.clear()
 
@@ -133,8 +128,8 @@ class DrawView : View {
      * @param height Relative vertical size
      */
     fun setAspectRatio(
-            width: Int,
-            height: Int
+        width: Int,
+        height: Int
     ) {
         if (width < 0 || height < 0) {
             throw IllegalArgumentException("Size cannot be negative.")
@@ -152,47 +147,49 @@ class DrawView : View {
         }
     }
 
-    fun movementIndicator(canvas: Canvas)
-    {
+    fun movementIndicator(canvas: Canvas) {
         this.exercice!!.movementList.forEach()
         {
             var pX = mDrawPoint[it.bodyPart1_Index].x
             var pY = mDrawPoint[it.bodyPart1_Index].y
 
-            var angleDeg : Int? = null
+            var angleDeg: Int? = null
 
-            when(it.movementState)
-            {
+            when (it.movementState) {
                 MovementState.INIT, MovementState.ENDING_ANGLE_REACHED -> {
-                    angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
+                    angleDeg = it.startingAngle!! + (180 - it.startingAngle!!) * 2
                     outlinePaint.color = 0xfffc0303.toInt()
                 }
 
                 MovementState.STARTING_ANGLE_REACHED -> {
-                    angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
+                    angleDeg = it.endingAngle!! + (180 - it.endingAngle!!) * 2
                     outlinePaint.color = 0xfffc0303.toInt()
                 }
 
                 MovementState.WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE -> {
-                    angleDeg = it.endingAngle!! + (180 - it.endingAngle!!)*2
+                    angleDeg = it.endingAngle!! + (180 - it.endingAngle!!) * 2
                     outlinePaint.color = 0xff1cb833.toInt()
                 }
 
                 MovementState.WAITING_FOR_OTHER_MOVEMENT_STARTING_ANGLE -> {
-                    angleDeg = it.startingAngle!! + (180 - it.startingAngle!!)*2
+                    angleDeg = it.startingAngle!! + (180 - it.startingAngle!!) * 2
                     outlinePaint.color = 0xff1cb833.toInt()
                 }
             }
 
-            this.exercice!!.calculateAngleHorizontalOffset(it, this, it.bodyPart1_Index, it.bodyPart0_Index)
+            this.exercice!!.calculateAngleHorizontalOffset(
+                it,
+                this,
+                it.bodyPart1_Index,
+                it.bodyPart0_Index
+            )
 
-            if(it.angleOffset != null)
-            {
+            if (it.angleOffset != null) {
 
                 var bottom = pY.toInt()
                 var top = bottom + it.member2Length!!
 
-                var angleVariationRad = it.acceptableAngleVariation *PI/180
+                var angleVariationRad = it.acceptableAngleVariation * PI / 180
 
                 var left = (pX - (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
                 var right = (pX + (it.member2Length!! * kotlin.math.sin(angleVariationRad))).toInt()
@@ -200,7 +197,7 @@ class DrawView : View {
                 var rect = Rect(left, top, right, bottom)
 
                 canvas.save()
-                canvas.rotate((it.angleOffset!!+ angleDeg - 90).toFloat(), pX, pY)
+                canvas.rotate((it.angleOffset!! + angleDeg - 90).toFloat(), pX, pY)
                 canvas.drawRect(rect, outlinePaint)
                 canvas.restore()
             }
@@ -242,8 +239,8 @@ class DrawView : View {
     }
 
     override fun onMeasure(
-            widthMeasureSpec: Int,
-            heightMeasureSpec: Int
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int
     ) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
