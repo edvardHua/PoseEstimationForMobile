@@ -724,8 +724,10 @@ class Camera2BasicFragment : Fragment() {
             return
         }
         val bitmap = textureView!!.getBitmap(classifier!!.imageSizeX, classifier!!.imageSizeY)
-        classifier!!.classifyFrame(bitmap)
-        bitmap.recycle()
+        if (bitmap != null) {
+            classifier!!.classifyFrame(bitmap)
+        }
+        bitmap?.recycle()
 
         drawView!!.setDrawPoint(classifier!!.mPrintPointArray!!, 0.5f)
 
