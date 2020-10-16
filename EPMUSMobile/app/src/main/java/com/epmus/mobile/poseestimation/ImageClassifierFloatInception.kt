@@ -35,13 +35,9 @@ class ImageClassifierFloatInception private constructor(
         numBytesPerChannel: Int = 4 // a 32bit float value requires 4 bytes
 ) : ImageClassifier(activity, imageSizeX, imageSizeY, numBytesPerChannel) {
 
-    /**
-     * An array to hold inference results, to be feed into Tensorflow Lite as outputs.
-     * This isn't part of the super class, because we need a primitive array here.
-     */
-    private val heatMapArray: Array<Array<Array<FloatArray>>> =
-            Array(1) { Array(outputW) { Array(outputH) { FloatArray(14) } } }
-
+    private val pointQty = 14
+    private val yShift = pointQty * outputH
+    private val tempArraySize = outputW * outputH
     private var mMat: Mat? = null
 
     override fun addPixelValue(pixelValue: Int) {
@@ -52,16 +48,10 @@ class ImageClassifierFloatInception private constructor(
     }
 
     override fun getProbability(labelIndex: Int): Float {
-        //    return heatMapArray[0][labelIndex];
         return 0f
     }
 
-    override fun setProbability(
-            labelIndex: Int,
-            value: Number
-    ) {
-        //    heatMapArray[0][labelIndex] = value.floatValue();
-    }
+    override fun setProbability(labelIndex: Int, value: Number) {}
 
     override fun getNormalizedProbability(labelIndex: Int): Float {
         return getProbability(labelIndex)
@@ -70,11 +60,9 @@ class ImageClassifierFloatInception private constructor(
     override fun runInference() {
         val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, imageSizeX, imageSizeY, 3), DataType.FLOAT32)
         inputFeature0.loadBuffer(imgData!!)
-        val outputs = tflite?.process(inputFeature0)
-        val outputFeature0 = outputs?.outputFeature0AsTensorBuffer?.floatArray
 
-        val pointQty = 14
-        val yShift = pointQty * outputH
+        val outputBuffer = tflite?.process(inputFeature0)?.outputFeature0AsTensorBuffer
+        val outputValues = outputBuffer?.floatArray
 
         if (mPrintPointArray == null)
             mPrintPointArray = Array(2) { FloatArray(pointQty) }
@@ -86,13 +74,13 @@ class ImageClassifierFloatInception private constructor(
         if (mMat == null)
             mMat = Mat(outputW, outputH, CvType.CV_32F)
 
-        val tempArray = FloatArray(outputW * outputH)
-        val outTempArray = FloatArray(outputW * outputH)
+        val tempArray = FloatArray(tempArraySize)
+        val outTempArray = FloatArray(tempArraySize)
         for (i in 0 until pointQty) {
             var index = 0
             for (x in 0 until outputW) {
                 for (y in 0 until outputH) {
-                    tempArray[index] = outputFeature0?.get(i + (x * pointQty) + (y * yShift))!!
+                    tempArray[index] = outputValues?.get(i + (x * pointQty) + (y * yShift))!!
                     index++
                 }
             }
@@ -124,7 +112,6 @@ class ImageClassifierFloatInception private constructor(
 
             mPrintPointArray!![0][i] = maxX
             mPrintPointArray!![1][i] = maxY
-//      Log.i("TestOutPut", "pic[$i] ($maxX,$maxY) $max")
         }
     }
 

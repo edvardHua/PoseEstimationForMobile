@@ -58,7 +58,7 @@ internal constructor(
     var mPrintPointArray: Array<FloatArray>? = null
 
     val activity = activity
-    fun initTflite(useGPU: Boolean) {
+    fun initTflite() {
         val options = Model.Options.Builder().setDevice(Model.Device.GPU).build()
         tflite = PoseModel.newInstance(activity, options)
     }

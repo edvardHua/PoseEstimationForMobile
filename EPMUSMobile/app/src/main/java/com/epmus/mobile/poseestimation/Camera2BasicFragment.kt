@@ -325,17 +325,8 @@ class Camera2BasicFragment : Fragment() {
         layoutFrame = view.findViewById(R.id.layout_frame)
         drawView = view.findViewById(R.id.drawview)
         layoutBottom = view.findViewById(R.id.layout_bottom)
-        radiogroup = view.findViewById(R.id.radiogroup)
 
         drawView!!.exercice = arguments.getSerializable("exercice") as Exercice
-
-        radiogroup!!.setOnCheckedChangeListener { group, checkedId ->
-            if (checkedId == R.id.radio_cpu) {
-                startBackgroundThread { classifier!!.initTflite(false) }
-            } else {
-                startBackgroundThread { classifier!!.initTflite(true) }
-            }
-        }
     }
 
     /**
@@ -363,7 +354,7 @@ class Camera2BasicFragment : Fragment() {
         backgroundHandler = Handler(backgroundThread!!.looper)
         runClassifier = true
 
-        startBackgroundThread { classifier!!.initTflite(true) }
+        startBackgroundThread { classifier!!.initTflite() }
         startBackgroundThread(periodicClassify)
 
         // When the screen is turned off and turned back on, the SurfaceTexture is already

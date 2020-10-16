@@ -158,29 +158,6 @@
         android:paddingTop="@dimen/margin_large"
         android:text="@string/debug" />
 
-    <RadioGroup
-        android:id="@+id/radiogroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radio_gpu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="GPU"
-            android:textColor="@color/black" />
-
-        <RadioButton
-            android:id="@+id/radio_cpu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CPU"
-            android:textColor="@color/black" />
-    </RadioGroup>
-
     <TextView
         android:id="@+id/background_initialize"
         android:layout_width="match_parent"
