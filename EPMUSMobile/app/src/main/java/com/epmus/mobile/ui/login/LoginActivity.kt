@@ -11,7 +11,7 @@ import android.widget.*
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.epmus.mobile.ForgotPasswordActivity
 import com.epmus.mobile.MainMenuActivity
 import com.epmus.mobile.R
@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {

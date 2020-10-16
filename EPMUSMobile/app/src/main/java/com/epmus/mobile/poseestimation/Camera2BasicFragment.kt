@@ -33,11 +33,10 @@ import android.view.*
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.epmus.mobile.ForgotPasswordActivity
-import com.epmus.mobile.MainMenuActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.epmus.mobile.R
 import com.epmus.mobile.program.ProgramListActivity
-import com.epmus.mobile.ui.login.LoginActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -200,9 +199,9 @@ class Camera2BasicFragment : Fragment() {
             val activity = activity
             return try {
                 val info = activity
-                        .packageManager
-                        .getPackageInfo(activity.packageName, PackageManager.GET_PERMISSIONS)
-                val ps = info.requestedPermissions
+                    ?.packageManager
+                    ?.getPackageInfo(activity.packageName, PackageManager.GET_PERMISSIONS)
+                val ps = info?.requestedPermissions
                 if (ps != null && ps.isNotEmpty()) {
                     ps
                 } else {
@@ -294,8 +293,7 @@ class Camera2BasicFragment : Fragment() {
             textView!!.text = text
             drawView!!.invalidate()
 
-            var textView2: TextView? = null
-            textView2 = view?.findViewById(R.id.debug)
+            var textView2: TextView? = view?.findViewById(R.id.debug)
             textView2!!.text = debug
             drawView!!.invalidate()
         }
@@ -326,7 +324,7 @@ class Camera2BasicFragment : Fragment() {
         drawView = view.findViewById(R.id.drawview)
         layoutBottom = view.findViewById(R.id.layout_bottom)
 
-        drawView!!.exercice = arguments.getSerializable("exercice") as Exercice
+        drawView!!.exercice = arguments?.getSerializable("exercice") as Exercice
     }
 
     /**
@@ -337,7 +335,7 @@ class Camera2BasicFragment : Fragment() {
         try {
             // create either a new ImageClassifierQuantizedMobileNet or an ImageClassifierFloatInception
             //      classifier = new ImageClassifierQuantizedMobileNet(getActivity());
-            classifier = ImageClassifierFloatInception.create(activity)
+            classifier = activity?.let { ImageClassifierFloatInception.create(it) }
             if (drawView != null)
                 drawView!!.setImgSize(classifier!!.imageSizeX, classifier!!.imageSizeY)
         } catch (e: IOException) {
@@ -390,7 +388,7 @@ class Camera2BasicFragment : Fragment() {
             height: Int
     ) {
         val activity = activity
-        val manager = activity.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val manager = activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             for (cameraId in manager.cameraIdList) {
                 val characteristics = manager.getCameraCharacteristics(cameraId)
@@ -469,9 +467,8 @@ class Camera2BasicFragment : Fragment() {
                     drawView!!.setAspectRatio(previewSize!!.width, previewSize!!.height)
 
                     //Adjust textfield background_initialize to fit the camera overlay
-                    activity?.runOnUiThread {
-                        var textViewBackground: TextView? = null
-                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                    activity.runOnUiThread {
+                        var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
                         var tmpHeight : Int = displaySize.x * previewSize!!.height / previewSize!!.width // to keep the ratio
                         var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
@@ -490,12 +487,11 @@ class Camera2BasicFragment : Fragment() {
                     textureView!!.setAspectRatio(newWidth, newHeight)
                     drawView!!.setAspectRatio(newWidth, newHeight)
 
-                    activity?.runOnUiThread {
-                        var textViewBackground: TextView? = null
-                        textViewBackground = view?.findViewById(R.id.background_initialize)
-                        var tmpHeight : Int = displaySize.x * newHeight / newWidth 
-                        var tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
-                                    FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
+                    activity.runOnUiThread {
+                        val textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
+                        val tmpHeight : Int = displaySize.x * newHeight / newWidth
+                        val tmpLayout: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT, tmpHeight)
                         tmpLayout.gravity = Gravity.CENTER
                         textViewBackground!!.layoutParams = tmpLayout
                         drawView!!.invalidate()
@@ -529,7 +525,7 @@ class Camera2BasicFragment : Fragment() {
             height: Int
     ) {
         if (!checkedPermissions && !allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(this.activity, requiredPermissions, PERMISSIONS_REQUEST_CODE)
+            this.activity?.let { ActivityCompat.requestPermissions(it, requiredPermissions, PERMISSIONS_REQUEST_CODE) }
             return
         } else {
             checkedPermissions = true
@@ -537,7 +533,7 @@ class Camera2BasicFragment : Fragment() {
         setUpCameraOutputs(width, height)
         configureTransform(width, height)
         val activity = activity
-        val manager = activity.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val manager = activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         try {
             if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw RuntimeException("Time out waiting to lock camera opening.")
@@ -553,9 +549,11 @@ class Camera2BasicFragment : Fragment() {
 
     private fun allPermissionsGranted(): Boolean {
         for (permission in requiredPermissions) {
-            if (ContextCompat.checkSelfPermission(
-                            activity, permission
-                    ) != PackageManager.PERMISSION_GRANTED
+            if (activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it, permission
+                    )
+                } != PackageManager.PERMISSION_GRANTED
             ) {
                 return false
             }
@@ -751,12 +749,10 @@ class Camera2BasicFragment : Fragment() {
                 {
                     val activity = activity
                     activity?.runOnUiThread {
-                        var textViewBackground: TextView? = null
-                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
                         textViewBackground!!.alpha = 0.7F
 
-                        var textViewCountdown: TextView? = null
-                        textViewCountdown = view?.findViewById(R.id.countdown)
+                        var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
                         textViewCountdown!!.text = drawView!!.exercice!!.notMovingTimer.toString()
 
                         drawView!!.invalidate()
@@ -767,12 +763,10 @@ class Camera2BasicFragment : Fragment() {
                 else {
                     val activity = activity
                     activity?.runOnUiThread {
-                        var textViewBackground: TextView? = null
-                        textViewBackground = view?.findViewById(R.id.background_initialize)
+                        var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
                         textViewBackground!!.alpha = 0.0F
 
-                        var textViewCountdown: TextView? = null
-                        textViewCountdown = view?.findViewById(R.id.countdown)
+                        var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
                         textViewCountdown!!.text = ""
 
                         drawView!!.invalidate()
@@ -795,12 +789,10 @@ class Camera2BasicFragment : Fragment() {
                 val activity = activity
 
                 activity?.runOnUiThread {
-                    var textViewBackground: TextView? = null
-                    textViewBackground = view?.findViewById(R.id.background_initialize)
+                    var textViewBackground: TextView? = view?.findViewById(R.id.background_initialize)
                     textViewBackground!!.alpha = 1.0F
 
-                    var textViewCountdown: TextView? = null
-                    textViewCountdown = view?.findViewById(R.id.countdown)
+                    var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
                     textViewCountdown!!.text = "Terminé"
                     drawView!!.invalidate()
 
@@ -850,14 +842,14 @@ class Camera2BasicFragment : Fragment() {
      */
     class ErrorDialog : DialogFragment() {
 
-        override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = activity
             return AlertDialog.Builder(activity)
-                    .setMessage(arguments.getString(ARG_MESSAGE))
-                    .setPositiveButton(
-                            android.R.string.ok
-                    ) { dialogInterface, i -> activity.finish() }
-                    .create()
+                .setMessage(arguments?.getString(ARG_MESSAGE))
+                .setPositiveButton(
+                    android.R.string.ok
+                ) { _, _ -> activity?.finish() }
+                .create()
         }
 
         companion object {

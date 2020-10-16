@@ -15,8 +15,8 @@
 
 package com.epmus.mobile.poseestimation
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.epmus.mobile.R
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
@@ -26,7 +26,7 @@ import org.opencv.android.OpenCVLoader
 /**
  * Main `Activity` class for the Camera app.
  */
-class CameraActivity : Activity() {
+class CameraActivity : AppCompatActivity() {
 
     private val mLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -53,11 +53,12 @@ class CameraActivity : Activity() {
         var bundle :Bundle ?=intent.extras
         var exercice = bundle!!.getSerializable("exercice")
         if (null == savedInstanceState) {
-            fragmentManager
+            supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.container, Camera2BasicFragment.newInstance(exercice))
                     .commit()
         }
+
     }
 
     override fun onResume() {
@@ -72,7 +73,6 @@ class CameraActivity : Activity() {
     companion object {
 
         init {
-            //        System.loadLibrary("opencv_java");
             System.loadLibrary("opencv_java4")
         }
 

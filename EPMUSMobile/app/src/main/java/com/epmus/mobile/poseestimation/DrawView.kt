@@ -200,7 +200,7 @@ class DrawView : View {
                 var rect = Rect(left, top, right, bottom)
 
                 canvas.save()
-                canvas.rotate((it.angleOffset!!+ angleDeg!! - 90).toFloat(), pX, pY)
+                canvas.rotate((it.angleOffset!!+ angleDeg - 90).toFloat(), pX, pY)
                 canvas.drawRect(rect, outlinePaint)
                 canvas.restore()
             }
