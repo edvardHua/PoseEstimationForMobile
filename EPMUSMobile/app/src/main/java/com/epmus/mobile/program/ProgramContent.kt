@@ -13,7 +13,7 @@ object ProgramContent {
         enumValues<ExerciceNameList>().forEach {
             var programItem = createProgramItem(id++, it.exerciceName)
             ITEMS.add(programItem)
-            ITEM_MAP.put(programItem.id, programItem)
+            ITEM_MAP[programItem.id] = programItem
         }
     }
 

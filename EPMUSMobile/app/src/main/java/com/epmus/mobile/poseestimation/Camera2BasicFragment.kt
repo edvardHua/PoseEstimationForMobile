@@ -64,7 +64,6 @@ class Camera2BasicFragment : Fragment() {
     private var drawView: DrawView? = null
     private var classifier: ImageClassifier? = null
     private var layoutBottom: ViewGroup? = null
-    private var radiogroup: RadioGroup? = null
 
     /**
      * [TextureView.SurfaceTextureListener] handles several lifecycle events on a [ ].

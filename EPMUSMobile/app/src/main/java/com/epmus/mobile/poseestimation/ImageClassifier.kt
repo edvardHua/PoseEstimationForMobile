@@ -169,15 +169,10 @@ internal constructor(
         /** Tag for the [Log].  */
         private const val TAG = "TfLiteCameraDemo"
 
-        /** Number of results to show in the UI.  */
-        private const val RESULTS_TO_SHOW = 3
-
         /** Dimensions of inputs.  */
         private const val DIM_BATCH_SIZE = 1
 
         private const val DIM_PIXEL_SIZE = 3
 
-        private const val FILTER_STAGES = 3
-        private const val FILTER_FACTOR = 0.4f
     }
 }

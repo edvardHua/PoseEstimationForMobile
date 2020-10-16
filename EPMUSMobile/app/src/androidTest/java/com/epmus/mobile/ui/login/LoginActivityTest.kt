@@ -3,14 +3,12 @@ package com.epmus.mobile.ui.login
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import com.epmus.mobile.MainMenuActivity
 import com.epmus.mobile.R
 import org.junit.Rule
@@ -32,7 +30,7 @@ class LoginActivityTest {
         onView(withId(R.id.password)).perform(typeText("admin1"))
         onView(withId(R.id.login)).perform(click())
         //Temporary sleep until proper solution is found
-        Thread.sleep(500);
+        Thread.sleep(500)
         intended(hasComponent(MainMenuActivity::class.java.name))
     }
 
