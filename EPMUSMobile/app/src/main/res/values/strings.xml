@@ -14,7 +14,7 @@
  limitations under the License.
 -->
 <resources>
-    <string name="app_name">EpmusMobile</string>
+    <string name="app_name">iPhysio</string>
 
     <string name="picture">Picture</string>
     <string name="description_info">Info</string>
