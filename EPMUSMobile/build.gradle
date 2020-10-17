@@ -10,10 +10,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
-            allowInsecureProtocol = true
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
@@ -29,10 +25,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
-            allowInsecureProtocol = true
-        }
     }
 }
 

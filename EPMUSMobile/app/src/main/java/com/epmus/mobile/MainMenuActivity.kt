@@ -9,6 +9,8 @@ import android.widget.Button
 import com.epmus.mobile.Messaging.NewMessageActivity
 import com.epmus.mobile.program.ProgramListActivity
 import com.epmus.mobile.ui.login.LoginActivity
+import com.epmus.mobile.ui.login.realmApp
+import java.io.IOException
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -71,9 +73,12 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         R.id.action_logout -> {
-            // TODO: handle logout properly
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            realmApp.currentUser()?.logOutAsync {
+                if (it.isSuccess) {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
             true
         }
 

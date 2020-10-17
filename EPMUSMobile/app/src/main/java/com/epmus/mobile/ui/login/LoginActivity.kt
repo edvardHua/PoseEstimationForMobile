@@ -24,6 +24,12 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (realmApp.currentUser() != null) {
+            val intent = Intent(this, MainMenuActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         setContentView(R.layout.activity_login)
 
         val username = findViewById<EditText>(R.id.username)
@@ -35,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         forgetPassword.setOnClickListener {
             val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -65,10 +72,6 @@ class LoginActivity : AppCompatActivity() {
                 updateUiWithUser(loginResult.success)
             }
             setResult(Activity.RESULT_OK)
-
-
-            //Complete and destroy login activity once successful
-            //finish()
         })
 
         username.afterTextChanged {
@@ -107,6 +110,7 @@ class LoginActivity : AppCompatActivity() {
 
         val intent = Intent(this, MainMenuActivity::class.java)
         startActivity(intent)
+        finish()
 
         Toast.makeText(
             applicationContext,
@@ -132,6 +136,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 val user = realmApp.currentUser()
                 loginViewModel.login(user)
+                finish()
             }
         }
     }
