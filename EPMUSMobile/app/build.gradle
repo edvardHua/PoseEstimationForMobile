@@ -62,7 +62,7 @@ android {
     }
     externalNativeBuild {
         ndkBuild {
-            path file('../openCVLibrary420/native/jni/OpenCV.mk')
+            path file('../openCVLibrary440/native/jni/OpenCV.mk')
         }
     }
     buildFeatures {
@@ -105,9 +105,9 @@ dependencies {
     /*Poseestimation*/
     implementation 'org.tensorflow:tensorflow-lite:2.3.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
-    implementation project(path: ':openCVLibrary420')
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
+    implementation project(path: ':openCVLibrary440')
 
     /*Tests*/
     testImplementation 'junit:junit:4.13.1'

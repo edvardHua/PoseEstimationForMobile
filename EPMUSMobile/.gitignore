@@ -2,3 +2,5 @@
 /.idea
 /local.properties
 /build/
+openCVLibrary440/.cxx/
+openCVLibrary440/build/
