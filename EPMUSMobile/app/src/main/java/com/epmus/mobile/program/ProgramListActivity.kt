@@ -37,7 +37,6 @@ class ProgramListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_program_list)
 
         val toolbar = findViewById<Toolbar>(R.id.my_toolbar_program)
-        toolbar.title = "Exercices"
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -63,18 +62,6 @@ class ProgramListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_account -> {
-            val intent = Intent(this, AccountActivity::class.java)
-            startActivity(intent)
-            true
-        }
-
-        R.id.action_history -> {
-            val intent = Intent(this, HistoryActivity::class.java)
-            startActivity(intent)
-            true
-        }
-
         R.id.action_settings -> {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)

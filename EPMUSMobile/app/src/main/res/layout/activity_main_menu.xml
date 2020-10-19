@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLightGray"
     android:orientation="vertical"
     tools:context=".MainMenuActivity">
 
@@ -12,55 +13,75 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+        android:theme="@style/AppTheme.AppBarOverlay" />
 
     <Button
         android:id="@+id/activity_program"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="2"
+        android:autoSizeMaxTextSize="60sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
         android:gravity="center"
+        android:padding="55dp"
         android:text="@string/title_activity_program"
-        android:textAppearance="@android:style/TextAppearance.Material.Headline"
-        android:padding="40dp"
-        android:autoSizeTextType="uniform" />
+        android:textColor="@color/colorDarkGray" />
 
     <Button
         android:id="@+id/activity_statistics"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="2"
+        android:autoSizeMaxTextSize="60sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
         android:gravity="center"
+        android:padding="75dp"
         android:text="@string/title_activity_statistics"
-        android:textAppearance="@android:style/TextAppearance.Material.Headline"
-        android:padding="40dp"
-        android:autoSizeTextType="uniform" />
+        android:textColor="@color/colorDarkGray" />
 
     <Button
         android:id="@+id/activity_messaging"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"
+        android:autoSizeMaxTextSize="60sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
+        android:padding="30dp"
         android:text="@string/title_activity_messaging"
-        android:textAppearance="@android:style/TextAppearance.Material.Headline"
-        android:padding="20dp"
-        android:autoSizeTextType="uniform" />
+        android:textColor="@color/colorDarkGray" />
 
     <Button
         android:id="@+id/activity_alerts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_weight="1"
+        android:autoSizeMaxTextSize="60sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
+        android:padding="30dp"
         android:text="@string/title_activity_alerts"
-        android:textAppearance="@android:style/TextAppearance.Material.Headline"
-        android:padding="20dp"
-        android:autoSizeTextType="uniform"/>
+        android:textColor="@color/colorDarkGray" />
 </LinearLayout>

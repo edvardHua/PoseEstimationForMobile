@@ -40,7 +40,11 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
 
-    <color name="colorPrimary">@android:color/holo_blue_light</color>
-    <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
+
+    <color name="colorPrimary">#ff33b5e5</color>
+    <color name="colorPrimaryDark">#ff0099cc</color>
     <color name="colorAccent">@android:color/holo_blue_light</color>
+    <color name="colorPlay">#31C337</color>
+    <color name="colorLightGray">#F3F3F3</color>
+    <color name="colorDarkGray">#716B6B</color>
 </resources>

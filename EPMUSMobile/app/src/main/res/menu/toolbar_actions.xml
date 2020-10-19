@@ -1,20 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_account"
-        android:title="@string/action_account"
-        android:icon="@drawable/ic_account_circle_24px"
-        app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/action_history"
-        android:title="@string/action_history"
-        android:icon="@drawable/ic_history_24px"
-        app:showAsAction="ifRoom"/>
-
     <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_24px"
+        android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_logout"
         android:title="@string/action_logout"
