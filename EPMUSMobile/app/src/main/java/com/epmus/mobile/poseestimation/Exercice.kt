@@ -20,13 +20,15 @@ class Exercice : Serializable {
 
     var movementList = ArrayList<Movement>()
 
+    var initStartTimer: Long? = null
     var initList = ArrayList<ArrayList<PointF>>()
     var notMovingInitList = ArrayList<Boolean>()
     var isInit: Boolean = false
-    var isInitTimer: Long? = null
+    var initDoneTimer: Long? = null
     var notMovingStartTime: Long? = null
     var notMovingTimer: Int = 0
     var targetTime: Long = 4000
+    var stdMax: Int = 100
 
     var exerciceType: ExerciceType? = null
 
@@ -50,6 +52,22 @@ class Exercice : Serializable {
         //For Each body part
         initList.forEachIndexed()
         { index, item ->
+
+
+
+            // Modify list
+            var pointX: Float = drawView.mDrawPoint[index].x
+            var pointY: Float = drawView.mDrawPoint[index].y
+            var pF = PointF(pointX, pointY)
+            if (!pointX.isNaN() && !pointY.isNaN()) {
+                if (item.count() == drawView.frameCounterMaxInit) {
+                    item.removeAt(0)
+                }
+                // add only if not 0 (out of frame)
+                if (pointX.toInt() != 0 && pointY.toInt() != 0) {
+                    item.add(pF)
+                }
+            }
 
             //Calculate average (mean) and standart deviation (ecart type)
             var meanX: Float = -1.0f
@@ -84,45 +102,15 @@ class Exercice : Serializable {
                 //standart deviation
                 stdDevX = sqrt(varianceX)
                 stdDevY = sqrt(varianceX)
+
+                //if std is below max, target is not moving
+                notMovingInitList[index] = stdDevX <= stdMax && stdDevY <= stdMax
             }
+        }
 
-
-            // Modify list
-            var pointX: Float = drawView.mDrawPoint[index].x
-            var pointY: Float = drawView.mDrawPoint[index].y
-            var pF = PointF(pointX, pointY)
-            if (!pointX.isNaN() && !pointY.isNaN()) {
-                if (item.count() == drawView.frameCounterMaxInit) {
-                    item.removeAt(0)
-                }
-                // add only if not 0 (out of frame)
-                if (pointX.toInt() != 0 && pointY.toInt() != 0) {
-                    item.add(pF)
-                }
-            }
-
-
-            //
-            if (item.count() == drawView.frameCounterMaxInit) {
-                //sum
-                var totalX: Float = 0.0000f
-                var totalY: Float = 0.0000f
-                item.forEach()
-                {
-                    totalX += it.x
-                    totalY += it.y
-                }
-
-                //mean
-                var avgX = totalX / item.count()
-                var avgY = totalY / item.count()
-
-                //If not moving
-                notMovingInitList[index] =
-                    avgX <= meanX + drawView.nearPointFInit && avgX >= meanX - drawView.nearPointFInit &&
-                            avgY <= meanY + drawView.nearPointFInit && avgY >= meanY - drawView.nearPointFInit
-            }
-
+        //save the start of the initialization
+        if (initStartTimer == null) {
+            initStartTimer = System.currentTimeMillis()
         }
 
         //look if every body part are not moving
@@ -144,7 +132,7 @@ class Exercice : Serializable {
                     targetTime.toInt() / 1000 - ((currentTime - notMovingStartTime!!) / 1000).toInt()
                 if (currentTime - notMovingStartTime!! >= targetTime) {
                     isInit = true
-                    isInitTimer = System.currentTimeMillis()
+                    initDoneTimer = System.currentTimeMillis()
                 }
             }
         } else {
@@ -563,9 +551,10 @@ class Exercice : Serializable {
         exercices.initList = initList
         exercices.notMovingInitList = notMovingInitList
         exercices.isInit = isInit
-        exercices.isInitTimer = isInitTimer
+        exercices.initDoneTimer = initDoneTimer
         exercices.notMovingStartTime = notMovingStartTime
         exercices.notMovingTimer = notMovingTimer
+        exercices.initStartTimer = initStartTimer
         exercices.targetTime = targetTime
         return exercices
     }
