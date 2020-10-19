@@ -41,7 +41,7 @@ class ProgramListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.fab_messaging).setOnClickListener { view ->
             val intent = Intent(view.context, NewMessageActivity::class.java)
             startActivity(intent)
         }

@@ -27,7 +27,7 @@ class ProgramDetailActivity : AppCompatActivity() {
         val exerciceData =
             ExerciceData.getExerciceData(ExerciceNameList.getEnumValue(program!!.content))
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.fab_play).setOnClickListener { view ->
             val intent = Intent(view.context, CameraActivity::class.java)
             intent.putExtra("exercice", exerciceData.exercice)
             startActivity(intent)

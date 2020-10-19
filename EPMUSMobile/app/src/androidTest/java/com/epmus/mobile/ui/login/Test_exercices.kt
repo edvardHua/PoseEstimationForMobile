@@ -43,14 +43,14 @@ class Test_exercices {
         onView(withId(R.id.activity_program)).check(matches(isDisplayed()))
         onView(withId(R.id.activity_program)).perform(click())
         onView(withId(R.id.program_list)).check(matches(isDisplayed()))
-        onView(withId(R.id.fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.fab_messaging)).check(matches(isDisplayed()))
         // Accès à la messagerie
-        onView(withId(R.id.fab)).perform(click())
+        onView(withId(R.id.fab_messaging)).perform(click())
         onView(withId(R.id.recyclerView_newMessage)).check(matches(isDisplayed()))
         pressBack()
         // Accès à un exercice
         onView(withId(R.id.program_list)).perform(actionOnItemAtPosition<ViewHolder>(0, click()))
         onView(withId(R.id.program_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.fab_play)).check(matches(isDisplayed()))
     }
 }
