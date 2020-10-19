@@ -83,4 +83,5 @@
     <string name="send">Envoyer</string>
     <string name="title_program_list">Exercices</string>
     <string name="title_program_detail">Information sur l\'exercice</string>
+    <string name="play_button">Play Button</string>
 </resources>

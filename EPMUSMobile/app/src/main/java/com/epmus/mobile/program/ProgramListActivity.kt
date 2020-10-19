@@ -3,6 +3,7 @@ package com.epmus.mobile.program
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageButton
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import android.widget.TextView
 import com.epmus.mobile.Messaging.NewMessageActivity
 import com.epmus.mobile.R
 import com.epmus.mobile.SettingsActivity
+import com.epmus.mobile.poseestimation.CameraActivity
 import com.epmus.mobile.ui.login.LoginActivity
 
 /**
@@ -89,10 +91,22 @@ class ProgramListActivity : AppCompatActivity() {
     ) :
         RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
-        private val onClickListener: View.OnClickListener
+        private val onClickListenerDetails: View.OnClickListener
+        private val onClickListenerPlay: View.OnClickListener
+
 
         init {
-            onClickListener = View.OnClickListener { v ->
+            onClickListenerPlay = View.OnClickListener { v ->
+                val item = v.tag as ProgramContent.ProgramItem
+                val intent = Intent(v.context, CameraActivity::class.java)
+                val program = ProgramContent.ITEM_MAP[item.id]
+                val exerciceData =
+                    ExerciceData.getExerciceData(ExerciceNameList.getEnumValue(program!!.content))
+                intent.putExtra("exercice", exerciceData.exercice)
+                v.context.startActivity(intent)
+            }
+
+            onClickListenerDetails = View.OnClickListener { v ->
                 val item = v.tag as ProgramContent.ProgramItem
                 if (twoPane) {
                     val fragment = ProgramDetailFragment().apply {
@@ -124,9 +138,14 @@ class ProgramListActivity : AppCompatActivity() {
             holder.idView.text = item.id
             holder.contentView.text = item.content
 
-            with(holder.itemView) {
+            with(holder.contentView) {
                 tag = item
-                setOnClickListener(onClickListener)
+                setOnClickListener(onClickListenerDetails)
+            }
+
+            with(holder.imageButton) {
+                tag = item
+                setOnClickListener(onClickListenerPlay)
             }
         }
 
@@ -135,6 +154,7 @@ class ProgramListActivity : AppCompatActivity() {
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val idView: TextView = view.findViewById(R.id.id_text)
             val contentView: TextView = view.findViewById(R.id.content)
+            val imageButton: ImageButton = view.findViewById(R.id.playButton)
         }
     }
 }
