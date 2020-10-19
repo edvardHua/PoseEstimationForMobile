@@ -7,21 +7,30 @@
     <TextView
         android:id="@+id/id_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_height="60sp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:autoSizeMaxTextSize="40sp"
+        android:autoSizeMinTextSize="6sp"
+        android:autoSizeTextType="uniform"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_height="60sp"
+        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_weight="8"
+        android:autoSizeMaxTextSize="40sp"
+        android:autoSizeMinTextSize="6sp"
+        android:autoSizeTextType="uniform"
         android:textAppearance="?attr/textAppearanceListItem" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
     <ImageButton
         android:id="@+id/playButton"
