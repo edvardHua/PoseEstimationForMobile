@@ -24,11 +24,13 @@
         android:layout_marginBottom="10dp"
         android:layout_weight="2"
         android:autoSizeMaxTextSize="60sp"
-        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMinTextSize="10sp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
         android:gravity="center"
-        android:padding="55dp"
+        android:maxLines="1"
+        android:paddingStart="@dimen/margin_huge"
+        android:paddingEnd="@dimen/margin_huge"
         android:text="@string/title_activity_program"
         android:textColor="@color/colorDarkGray" />
 
@@ -42,11 +44,13 @@
         android:layout_marginBottom="10dp"
         android:layout_weight="2"
         android:autoSizeMaxTextSize="60sp"
-        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMinTextSize="10sp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
         android:gravity="center"
-        android:padding="75dp"
+        android:maxLines="1"
+        android:paddingStart="@dimen/margin_huge"
+        android:paddingEnd="@dimen/margin_huge"
         android:text="@string/title_activity_statistics"
         android:textColor="@color/colorDarkGray" />
 
@@ -60,10 +64,13 @@
         android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:autoSizeMaxTextSize="60sp"
-        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="10sp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
-        android:padding="30dp"
+        android:maxLines="1"
+        android:paddingStart="@dimen/margin_huge"
+        android:paddingEnd="@dimen/margin_huge"
         android:text="@string/title_activity_messaging"
         android:textColor="@color/colorDarkGray" />
 
@@ -77,10 +84,13 @@
         android:layout_marginBottom="20dp"
         android:layout_weight="1"
         android:autoSizeMaxTextSize="60sp"
-        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="10sp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/rounded_edit_text"
-        android:padding="30dp"
+        android:maxLines="1"
+        android:paddingStart="100dp"
+        android:paddingEnd="100dp"
         android:text="@string/title_activity_alerts"
         android:textColor="@color/colorDarkGray" />
 </LinearLayout>
