@@ -8,11 +8,10 @@
     tools:context=".MainMenuActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/toolbar_MainMenu"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
         android:theme="@style/AppTheme.AppBarOverlay" />
 
     <Button

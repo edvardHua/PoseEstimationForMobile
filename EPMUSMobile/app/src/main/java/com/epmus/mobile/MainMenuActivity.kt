@@ -10,7 +10,6 @@ import com.epmus.mobile.Messaging.NewMessageActivity
 import com.epmus.mobile.program.ProgramListActivity
 import com.epmus.mobile.ui.login.LoginActivity
 import com.epmus.mobile.ui.login.realmApp
-import java.io.IOException
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -19,7 +18,7 @@ class MainMenuActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_menu)
 
         // toolbar support
-        setSupportActionBar(findViewById(R.id.my_toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_MainMenu))
 
         val program = findViewById<Button>(R.id.activity_program)
         val statistics = findViewById<Button>(R.id.activity_statistics)

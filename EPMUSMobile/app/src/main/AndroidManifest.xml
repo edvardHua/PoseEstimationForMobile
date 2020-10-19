@@ -20,7 +20,7 @@
             android:name=".program.ProgramListActivity"
             android:label="@string/title_program_list"
             android:parentActivityName=".MainMenuActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".program.ProgramDetailActivity"
             android:label="@string/title_program_detail"
@@ -65,7 +65,7 @@
         </activity>
         <activity
             android:name=".poseestimation.CameraActivity"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
     </application>
 
 </manifest>

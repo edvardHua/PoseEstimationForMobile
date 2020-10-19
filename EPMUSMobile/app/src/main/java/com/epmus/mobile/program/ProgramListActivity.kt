@@ -34,7 +34,7 @@ class ProgramListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_program_list)
 
-        val toolbar = findViewById<Toolbar>(R.id.my_toolbar_program)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_Program)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
