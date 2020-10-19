@@ -15,6 +15,7 @@ import com.epmus.mobile.R
 import com.epmus.mobile.SettingsActivity
 import com.epmus.mobile.poseestimation.CameraActivity
 import com.epmus.mobile.ui.login.LoginActivity
+import com.epmus.mobile.ui.login.realmApp
 
 /**
  * An activity representing a list of Pings. This activity
@@ -69,9 +70,12 @@ class ProgramListActivity : AppCompatActivity() {
         }
 
         R.id.action_logout -> {
-            // TODO: handle logout properly
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            realmApp.currentUser()?.logOutAsync {
+                if (it.isSuccess) {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
             true
         }
 
