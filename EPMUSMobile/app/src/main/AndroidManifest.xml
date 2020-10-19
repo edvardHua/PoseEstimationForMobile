@@ -32,9 +32,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainMenuActivity" />
-        <activity android:name=".AccountActivity" />
         <activity
             android:name=".ForgotPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
@@ -46,9 +44,6 @@
             android:parentActivityName=".MainMenuActivity" />
         <activity
             android:name=".StatisticsActivity"
-            android:parentActivityName=".MainMenuActivity" />
-        <activity
-            android:name=".HistoryActivity"
             android:parentActivityName=".MainMenuActivity" />
         <activity android:name=".MainMenuActivity" />
         <activity android:name=".ui.login.LoginActivity">

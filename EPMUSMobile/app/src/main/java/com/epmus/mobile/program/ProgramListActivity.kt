@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.widget.TextView
-import com.epmus.mobile.AccountActivity
-import com.epmus.mobile.HistoryActivity
 import com.epmus.mobile.Messaging.NewMessageActivity
 import com.epmus.mobile.R
 import com.epmus.mobile.SettingsActivity
