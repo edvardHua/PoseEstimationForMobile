@@ -24,9 +24,11 @@ import android.content.res.Configuration
 import android.graphics.*
 import android.hardware.camera2.*
 import android.media.ImageReader
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.text.Html
 import android.util.Log
 import android.util.Size
 import android.view.*
@@ -59,11 +61,16 @@ class Camera2BasicFragment : Fragment() {
     private var checkedPermissions = false
     private var textView: TextView? = null
     private var debugView: TextView? = null
+    private var infoLeft: TextView? = null
+    private var infoRight: TextView? = null
     private var textureView: AutoFitTextureView? = null
     private var layoutFrame: AutoFitFrameLayout? = null
     private var drawView: DrawView? = null
     private var classifier: ImageClassifier? = null
     private var layoutBottom: ViewGroup? = null
+
+    private var debugMode: Boolean = true
+    private var temp: Boolean = true
 
     /**
      * [TextureView.SurfaceTextureListener] handles several lifecycle events on a [ ].
@@ -239,8 +246,15 @@ class Camera2BasicFragment : Fragment() {
         }
     }
 
-    private fun showValues(exercises: Exercice) {
-        var labelVitesse: String = ""
+    private fun showDebugValues(exercises: Exercice) {
+        if(temp)
+        {
+            var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.tabarnak)
+            mediaPlayer?.start() // no need to call prepare(); create() does that for you
+            temp = false
+        }
+
+        var labelVitesse= ""
         if (exercises.mouvementSpeedTime != null) {
             if (exercises.mouvementSpeedTime!! < exercises.minExecutionTime!!) {
                 labelVitesse = "-"
@@ -292,6 +306,40 @@ class Camera2BasicFragment : Fragment() {
 
     }
 
+    private fun showExerciseInformation(exercises: Exercice) {
+        var infoLeft = ""
+        var infoRight = ""
+        when (exercises.exerciceType) {
+            ExerciceType.HOLD -> {
+                var holdValue = if(exercises!!.isHolding) {
+                    "<font color='#00EE00'>" + ((exercises.holdTime + exercises.currentHoldTime) / 1000).toInt() + "</font>"
+                } else {
+                    "<font color='#EE0000'>" + ((exercises.holdTime + exercises.currentHoldTime) / 1000).toInt() + "</font>"
+                }
+
+                infoRight = ""
+                infoLeft = "Temps maintenu: $holdValue"
+            }
+
+            ExerciceType.REPETITION -> {
+                infoLeft = "Nombre de répétition: " + exercises.numberOfRepetition
+                infoRight = ""
+            }
+
+            ExerciceType.CHRONO -> {
+                infoLeft = "Temps restant: " + "<font color='#EE0000'>" + exercises.chronoTime!! + "</font>"
+                infoRight = "Nombre de répétition: " + exercises.numberOfRepetition
+            }
+        }
+
+        val activity = activity
+        activity?.runOnUiThread {
+            this.infoLeft!!.setText(Html.fromHtml(infoLeft))
+            this.infoRight!!.setText(Html.fromHtml(infoRight))
+            drawView!!.invalidate()
+        }
+    }
+
     /**
      * Layout the preview and buttons.
      */
@@ -313,6 +361,8 @@ class Camera2BasicFragment : Fragment() {
         textureView = view.findViewById(R.id.texture)
         textView = view.findViewById(R.id.text)
         debugView = view.findViewById(R.id.debug)
+        infoRight = view.findViewById(R.id.infoRight)
+        infoLeft = view.findViewById(R.id.infoLeft)
         layoutFrame = view.findViewById(R.id.layout_frame)
         drawView = view.findViewById(R.id.drawview)
         layoutBottom = view.findViewById(R.id.layout_bottom)
@@ -787,7 +837,10 @@ class Camera2BasicFragment : Fragment() {
         } else {
             // Verify angle
             drawView!!.exercice!!.exerciceVerification(drawView!!)
-            showValues(drawView!!.exercice!!)
+            if(debugMode){
+                showDebugValues(drawView!!.exercice!!)
+            }
+            showExerciseInformation(drawView!!.exercice!!)
             statistiques.add(drawView!!.exercice!!.copy())
 
             // Done -> exit exercise

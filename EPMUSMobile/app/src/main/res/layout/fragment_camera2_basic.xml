@@ -37,8 +37,38 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical" />
 
-
     </com.epmus.mobile.poseestimation.AutoFitFrameLayout>
+
+    <LinearLayout
+        android:id="@+id/exerciseInfo"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:background="#1c000000"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp">
+
+        <TextView
+            android:id="@+id/infoLeft"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:textColor="@color/black"
+            android:paddingRight="@dimen/margin_large"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/infoRight"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:paddingLeft="@dimen/margin_large"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_bottom"
@@ -135,12 +165,13 @@
             android:textColor="@color/color_r_ankle" />
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello"
+        android:layout_gravity="bottom"
+        android:paddingBottom="@dimen/margin_large"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -150,7 +181,7 @@
         android:id="@+id/debug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_large"
+        android:layout_gravity="bottom"
         android:text="@string/debug"
         android:textColor="@color/black"
         android:textSize="32sp"

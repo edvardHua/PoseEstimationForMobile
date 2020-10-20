@@ -39,6 +39,7 @@ class Exercice : Serializable {
     var targetHoldTime: Int? = null
     var holdTime: Long = 0.toLong()
     var wasHolding: Boolean = false
+    var isHolding: Boolean = false
     var holdingStartTime: Long? = null
     var currentHoldTime: Long = 0
 
@@ -267,13 +268,14 @@ class Exercice : Serializable {
         }
 
         //Verify if the patient was not holding the correct position and is now holding to set the holdingStartTime
-        if (isInHoldPosition(movementList) && !wasHolding) {
+        isInHoldPosition(movementList)
+        if (isHolding && !wasHolding) {
             holdingStartTime = System.currentTimeMillis()
             wasHolding = true
         }
 
         //Verify if the targetHoldTime is reached and set exit state to true
-        if (holdingStartTime != null && isInHoldPosition(movementList)) {
+        if (holdingStartTime != null && isHolding) {
             currentHoldTime = System.currentTimeMillis() - holdingStartTime!!
 
             if (((holdTime + currentHoldTime) / 1000).toInt() >= targetHoldTime!!) {
@@ -285,7 +287,7 @@ class Exercice : Serializable {
     }
 
     //Verify if every movement is at state WAITING_FOR_OTHER_MOVEMENT_ENDING_ANGLE
-    private fun isInHoldPosition(movementList: ArrayList<Movement>): Boolean {
+    private fun isInHoldPosition(movementList: ArrayList<Movement>) {
         var isHolding = true
         movementList.forEach()
         {
@@ -293,7 +295,7 @@ class Exercice : Serializable {
                 isHolding = false
             }
         }
-        return isHolding
+        this.isHolding = isHolding
     }
 
     fun exerciceVerificationRepetition(drawView: DrawView) {
