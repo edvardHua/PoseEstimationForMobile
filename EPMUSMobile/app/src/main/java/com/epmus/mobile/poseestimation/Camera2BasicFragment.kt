@@ -70,7 +70,7 @@ class Camera2BasicFragment : Fragment() {
     private var layoutBottom: ViewGroup? = null
 
     private var debugMode: Boolean = true
-    private var temp: Boolean = true
+    private var audioIsPlaying: Boolean = false
 
     /**
      * [TextureView.SurfaceTextureListener] handles several lifecycle events on a [ ].
@@ -246,13 +246,94 @@ class Camera2BasicFragment : Fragment() {
         }
     }
 
-    private fun showDebugValues(exercises: Exercice) {
-        if(temp)
-        {
-            var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.tabarnak)
-            mediaPlayer?.start() // no need to call prepare(); create() does that for you
-            temp = false
+    private fun retroaction(exercise: Exercice)
+    {
+        when (exercise.exerciceType) {
+            ExerciceType.CHRONO -> retroactionChrono(exercise)
+            ExerciceType.REPETITION -> retroactionRepetition(exercise)
+            ExerciceType.HOLD -> retroactionHold(exercise)
+            else -> {}
         }
+    }
+
+    private fun retroactionChrono(exercise: Exercice)
+    {
+        if (exercise.mouvementSpeedTime != null) {
+            if (exercise.mouvementSpeedTime!! < exercise.minExecutionTime!!) {
+                playAudio(R.raw.ralentisser)
+                showRetroaction()
+            }
+            else if (exercise.mouvementSpeedTime!! > exercise.maxExecutionTime!!) {
+                playAudio(R.raw.accelerer)
+                showRetroaction()
+            }
+        }
+    }
+
+    private fun retroactionRepetition(exercise: Exercice)
+    {
+        if (exercise.mouvementSpeedTime != null) {
+            if (exercise.mouvementSpeedTime!! < exercise.minExecutionTime!!) {
+                playAudio(R.raw.ralentisser)
+                showRetroaction()
+            }
+            else if (exercise.mouvementSpeedTime!! > exercise.maxExecutionTime!!) {
+                playAudio(R.raw.accelerer)
+                showRetroaction()
+            }
+        }
+    }
+
+    private fun retroactionHold(exercise: Exercice)
+    {
+
+    }
+
+    private fun showRetroaction()
+    {
+        if (drawView!!.exercice!!.exitStateReached == true) {
+            val activity = activity
+
+            activity?.runOnUiThread {
+                var textViewBackground: TextView? =
+                    view?.findViewById(R.id.background_initialize)
+                textViewBackground!!.alpha = 1.0F
+
+                var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
+                textViewCountdown!!.text = "Terminé"
+                drawView!!.invalidate()
+
+                // must do a separate thread or the background wont show
+                GlobalScope.launch {
+                    delay(2000L)
+
+                    //EXIT !
+                    activity.let {
+                        val intent = Intent(it, ProgramListActivity::class.java)
+                        it.startActivity(intent)
+                        it.finish()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun playAudio(audioFile: Int)
+    {
+        if(!audioIsPlaying)
+        {
+            audioIsPlaying = true
+            // must do a separate thread
+            GlobalScope.launch {
+                var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, audioFile)
+                mediaPlayer?.start() // no need to call prepare(); create() does that for you
+                delay(mediaPlayer?.duration!!.toLong())
+                audioIsPlaying = false
+            }
+        }
+    }
+
+    private fun showDebugValues(exercises: Exercice) {
 
         var labelVitesse= ""
         if (exercises.mouvementSpeedTime != null) {
@@ -837,10 +918,15 @@ class Camera2BasicFragment : Fragment() {
         } else {
             // Verify angle
             drawView!!.exercice!!.exerciceVerification(drawView!!)
+
             if(debugMode){
                 showDebugValues(drawView!!.exercice!!)
             }
+
+            retroaction(drawView!!.exercice!!)
+
             showExerciseInformation(drawView!!.exercice!!)
+
             statistiques.add(drawView!!.exercice!!.copy())
 
             // Done -> exit exercise

@@ -155,8 +155,7 @@ class Exercice : Serializable {
             ExerciceType.CHRONO -> exerciceVerificationChrono(drawView)
             ExerciceType.REPETITION -> exerciceVerificationRepetition(drawView)
             ExerciceType.HOLD -> exerciceVerificationHold(drawView)
-            else -> {
-            }
+            else -> {}
         }
     }
 
