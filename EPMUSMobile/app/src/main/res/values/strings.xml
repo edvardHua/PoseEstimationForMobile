@@ -51,7 +51,7 @@
     <string name="welcome">"Bienvenue !!"</string>
     <string name="invalid_username">Adresse de courriel non valide</string>
     <string name="invalid_password">Le mot de passe doit avoir plus de 5 caractères</string>
-    <string name="login_failed">La connection n\'a pas réussi</string>
+    <string name="login_failed">La connexion n\'a pas réussi</string>
     <string name="checkbox">Rester connecté</string>
     <string name="forgot_password">Mot de passe oublié?</string>
     <string name="title_activity_program">"Programmes"</string>

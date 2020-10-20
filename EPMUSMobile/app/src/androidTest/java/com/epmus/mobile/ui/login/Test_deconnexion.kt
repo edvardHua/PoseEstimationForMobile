@@ -32,17 +32,30 @@ class Test_deconnexion {
 
     @Test
     fun test_deconnexion() {
-        // Connexion
-        onView(withId(R.id.username)).perform(typeText("admin1"))
-        onView(withId(R.id.password)).perform(typeText("admin1"))
-        onView(withId(R.id.login)).perform(click())
-        Thread.sleep(1000);
-        // Deconnexion
-        onView(withContentDescription("More options")).check(matches(isDisplayed()))
-        onView(withContentDescription("More options")).perform(click())
-        onView(withText("Déconnexion")).check(matches(isDisplayed()))
-        onView(withText("Déconnexion")).perform(click())
-        onView(withId(R.id.login)).check(matches(isDisplayed()))
+        try {
+            onView(withContentDescription("More options")).check(matches(isDisplayed()))
+            onView(withContentDescription("More options")).perform(click())
+            onView(withText("Déconnexion")).check(matches(isDisplayed()))
+            onView(withText("Déconnexion")).perform(click())
+            Thread.sleep(1000);
+        }
+        catch (e: Exception){
+
+        }
+        finally {
+            // Connexion
+            onView(withId(R.id.username)).perform(typeText("admin1"))
+            onView(withId(R.id.password)).perform(typeText("admin1"))
+            onView(withId(R.id.login)).perform(click())
+            Thread.sleep(1000);
+            // Deconnexion
+            onView(withContentDescription("More options")).check(matches(isDisplayed()))
+            onView(withContentDescription("More options")).perform(click())
+            onView(withText("Déconnexion")).check(matches(isDisplayed()))
+            onView(withText("Déconnexion")).perform(click())
+            Thread.sleep(1000);
+            onView(withId(R.id.login)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -50,6 +63,6 @@ class Test_deconnexion {
         onView(withId(R.id.username)).perform(typeText("BadUser"))
         onView(withId(R.id.password)).perform(typeText("BadUser"))
         onView(withId(R.id.login)).perform(click())
-        // onView(withText("La connection n'a pas réussi")).inRoot(isDialog()).check(matches(isDisplayed()))
+        // onView(withText("La connexion n'a pas réussi")).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 }
