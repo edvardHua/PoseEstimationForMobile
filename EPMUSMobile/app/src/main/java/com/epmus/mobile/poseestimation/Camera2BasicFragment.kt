@@ -72,6 +72,8 @@ class Camera2BasicFragment : Fragment() {
     private var debugMode: Boolean = true
     private var audioIsPlaying: Boolean = false
 
+    private var isClosing: Boolean = false
+
     /**
      * [TextureView.SurfaceTextureListener] handles several lifecycle events on a [ ].
      */
@@ -936,7 +938,10 @@ class Camera2BasicFragment : Fragment() {
             }
         }
         // Done -> exit exercise
-        else if (drawView!!.exercice!!.exitStateReached == true) {
+        else if (drawView!!.exercice!!.exitStateReached && !isClosing ) {
+
+            isClosing = true
+
             val activity = activity
 
             activity?.runOnUiThread {
@@ -948,12 +953,13 @@ class Camera2BasicFragment : Fragment() {
                 textViewCountdown!!.text = "Terminé"
                 drawView!!.invalidate()
 
-                //Play the audio file
-                var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.termine)
-                mediaPlayer?.start()
-
                 // must do a separate thread or the background wont show
                 GlobalScope.launch {
+
+                    //Play the audio file
+                    var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.termine)
+                    mediaPlayer?.start()
+
                     delay(2000L)
 
                     //EXIT !
@@ -965,7 +971,7 @@ class Camera2BasicFragment : Fragment() {
                 }
             }
         }
-        else {
+        else if(!isClosing) {
             // Verify angle
             drawView!!.exercice!!.exerciceVerification(drawView!!)
 
