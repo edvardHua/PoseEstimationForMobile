@@ -258,76 +258,95 @@ class Camera2BasicFragment : Fragment() {
 
     private fun retroactionChrono(exercise: Exercice)
     {
-        if (exercise.mouvementSpeedTime != null) {
-            if (exercise.mouvementSpeedTime!! < exercise.minExecutionTime!!) {
-                playAudio(R.raw.ralentisser)
-                showRetroaction()
-            }
-            else if (exercise.mouvementSpeedTime!! > exercise.maxExecutionTime!!) {
-                playAudio(R.raw.accelerer)
-                showRetroaction()
+        if(exercise.warningCanBeDisplayed) {
+            exercise.warningCanBeDisplayed = false
+            if (exercise.mouvementSpeedTime != null) {
+                if (exercise.mouvementSpeedTime!! < exercise.minExecutionTime!!) {
+                    playAndShowRetroaction("Ralentissez", R.raw.ralentissez)
+                } else if (exercise.mouvementSpeedTime!! > exercise.maxExecutionTime!!) {
+                    playAndShowRetroaction("Accélérez", R.raw.accelerez)
+                }
             }
         }
     }
 
     private fun retroactionRepetition(exercise: Exercice)
     {
-        if (exercise.mouvementSpeedTime != null) {
-            if (exercise.mouvementSpeedTime!! < exercise.minExecutionTime!!) {
-                playAudio(R.raw.ralentisser)
-                showRetroaction()
-            }
-            else if (exercise.mouvementSpeedTime!! > exercise.maxExecutionTime!!) {
-                playAudio(R.raw.accelerer)
-                showRetroaction()
+        if(exercise.warningCanBeDisplayed) {
+            exercise.warningCanBeDisplayed = false
+            if (exercise.mouvementSpeedTime != null) {
+                if (exercise.mouvementSpeedTime!! < exercise.minExecutionTime!!) {
+                    playAndShowRetroaction("Ralentissez", R.raw.ralentissez)
+                }
+                else if (exercise.mouvementSpeedTime!! > exercise.maxExecutionTime!!) {
+                    playAndShowRetroaction("Accélérez", R.raw.accelerez)
+                }
             }
         }
     }
 
     private fun retroactionHold(exercise: Exercice)
     {
-
-    }
-
-    private fun showRetroaction()
-    {
-        if (drawView!!.exercice!!.exitStateReached == true) {
-            val activity = activity
-
-            activity?.runOnUiThread {
-                var textViewBackground: TextView? =
-                    view?.findViewById(R.id.background_initialize)
-                textViewBackground!!.alpha = 1.0F
-
-                var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
-                textViewCountdown!!.text = "Terminé"
-                drawView!!.invalidate()
-
-                // must do a separate thread or the background wont show
-                GlobalScope.launch {
-                    delay(2000L)
-
-                    //EXIT !
-                    activity.let {
-                        val intent = Intent(it, ProgramListActivity::class.java)
-                        it.startActivity(intent)
-                        it.finish()
-                    }
+        if(exercise.warningCanBeDisplayed) {
+            exercise.warningCanBeDisplayed = false
+            if(exercise.isHolding != null) {
+                if (exercise.isHolding) {
+                    playAndShowRetroaction("Tenez la position", R.raw.tenez_la_position)
+                } else if (!exercise.isHolding) {
+                    playAndShowRetroaction("Revenez en position", R.raw.revenez_en_position)
                 }
             }
         }
     }
 
-    private fun playAudio(audioFile: Int)
+    private fun playAndShowRetroaction(message: String, audioFile: Int)
     {
         if(!audioIsPlaying)
         {
             audioIsPlaying = true
             // must do a separate thread
             GlobalScope.launch {
+                //Play the audio file
                 var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, audioFile)
-                mediaPlayer?.start() // no need to call prepare(); create() does that for you
+                mediaPlayer?.start()
+
+                //Display the warning message
+                val activity = activity
+
+                activity?.runOnUiThread {
+                    var textViewWarning: TextView? = view?.findViewById(R.id.warningPopUp)
+                    textViewWarning!!.alpha = 1.0F
+                    textViewWarning!!.text = message
+
+                    //Hide the exercise information
+                    var textViewInfoLeft: TextView? = view?.findViewById(R.id.infoLeft)
+                    textViewInfoLeft!!.alpha = 0.0F
+
+                    var textViewInfoRight: TextView? = view?.findViewById(R.id.infoRight)
+                    textViewInfoRight!!.alpha = 0.0F
+
+                    drawView!!.invalidate()
+                }
+
+                // Delay the thread until the audio stopped playing
                 delay(mediaPlayer?.duration!!.toLong())
+
+                //Hide the warning message
+                activity?.runOnUiThread {
+                    var textViewWarning: TextView? = view?.findViewById(R.id.warningPopUp)
+                    textViewWarning!!.alpha = 0.0F
+                    textViewWarning!!.text = ""
+
+                    //Show exercise information
+                    var textViewInfoLeft: TextView? = view?.findViewById(R.id.infoLeft)
+                    textViewInfoLeft!!.alpha = 1.0F
+
+                    var textViewInfoRight: TextView? = view?.findViewById(R.id.infoRight)
+                    textViewInfoRight!!.alpha = 1.0F
+
+                    drawView!!.invalidate()
+                }
+
                 audioIsPlaying = false
             }
         }
@@ -915,7 +934,38 @@ class Camera2BasicFragment : Fragment() {
                 }
 
             }
-        } else {
+        }
+        // Done -> exit exercise
+        else if (drawView!!.exercice!!.exitStateReached == true) {
+            val activity = activity
+
+            activity?.runOnUiThread {
+                var textViewBackground: TextView? =
+                    view?.findViewById(R.id.background_initialize)
+                textViewBackground!!.alpha = 1.0F
+
+                var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
+                textViewCountdown!!.text = "Terminé"
+                drawView!!.invalidate()
+
+                //Play the audio file
+                var mediaPlayer: MediaPlayer? = MediaPlayer.create(context, R.raw.termine)
+                mediaPlayer?.start()
+
+                // must do a separate thread or the background wont show
+                GlobalScope.launch {
+                    delay(2000L)
+
+                    //EXIT !
+                    activity.let {
+                        val intent = Intent(it, ProgramListActivity::class.java)
+                        it.startActivity(intent)
+                        it.finish()
+                    }
+                }
+            }
+        }
+        else {
             // Verify angle
             drawView!!.exercice!!.exerciceVerification(drawView!!)
 
@@ -923,38 +973,11 @@ class Camera2BasicFragment : Fragment() {
                 showDebugValues(drawView!!.exercice!!)
             }
 
-            retroaction(drawView!!.exercice!!)
-
             showExerciseInformation(drawView!!.exercice!!)
 
+            retroaction(drawView!!.exercice!!)
+
             statistiques.add(drawView!!.exercice!!.copy())
-
-            // Done -> exit exercise
-            if (drawView!!.exercice!!.exitStateReached == true) {
-                val activity = activity
-
-                activity?.runOnUiThread {
-                    var textViewBackground: TextView? =
-                        view?.findViewById(R.id.background_initialize)
-                    textViewBackground!!.alpha = 1.0F
-
-                    var textViewCountdown: TextView? = view?.findViewById(R.id.countdown)
-                    textViewCountdown!!.text = "Terminé"
-                    drawView!!.invalidate()
-
-                    // must do a separate thread or the background wont show
-                    GlobalScope.launch {
-                        delay(2000L)
-
-                        //EXIT !
-                        activity.let {
-                            val intent = Intent(it, ProgramListActivity::class.java)
-                            it.startActivity(intent)
-                            it.finish()
-                        }
-                    }
-                }
-            }
         }
     }
 

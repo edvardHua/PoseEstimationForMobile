@@ -43,6 +43,9 @@ class Exercice : Serializable {
     var holdingStartTime: Long? = null
     var currentHoldTime: Long = 0
 
+    //This is used to make sure that a warning cannot be spammed
+    var warningCanBeDisplayed: Boolean = true
+
     fun initialisationVerification(drawView: DrawView) {
         //For Each body part
         initList.forEachIndexed()
@@ -206,6 +209,7 @@ class Exercice : Serializable {
                 it.movementState = MovementState.ENDING_ANGLE_REACHED
             }
             numberOfRepetition++
+            warningCanBeDisplayed = true
             mouvementSpeedTime = calculateTime()
         }
 
@@ -261,6 +265,7 @@ class Exercice : Serializable {
                         holdTime += currentHoldTime
                         currentHoldTime = 0
                         wasHolding = false
+                        warningCanBeDisplayed = true
                     }
                 }
             }
@@ -271,6 +276,7 @@ class Exercice : Serializable {
         if (isHolding && !wasHolding) {
             holdingStartTime = System.currentTimeMillis()
             wasHolding = true
+            warningCanBeDisplayed = true
         }
 
         //Verify if the targetHoldTime is reached and set exit state to true
