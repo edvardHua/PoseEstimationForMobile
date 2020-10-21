@@ -344,6 +344,7 @@ class Exercice : Serializable {
                 it.movementState = MovementState.ENDING_ANGLE_REACHED
             }
             numberOfRepetition++
+            warningCanBeDisplayed = true
             mouvementSpeedTime = calculateTime()
         }
 
