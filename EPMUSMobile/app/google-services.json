@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "887494519381",
+    "firebase_url": "https://iphysio-55674.firebaseio.com",
+    "project_id": "iphysio-55674",
+    "storage_bucket": "iphysio-55674.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887494519381:android:b09a4baa0c904dee47c2dc",
+        "android_client_info": {
+          "package_name": "com.epmus.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887494519381-l35c67frgjokgedo5v4apf1slja5vho4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYuqgLc5Wlxj30J1-wyf25Gd6W2huy3xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887494519381-l35c67frgjokgedo5v4apf1slja5vho4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

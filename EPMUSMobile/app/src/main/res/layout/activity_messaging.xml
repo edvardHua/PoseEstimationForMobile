@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".Messaging.MessagingActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_MainMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
